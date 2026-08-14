@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0B0F19;
+  --foreground: #F3F4F6;
+  --primary: #0B0F19;
+  --accent: #C5A880;
+  --accent-hover: #B59870;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #E5C090 0%, #C5A880 50%, #A48358 100%);
+}
+
+.gold-text-gradient {
+  background: linear-gradient(135deg, #E5C090 0%, #C5A880 50%, #A48358 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 128, 0.15);
+}
+
+.glass-card:hover {
+  border-color: rgba(197, 168, 128, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(197, 168, 128, 0.1);
+}
