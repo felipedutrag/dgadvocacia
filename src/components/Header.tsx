@@ -20,7 +20,6 @@ export default function Header() {
           <nav className="hidden md:flex space-x-6 ml-auto mr-8">
             <Link href="/" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Início</Link>
             <a href="#servicos" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Áreas de Atuação</a>
-            <a href="#sobre" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Diferencial</a>
             <a href="#advogado" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">O Advogado</a>
             <a href="#metodologia" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Como Atuamos</a>
             <a href="#faq" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">FAQ</a>
@@ -75,13 +74,6 @@ export default function Header() {
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
           >
             Áreas de Atuação
-          </a>
-          <a
-            href="#sobre"
-            onClick={() => setIsOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
-          >
-            Diferencial
           </a>
           <a
             href="#advogado"

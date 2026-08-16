@@ -12,7 +12,7 @@ export default function Footer() {
               <span className="text-sm font-sans font-light tracking-[0.2em] text-gray-300 border-l border-accent/20 pl-2">ADVOCACIA</span>
             </div>
             <p className="text-xs sm:text-sm leading-relaxed max-w-sm">
-              Consultoria jurídica especializada em Direito Digital, Governança de IA, LGPD e Auditoria de Propriedade Intelectual para proteger ativos intangíveis e blindar negócios tecnológicos.
+              Consultoria jurídica especializada em Direito Digital, Governança de IA, LGPD e Auditoria de Propriedade Intelectual para proteger ativos de software e blindar negócios tecnológicos.
             </p>
           </div>
 
@@ -76,10 +76,10 @@ export default function Footer() {
         <div className="border-t border-accent/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-xs">
           <div>
             <p>&copy; {currentYear} DG Advocacia. Todos os direitos reservados.</p>
-            <p className="mt-1 text-gray-500">Dr. Felipe Dutra Gonçalves &bull; OAB/SP nº 459.254 — Em estrita conformidade com o Código de Ética e Disciplina da OAB.</p>
+            <p className="mt-1 text-gray-500">Felipe Dutra Gonçalves &bull; OAB/SP nº 459.254</p>
           </div>
           <div className="flex gap-4">
-            <a href="#advogado" className="hover:text-accent transition-colors">Dr. Felipe Dutra Gonçalves</a>
+            <a href="#advogado" className="hover:text-accent transition-colors">Felipe Dutra Gonçalves</a>
           </div>
         </div>
       </div>

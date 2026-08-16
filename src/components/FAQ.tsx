@@ -29,12 +29,12 @@ export default function FAQ({
   return (
     <section id="faq" className="py-24 bg-[#0B0F19] relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">{subtitle}</span>
           <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
             {title}
           </h2>
-          <p className="mt-4 text-gray-400">
+          <p className="mt-3 text-gray-400">
             {description}
           </p>
         </div>
