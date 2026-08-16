@@ -19,20 +19,22 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 ml-auto mr-8">
             <Link href="/" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Início</Link>
-            <a href="#por-que-registrar" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Por Que Registrar</a>
-            <a href="#simulador" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Consulta INPI</a>
+            <a href="#servicos" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Áreas de Atuação</a>
+            <a href="#sobre" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Diferencial</a>
+            <a href="#advogado" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">O Advogado</a>
+            <a href="#metodologia" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Como Atuamos</a>
             <a href="#faq" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">FAQ</a>
           </nav>
 
           {/* Call to Action */}
           <div className="hidden md:flex">
             <a
-              href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+falar+com+um+advogado+sobre+registro+de+marcas+no+INPI."
+              href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-primary gold-gradient hover:opacity-90 active:scale-[0.98] transition-all"
             >
-              Falar com Especialista
+              Agendar Consulta Estratégica
             </a>
           </div>
 
@@ -68,18 +70,32 @@ export default function Header() {
             Início
           </Link>
           <a
-            href="#por-que-registrar"
+            href="#servicos"
             onClick={() => setIsOpen(false)}
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
           >
-            Por Que Registrar
+            Áreas de Atuação
           </a>
           <a
-            href="#simulador"
+            href="#sobre"
             onClick={() => setIsOpen(false)}
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
           >
-            Consulta INPI
+            Diferencial
+          </a>
+          <a
+            href="#advogado"
+            onClick={() => setIsOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
+          >
+            O Advogado
+          </a>
+          <a
+            href="#metodologia"
+            onClick={() => setIsOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
+          >
+            Como Atuamos
           </a>
           <a
             href="#faq"
@@ -90,12 +106,12 @@ export default function Header() {
           </a>
           <div className="pt-4 px-3">
             <a
-              href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+falar+com+um+advogado+sobre+registro+de+marcas+no+INPI."
+              href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full py-3 rounded-full text-sm font-semibold uppercase tracking-wider text-primary gold-gradient"
             >
-              Falar com Especialista
+              Agendar Consulta Estratégica
             </a>
           </div>
         </div>

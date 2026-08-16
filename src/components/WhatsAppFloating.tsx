@@ -9,7 +9,7 @@ export default function WhatsAppFloating() {
         Falar com Advogado
       </div>
       <a
-        href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+falar+com+um+advogado+sobre+direito+imobili%C3%A1rio."
+        href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center w-14 h-14 bg-[#25D366] hover:bg-[#20BA5A] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group focus:outline-none pointer-events-auto"

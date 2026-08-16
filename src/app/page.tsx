@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import Header from "@/components/Header";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
@@ -54,456 +54,407 @@ const NICE_CLASSES = [
 ];
 
 export default function Home() {
-  // Estado para a Consulta Interativa de Marca (Simulador)
-  const [marcaInput, setMarcaInput] = useState("");
-  const [classeInput, setClasseInput] = useState("25");
-  const [categoriaFiltro, setCategoriaFiltro] = useState("todas");
-  const [termoBuscaClasse, setTermoBuscaClasse] = useState("");
-  const [descInput, setDescInput] = useState("");
-  const [whatsInput, setWhatsInput] = useState("");
-  const [loadingConsulta, setLoadingConsulta] = useState(false);
-  const [resultadoConsulta, setResultadoConsulta] = useState<any>(null);
-  const [erroConsulta, setErroConsulta] = useState<string | null>(null);
-
   const faqs = [
     {
-      question: "Por que devo registrar minha marca no INPI?",
-      answer: "O registro no INPI (Instituto Nacional da Propriedade Industrial) garante o direito de uso exclusivo da marca em todo o território nacional. Sem o registro, outra empresa pode registrar o nome primeiro e impedi-lo de utilizá-lo, além de cobrar indenizações."
+      question: "O que é a Governança e Compliance para Inteligência Artificial?",
+      answer: "É a estruturação jurídica que assegura o uso seguro e ético de IA nas empresas. Abrange a conformidade com regulação (Privacy and Ethics by Design), análise de contratos e licenças de modelos de LLMs, proteção de dados em integrações via API e a preservação de segredos de negócio e direitos autorais nos treinos de modelos."
     },
     {
-      question: "Qual o valor e a validade do registro de marca?",
-      answer: "Após concedido pelo INPI, o registro da marca tem validade de 10 anos em todo o Brasil, renovável por períodos iguais e sucessivos. Trata-se de um investimento patrimonial direto no ativo intangível da sua empresa."
+      question: "Como funciona a Auditoria de Propriedade Intelectual (Due Diligence)?",
+      answer: "A Due Diligence de PI avalia detalhadamente todo o patrimônio intangível da sua empresa — incluindo softwares, algoritmos, bases de dados, registros no INPI, marcas e patentes. Identificamos gargalos de titularidade, riscos de infração de código/terceiros e oportunidades para blindagem do portfólio."
     },
     {
-      question: "O que são as Classes de Nice do INPI?",
-      answer: "As Classes de Nice classificam produtos e serviços em 45 categorias internacionais (1 a 34 para produtos e 35 a 45 para serviços). O registro protege a marca nas classes específicas escolhidas para a sua atividade."
+      question: "Por que minha empresa precisa de conformidade com a LGPD aplicada à tecnologia?",
+      answer: "Para empresas de tecnologia e startups, a conformidade vai além de termos de uso genéricos: ela exige Privacy by Design na arquitetura dos sistemas, mapeamento de fluxo de dados em APIs/servidores e termos adequados de transferência internacional ou processamento de dados."
     },
     {
-      question: "Como funciona a API de consulta de disponibilidade do INPI?",
-      answer: "Nossa API realiza varredura exata e por similaridade nos bancos de dados do INPI, identificando processos existentes na mesma classe de Nice e fornecendo uma análise de viabilidade imediata para o registro."
+      question: "Como proteger softwares, algoritmos e modelos de IA no Brasil?",
+      answer: "A proteção de ativos tecnológicos combina o Registro de Programa de Computador no INPI (para o código-fonte), proteção contratual de segredos de negócio (NDA/Trade Secrets) para algoritmos e arquiteturas, e proteção de marca/patente de invenções implementadas por computador."
     },
     {
-      question: "Quanto tempo demora o processo de concessão de marca no INPI?",
-      answer: "O processo médio de registro no INPI leva entre 6 a 12 meses. Nossa equipe jurídica faz o acompanhamento semanal das publicações na Revista da Propriedade Industrial (RPI) para responder eventuais oposições no prazo legal."
+      question: "Qual a relevância de contratos específicos de SaaS e Licenciamento de Tecnologia?",
+      answer: "Contratos genéricos expõem a empresa a riscos de perda de propriedade intelectual sobre customizações, violação de SLAs, responsabilidade ilimitada por vazamento de dados e disputas sobre o uso de dados de clientes para treinamento de modelos de IA."
     }
   ];
-
-  const handleSimular = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!marcaInput.trim()) return;
-
-    setLoadingConsulta(true);
-    setErroConsulta(null);
-    setResultadoConsulta(null);
-
-    try {
-      const res = await fetch("/api/inpi/check-trademark", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          trademark: marcaInput.trim(),
-          classe: classeInput,
-          description: descInput.trim() || undefined,
-          whatsapp: whatsInput.trim() || undefined
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Erro ao consultar a disponibilidade da marca.");
-      }
-
-      setResultadoConsulta(data);
-    } catch (err: any) {
-      setErroConsulta(err.message || "Erro de conexão ao consultar a API.");
-    } finally {
-      setLoadingConsulta(false);
-    }
-  };
-
-  const classesFiltradas = NICE_CLASSES.filter((item) => {
-    const matchCategory = categoriaFiltro === "todas" || item.categories.includes(categoriaFiltro);
-    const matchSearch =
-      termoBuscaClasse.trim() === "" ||
-      item.name.toLowerCase().includes(termoBuscaClasse.toLowerCase()) ||
-      item.code.includes(termoBuscaClasse.trim());
-    return matchCategory && matchSearch;
-  });
 
   return (
     <>
       <Header />
 
       <main className="flex-1 bg-[#0B0F19] text-gray-100 font-sans">
-        {/* 1. Hero Section - Background: Dark Navy Radial (#121A2E -> #0B0F19) */}
-        <section className="relative py-28 sm:py-36 overflow-hidden bg-radial from-[#121A2E] via-[#0B0F19] to-[#0B0F19] border-b border-accent/10">
+        {/* HERO SECTION */}
+        <section className="relative pt-20 pb-24 md:pt-28 md:pb-32 overflow-hidden bg-radial from-[#131C31] via-[#0B0F19] to-[#0B0F19] border-b border-accent/10">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-4xl mx-auto space-y-8">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20">
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                Proteção de Propriedade Intelectual & Registro no INPI
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20 mb-8">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              Direito Digital, IA &amp; Ativos Tecnológicos
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.15] max-w-4xl mx-auto">
+              Segurança Jurídica e Estratégia para{" "}
+              <span className="gold-text-gradient block mt-2 sm:inline sm:mt-0">
+                Inovação, IA e Ativos Tecnológicos
               </span>
+            </h1>
 
-              <h1 className="text-4xl sm:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.15]">
-                Sua marca é o seu maior ativo. <br />
-                <span className="gold-text-gradient">Garanta o registro oficial no INPI.</span>
-              </h1>
+            <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
+              Unimos profundo conhecimento jurídico a uma sólida base técnica em sistemas para blindar seu produto digital, garantir governança em inteligência artificial e proteger seus ativos intangíveis.
+            </p>
 
-              <p className="text-base sm:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
-                Proteja o nome e a identidade da sua empresa contra cópias e imitações. Oferecemos assessoria jurídica completa e tecnologia de busca inteligente para consultar a viabilidade da sua marca em segundos.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
-                <a
-                  href="#simulador"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-lg shadow-accent/10"
-                >
-                  Consultar Minha Marca Agora
-                </a>
-                <a
-                  href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+falar+com+um+advogado+sobre+registro+de+marcas+no+INPI."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
-                >
-                  Falar com Advogado
-                </a>
-              </div>
+            <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+              <a
+                href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
+              >
+                Agendar Consulta Estratégica
+              </a>
+              <a
+                href="#servicos"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+              >
+                Conhecer Áreas de Atuação
+              </a>
             </div>
           </div>
         </section>
 
-        {/* 2. Por Que Registrar? - Background: Darker Tone (#090D16) */}
-        <section id="por-que-registrar" className="py-24 bg-[#090D16] border-b border-accent/5">
+        {/* ÁREAS DE ATUAÇÃO */}
+        <section id="servicos" className="py-24 bg-[#090D16] border-b border-accent/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Exclusividade & Segurança</span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
-                Por que registrar sua marca no INPI?
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Especialidades &amp; Soluções</span>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+                Áreas de Atuação Especializada
               </h2>
-              <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-                Quem não registra não é dono. Descubra a importância de blindar legalmente o nome do seu negócio.
+              <p className="mt-4 text-gray-400 text-sm sm:text-base leading-relaxed">
+                Estruturação jurídica e conformidade técnica para negócios de base tecnológica, inteligência artificial e proteção de ativos intangíveis.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-white">Uso Exclusivo em Todo o Brasil</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  O registro concede o direito de exploração comercial exclusiva da sua marca em todo o território nacional, impedindo concorrentes de usarem nomes parecidos.
-                </p>
-              </div>
-
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-white">Ativo Financeiro de Alto Valor</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  Uma marca registrada é um bem intangível que pode ser avaliado monetariamente, vendido, licenciado ou até utilizado como garantia em operações comerciais.
-                </p>
-              </div>
-
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-white">Proteção Contra Notificações e Processos</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  Evite a perda repentina do nome do seu negócio, custos de alteração de identidade visual e pesadas indenizações por uso indevido de marcas alheias.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Simulador de Marcas (Consumo da API) - Background: Primary Dark (#0B0F19) */}
-        <section id="simulador" className="py-24 bg-[#0B0F19] relative border-b border-accent/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20 mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
-                API em Tempo Real
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
-                Consulte a Disponibilidade da sua Marca no INPI
-              </h2>
-              <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-                Insira o nome da sua marca e a classe de atuação para consultar diretamente o banco de dados oficial via nossa API de análise.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Form de Busca */}
-              <div className="lg:col-span-5 glass-card p-8 rounded-2xl border border-accent/20 shadow-2xl h-full flex flex-col justify-between">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Pillar 1 */}
+              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    Simulador de Marca
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Auditoria de Propriedade Intelectual (Due Diligence de PI)
                   </h3>
-
-                  <form onSubmit={handleSimular} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-                        Nome da Marca <span className="text-accent">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Ex: DG Advocacia"
-                        value={marcaInput}
-                        onChange={(e) => setMarcaInput(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent text-sm"
-                      />
-                    </div>
-
-                    {/* Filtro de Perfil / Ramo de Atuação (Digital / Geral) */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">
-                        Filtrar por Perfil / Ramo de Atuação
-                      </label>
-                      <select
-                        value={categoriaFiltro}
-                        onChange={(e) => setCategoriaFiltro(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-700 rounded-xl px-3 py-2 text-accent focus:outline-none focus:border-accent text-xs font-medium"
-                      >
-                        <option value="todas">🌐 Todas as 45 Classes de Nice</option>
-                        <option value="digital">💻 Negócios Digitais & TI (SaaS, Apps, E-commerce, Marketing)</option>
-                        <option value="moda">👗 Moda, Vestuário, Joias & Acessórios</option>
-                        <option value="alimentacao">🍔 Alimentos, Bebidas & Restaurantes</option>
-                        <option value="saude">💄 Saúde, Estética & Cosméticos</option>
-                        <option value="educacao">📚 Educação, Cursos, Podcasts & Mídia</option>
-                        <option value="servicos">⚖️ Serviços Profissionais, Financeiros & Jurídicos</option>
-                        <option value="industria">🏭 Indústria, Materiais & Produtos Diversos</option>
-                      </select>
-                    </div>
-
-                    {/* Busca Rápida por palavra-chave da classe */}
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="🔍 Ou digite o nome/número para buscar na lista..."
-                        value={termoBuscaClasse}
-                        onChange={(e) => setTermoBuscaClasse(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-800 rounded-lg px-3 py-1.5 text-gray-300 placeholder-gray-500 text-xs focus:outline-none focus:border-accent"
-                      />
-                    </div>
-
-                    {/* Dropdown com todas as 45 classes de Nice */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-                        Classe de Nice (INPI) — <span className="text-accent">{classesFiltradas.length} encontrada(s)</span>
-                      </label>
-                      <select
-                        value={classeInput}
-                        onChange={(e) => setClasseInput(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent text-sm"
-                      >
-                        {classesFiltradas.length > 0 ? (
-                          classesFiltradas.map((c) => (
-                            <option key={c.code} value={c.code}>
-                              {c.name}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="25">Nenhuma classe encontrada para a busca</option>
-                        )}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-                        Sua Empresa / Razão Social (Opcional)
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Nome do seu negócio"
-                        value={descInput}
-                        onChange={(e) => setDescInput(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-                        WhatsApp para Relatório Completo (Opcional)
-                      </label>
-                      <input
-                        type="tel"
-                        placeholder="(11) 99999-9999"
-                        value={whatsInput}
-                        onChange={(e) => setWhatsInput(e.target.value)}
-                        className="w-full bg-[#070A11] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent text-sm"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loadingConsulta}
-                      className="w-full py-4 rounded-xl font-semibold text-sm uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
-                    >
-                      {loadingConsulta ? (
-                        <>
-                          <svg className="animate-spin h-5 w-5 text-[#0B0F19]" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                          </svg>
-                          Consultando API do INPI...
-                        </>
-                      ) : (
-                        "Verificar Disponibilidade na API"
-                      )}
-                    </button>
-                  </form>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Avaliação minuciosa do portfólio de ativos intangíveis, identificando gargalos, riscos de infração e oportunidades para novos registros de marcas, patentes e programas de computador (software).
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-white/5">
+                  <span className="text-xs text-accent font-medium uppercase tracking-wider">Proteção de Patrimônio &bull; Software &bull; Marcas</span>
                 </div>
               </div>
 
-              {/* Resultado da Busca */}
-              <div className="lg:col-span-7 glass-card p-8 rounded-2xl border border-white/10 h-full flex flex-col justify-between">
+              {/* Pillar 2 */}
+              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center justify-between">
-                    <span>Resultado da Análise da API</span>
-                    {resultadoConsulta && (
-                      <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
-                        HTTP 200 OK
-                      </span>
-                    )}
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Governança &amp; Estratégia de PI para IA
                   </h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Estruturação jurídica para proteger algoritmos, modelos de IA, bases de dados e códigos-fonte, assegurando conformidade com <em>Privacy and Ethics by Design</em> e segurança em integrações de APIs.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-white/5">
+                  <span className="text-xs text-accent font-medium uppercase tracking-wider">LLMs &bull; Privacy by Design &bull; APIs</span>
+                </div>
+              </div>
 
-                  {erroConsulta && (
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm mb-6">
-                      <strong>Erro na Consulta:</strong> {erroConsulta}
-                    </div>
-                  )}
+              {/* Pillar 3 */}
+              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Gestão e Monitoramento de Portfólio
+                  </h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Acompanhamento contínuo de registros perante o INPI, defesas contra oposições, cumprimento de exigências e ações preventivas contra infrações de terceiros.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-white/5">
+                  <span className="text-xs text-accent font-medium uppercase tracking-wider">INPI &bull; Vigilância Ativa &bull; Defesas</span>
+                </div>
+              </div>
 
-                  {!resultadoConsulta && !loadingConsulta && !erroConsulta && (
-                    <div className="text-center py-16 space-y-4 text-gray-500">
-                      <svg className="w-16 h-16 mx-auto opacity-30 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-sm">Preencha o formulário ao lado para acionar a nossa API e obter o status da marca no INPI.</p>
-                    </div>
-                  )}
+              {/* Pillar 4 */}
+              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Licenciamento e Contratos de Tecnologia
+                  </h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Elaboração e negociação de contratos de software (SaaS), cessão de direitos, transferência de tecnologia e parcerias para integração de IA.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-white/5">
+                  <span className="text-xs text-accent font-medium uppercase tracking-wider">Contratos SaaS &bull; Transferência de Tech &bull; NDAs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                  {loadingConsulta && (
-                    <div className="py-16 text-center space-y-4">
-                      <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto" />
-                      <p className="text-sm text-gray-300">Buscando marcas similares e verificando conflitos na Classe {classeInput}...</p>
-                    </div>
-                  )}
+        {/* SEÇÃO SOBRE O ESCRITÓRIO E INSTITUCIONAL */}
+        <section id="sobre" className="py-24 bg-[#0B0F19] relative border-b border-accent/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Diferencial Estratégico</span>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+                Engenharia e Direito no Mesmo Diálogo
+              </h2>
+              <p className="mt-4 text-gray-400 text-sm sm:text-base leading-relaxed">
+                Eliminamos a barreira entre o departamento jurídico e a engenharia de software, traduzindo normas regulatórias em proteção técnica efetiva.
+              </p>
+            </div>
 
-                  {resultadoConsulta && (
-                    <div className="space-y-6">
-                      <div className="p-4 rounded-xl bg-accent/5 border border-accent/20">
-                        <p className="text-xs text-accent uppercase tracking-wider font-semibold">Marca Analisada</p>
-                        <p className="text-lg font-bold text-white">{resultadoConsulta.trademark || marcaInput}</p>
-                        <p className="text-xs text-gray-400 mt-1">Classe de Nice: {classeInput} | Total de Processos Encontrados: {resultadoConsulta.processos?.length || 0}</p>
-                      </div>
+            {/* Container Principal Unificado em Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+              {/* Imagem do Escritório em Destaque */}
+              <div className="lg:col-span-5 relative rounded-2xl overflow-hidden border border-accent/20 shadow-2xl min-h-[380px]">
+                <Image
+                  src="/office_sign.png"
+                  alt="DG Advocacia — Sede do Escritório"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-[#0B0F19]/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <span className="text-xs uppercase tracking-widest text-accent font-semibold block mb-1">Estrutura Institucional</span>
+                  <p className="text-white text-sm font-serif font-bold">DG Advocacia &bull; São Paulo / SP</p>
+                </div>
+              </div>
 
-                      {resultadoConsulta.processos && resultadoConsulta.processos.length > 0 ? (
-                        <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
-                          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
-                            ⚠️ Processos Semelhantes Registrados no INPI:
-                          </p>
-                          {resultadoConsulta.processos.map((proc: any, i: number) => (
-                            <div key={i} className="p-3.5 rounded-lg bg-[#070A11] border border-gray-800 text-xs flex justify-between items-center gap-4">
-                              <div>
-                                <span className="font-bold text-white block">{proc.marca || proc.numero}</span>
-                                <span className="text-gray-400 text-[11px]">Nº: {proc.numero} | {proc.situacao || "Em andamento"}</span>
-                              </div>
-                              <span className="px-2.5 py-1 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px] font-mono shrink-0">
-                                Conflito Potencial
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm flex items-start gap-3">
-                          <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <div>
-                            <strong>Nenhum impedimento direto encontrado!</strong>
-                            <p className="text-xs text-emerald-300/80 mt-1">A marca demonstra alta probabilidade de registro na Classe {classeInput}. Fale com nossos advogados para efetuar o depósito oficial.</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+              {/* Card de Conteúdo e Pilares */}
+              <div className="lg:col-span-7 flex flex-col justify-between glass-card p-8 sm:p-10 rounded-2xl border border-accent/20 space-y-8">
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Soluções Alinhadas à Sua Inovação
+                  </h3>
+                  <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    Seja para auditar o código-fonte de um software proprietário, garantir conformidade com a LGPD em fluxos de IA, ou formalizar contratos de licenciamento SaaS, nossa consultoria atua lado a lado com fundadores, CTOs e líderes de tecnologia.
+                  </p>
                 </div>
 
-                {resultadoConsulta && (
-                  <div className="pt-4 border-t border-gray-800 flex justify-end">
+                <div className="space-y-4 pt-6 border-t border-white/10">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">✓</div>
+                    <p className="text-sm text-gray-300"><strong className="text-white">Linguagem Nativa de TI:</strong> Compreensão profunda de arquiteturas de software, fluxos de dados, contêineres, LLMs e APIs.</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">✓</div>
+                    <p className="text-sm text-gray-300"><strong className="text-white">Compliance Ético &amp; Operacional:</strong> Mitigação de riscos regulatórios (LGPD e IA) sem desacelerar seu time de desenvolvimento.</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">✓</div>
+                    <p className="text-sm text-gray-300"><strong className="text-white">Rigor Ético OAB:</strong> Atuação sóbria, técnica e estritamente informativa para construção de valor patrimonial seguro.</p>
+                  </div>
+                </div>
+
+                <div>
+                  <a
+                    href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 transition-all shadow-lg"
+                  >
+                    Falar com Advogado Especialista
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SEÇÃO O ADVOGADO */}
+        <section id="advogado" className="py-24 bg-[#080C14] relative border-b border-accent/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Liderança &amp; Experiência</span>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+                Advocacia Especializada em Tecnologia
+              </h2>
+              <p className="mt-4 text-gray-400 text-sm sm:text-base leading-relaxed">
+                Atuação consultiva e estratégica combinando domínio técnico em sistemas com rigor jurídico e conformidade ética.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              {/* Foto do Dr. Felipe Dutra Gonçalves */}
+              <div className="lg:col-span-5 relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-blue-600/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition duration-500 pointer-events-none" />
+                <div className="relative mx-auto max-w-sm rounded-2xl overflow-hidden border border-accent/30 shadow-2xl group bg-[#0B0F19]">
+                  <Image
+                    src="/felipe_dutra.jpg"
+                    alt="Dr. Felipe Dutra Gonçalves — Advogado Especialista em Direito Digital e IA"
+                    width={600}
+                    height={800}
+                    priority
+                    className="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
+                  />
+                  {/* Máscara de iluminação e degradê suave */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080C14] via-transparent to-transparent opacity-60" />
+                  <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#0B0F19]/80 backdrop-blur-md border border-accent/20 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-accent font-semibold uppercase tracking-wider">Advogado Titular</p>
+                      <p className="text-white text-xs font-serif font-bold">OAB/SP 459.254</p>
+                    </div>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Atendimento Ativo" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bio & Credenciais */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="glass-card p-8 sm:p-10 rounded-2xl border border-accent/20 space-y-6">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-accent font-semibold block mb-1">Fundador &amp; Advogado Titular</span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+                      Dr. Felipe Dutra Gonçalves
+                    </h3>
+                    <p className="text-sm font-mono text-gray-400 mt-1">OAB/SP nº 459.254</p>
+                  </div>
+
+                  <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    Advogado dedicado à vanguarda do Direito Digital, Governança de Inteligência Artificial e Proteção de Ativos Tecnológicos. Sua abordagem inovadora une o entendimento profundo de arquiteturas computacionais, contratos de tecnologia (SaaS/APIs) e privacidade à segurança patrimonial dos clientes.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-xs shrink-0 mt-0.5">✓</div>
+                      <div>
+                        <h4 className="text-white text-sm font-semibold">Auditoria &amp; Due Diligence</h4>
+                        <p className="text-xs text-gray-400">Proteção de código-fonte, marcas e patentes no INPI.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-xs shrink-0 mt-0.5">✓</div>
+                      <div>
+                        <h4 className="text-white text-sm font-semibold">IA &amp; Regulação Digital</h4>
+                        <p className="text-xs text-gray-400">Privacy by Design, governança de LLMs e contratos de APIs.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
                     <a
-                      href={`https://wa.me/5511972667778?text=Ol%C3%A1%2C+consultei+a+marca+${encodeURIComponent(marcaInput)}+na+classe+${classeInput}+e+gostaria+de+iniciar+o+registro.`}
+                      href="https://wa.me/5513988658518?text=Ol%C3%A1+Dr.+Felipe+Dutra%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica."
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient"
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 transition-all shadow-lg"
                     >
-                      Iniciar Registro via WhatsApp &rarr;
+                      Falar Diretamente com Dr. Felipe
                     </a>
+                    <span className="text-xs text-gray-400 flex items-center gap-2">
+                      <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      (13) 98865-8518
+                    </span>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 4. Como Funciona o Processo no INPI - Background: Darker Tone (#090D16) */}
-        <section className="py-24 bg-[#090D16] border-b border-accent/5">
+        {/* METODOLOGIA / COMO ATUAMOS */}
+        <section id="metodologia" className="py-24 bg-[#090D16] border-b border-accent/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Passo a Passo</span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
-                Como Funciona o Processo de Registro no INPI
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Nossa Abordagem</span>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+                Como Atuamos no Seu Negócio
               </h2>
+              <p className="mt-4 text-gray-400 text-sm sm:text-base leading-relaxed">
+                Um fluxo de consultoria contínuo projetado para acompanhar o ciclo de vida do seu produto digital.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="relative glass-card p-8 rounded-2xl border border-accent/10">
-                <span className="text-4xl font-serif font-bold text-accent/30 block mb-4">01</span>
-                <h3 className="text-lg font-bold text-white mb-2">Busca de Anterioridade</h3>
+              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block">01</span>
+                <h3 className="text-lg font-bold text-white">Diagnóstico &amp; Mapeamento</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Varredura minuciosa nos arquivos do INPI para garantir que nenhuma marca similar ou idêntica impeça a sua concessão.
+                  Análise profunda da arquitetura de software, bases de dados, contratos vigentes e presença de marca para identificar vulnerabilidades e oportunidades.
                 </p>
               </div>
 
-              <div className="relative glass-card p-8 rounded-2xl border border-accent/10">
-                <span className="text-4xl font-serif font-bold text-accent/30 block mb-4">02</span>
-                <h3 className="text-lg font-bold text-white mb-2">Depósito Oficial do Pedido</h3>
+              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block">02</span>
+                <h3 className="text-lg font-bold text-white">Governança &amp; Blindagem</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Protocolo jurídico formal no INPI com o enquadramento perfeito nas Classes de Nice e emissão da Guia de Recolhimento da União (GRU).
+                  Implementação de Privacy by Design, elaboração de instrumentos contratuais (SaaS/NDA) e protocolo de proteção para código-fonte e IA.
                 </p>
               </div>
 
-              <div className="relative glass-card p-8 rounded-2xl border border-accent/10">
-                <span className="text-4xl font-serif font-bold text-accent/30 block mb-4">03</span>
-                <h3 className="text-lg font-bold text-white mb-2">Acompanhamento & Concessão</h3>
+              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block">03</span>
+                <h3 className="text-lg font-bold text-white">Monitoramento Contínuo</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Monitoramento semanal na Revista da Propriedade Industrial (RPI), defesa contra oposições e emissão do Certificado de Registro de 10 anos.
+                  Suporte jurídico consultivo permanente para o lançamento de novas features, integrações de modelos de IA e adequação a atualizações regulatórias.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 5. FAQ Section - Background: Primary Dark (#0B0F19) */}
-        <FAQ faqs={faqs} title="Dúvidas Frequentes sobre Registro de Marcas" subtitle="INPI & Propriedade Intelectual" />
+        {/* CTA FINAL */}
+        <section className="py-20 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+              Pronto para construir uma base jurídica sólida para sua tecnologia?
+            </h2>
+            <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+              Agende uma consulta estratégica com nossa equipe e garanta o alinhamento regulatório e a proteção do seu patrimônio intangível.
+            </p>
+            <div className="pt-4">
+              <a
+                href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 transition-all shadow-xl shadow-accent/10"
+              >
+                Agendar Consulta Estratégica via WhatsApp
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ SECTION */}
+        <FAQ
+          faqs={faqs}
+          title="Dúvidas Frequentes"
+          subtitle="Direito Digital, IA & Propriedade Intelectual"
+          description="Esclareça os principais pontos sobre conformidade jurídica, governança de IA e auditoria de intangíveis."
+        />
       </main>
 
       <Footer />

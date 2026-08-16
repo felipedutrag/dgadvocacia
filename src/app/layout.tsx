@@ -17,9 +17,31 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DG Advocacia | Direito Imobiliário e Possessório",
-  description: "Proteja seu patrimônio com segurança jurídica total. Especialistas em Ações de Despejo, Imissão na Posse e Reintegração de Posse.",
-  keywords: ["direito imobiliario", "reintegracao de posse", "acao de despejo", "imissao na posse", "advogado imobiliario", "DG Advocacia"],
+  title: "Direito Digital, Compliance de IA e Propriedade Intelectual | DG Advocacia",
+  description: "Consultoria jurídica especializada em Direito Digital, auditoria de PI, governança de IA e conformidade com a LGPD para empresas e inovações tecnológicas.",
+  keywords: [
+    "Direito Digital",
+    "Compliance de IA",
+    "Governança de Inteligência Artificial",
+    "LGPD para Tecnologia",
+    "Auditoria de Propriedade Intelectual",
+    "Due Diligence de PI",
+    "Licenciamento de Software",
+    "Contratos de SaaS",
+    "Registro de Software INPI",
+    "Proteção de Ativos Tecnológicos",
+    "DG Advocacia"
+  ],
+  openGraph: {
+    title: "Direito Digital, Compliance de IA e Propriedade Intelectual | DG Advocacia",
+    description: "Consultoria jurídica especializada em Direito Digital, auditoria de PI, governança de IA e conformidade com a LGPD para empresas e inovações tecnológicas.",
+    locale: "pt_BR",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
