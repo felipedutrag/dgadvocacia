@@ -32,7 +32,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#advogado" className="hover:text-accent transition-colors">
-                  O Advogado
+                  Sobre o Escritório
                 </a>
               </li>
               <li>

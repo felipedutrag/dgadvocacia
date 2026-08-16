@@ -100,7 +100,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mt-6 text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
+            <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
               Proteção jurídica integrada ao ciclo de desenvolvimento. Blindamos código-fonte, garantimos conformidade em IA e registramos marcas no INPI sem desacelerar seu produto.
             </p>
 
@@ -337,15 +337,15 @@ export default function Home() {
         </section>
 
         {/* CTA FINAL */}
-        <section className="py-32 sm:py-44 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center min-h-[420px]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
+        <section className="py-16 sm:py-36 md:py-44 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-8 relative z-10">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
               Pronto para construir uma base jurídica sólida para sua tecnologia?
             </h2>
             <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
               Agende uma consulta estratégica com nossa equipe e garanta o alinhamento regulatório e a proteção dos seus ativos digitais.
             </p>
-            <div className="pt-4">
+            <div className="pt-2 sm:pt-4">
               <a
                 href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
                 target="_blank"
