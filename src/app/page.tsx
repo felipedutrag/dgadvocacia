@@ -241,9 +241,9 @@ export default function Home() {
             <div className="glass-card rounded-3xl border border-accent/20 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 {/* Foto Integrada */}
-                <div className="lg:col-span-4 relative group">
+                <div className="lg:col-span-4 relative group w-full">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/30 to-blue-600/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-85 transition duration-500 pointer-events-none" />
-                  <div className="relative mx-auto max-w-xs sm:max-w-sm rounded-2xl overflow-hidden border border-accent/30 shadow-2xl bg-[#080C14]">
+                  <div className="relative mx-auto w-full max-w-md sm:max-w-sm lg:max-w-none rounded-2xl overflow-hidden border border-accent/30 shadow-2xl bg-[#080C14]">
                     <Image
                       src="/felipe_dutra.jpg"
                       alt="Felipe Dutra Gonçalves — Advogado Especialista em Direito Digital e IA"
