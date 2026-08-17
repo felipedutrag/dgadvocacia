@@ -84,8 +84,10 @@ export default function Home() {
       <main className="flex-1 bg-[#0B0F19] text-gray-100 font-sans">
         {/* HERO SECTION */}
         <section className="relative pt-20 pb-24 md:pt-28 md:pb-32 overflow-hidden bg-radial from-[#131C31] via-[#0B0F19] to-[#0B0F19] border-b border-accent/10">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+          {/* Elementos Dinâmicos de Iluminação e Tecnologia */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] sm:w-[800px] h-[350px] bg-accent/15 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
+          <div className="absolute -top-16 -left-20 w-[400px] sm:w-[500px] h-[400px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-float-slow" />
+          <div className="absolute top-1/3 -right-20 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] bg-amber-500/10 rounded-full blur-[150px] pointer-events-none animate-float-reverse" />
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20 mb-8">
@@ -231,7 +233,7 @@ export default function Home() {
                 Advocacia Especializada em Tecnologia
               </h2>
               <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
-                Consultoria jurídica preventiva na mesma linguagem da sua equipe de engenharia.
+                Consultoria jurídica preventiva na mesma linguagem da sua equipe de TI.
               </p>
             </div>
 
@@ -312,25 +314,25 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block">01</span>
-                <h3 className="text-lg font-bold text-white">Diagnóstico &amp; Mapeamento</h3>
+              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block mb-3">01</span>
+                <h3 className="text-lg font-bold text-white mb-1.5">Diagnóstico &amp; Mapeamento</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Análise profunda da arquitetura de software, bases de dados, contratos vigentes e presença de marca para identificar vulnerabilidades e oportunidades.
                 </p>
               </div>
 
-              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block">02</span>
-                <h3 className="text-lg font-bold text-white">Governança &amp; Blindagem</h3>
+              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block mb-3">02</span>
+                <h3 className="text-lg font-bold text-white mb-1.5">Governança &amp; Blindagem</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Implementação de Privacy by Design, elaboração de instrumentos contratuais (SaaS/NDA) e protocolo de proteção para código-fonte e IA.
                 </p>
               </div>
 
-              <div className="glass-card p-8 rounded-2xl border border-accent/10 space-y-4 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block">03</span>
-                <h3 className="text-lg font-bold text-white">Monitoramento Contínuo</h3>
+              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-4xl font-serif font-bold text-accent block mb-3">03</span>
+                <h3 className="text-lg font-bold text-white mb-1.5">Monitoramento Contínuo</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Suporte jurídico consultivo permanente para o lançamento de novas features, integrações de modelos de IA e adequação a atualizações regulatórias.
                 </p>
