@@ -6,19 +6,25 @@ import Link from "next/link";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleScrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-[#0B0F19]/90 backdrop-blur-md border-b border-accent/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <a href="#" onClick={handleScrollToTop} className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
             <span className="text-3xl font-serif font-bold tracking-wider gold-text-gradient">DG</span>
             <span className="text-sm font-sans font-light tracking-[0.2em] text-gray-400 border-l border-accent/20 pl-2">ADVOCACIA</span>
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 ml-auto mr-8">
-            <Link href="/" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Início</Link>
+            <a href="#" onClick={handleScrollToTop} className="text-xs text-gray-300 hover:text-accent transition-colors font-medium cursor-pointer">Início</a>
             <a href="#servicos" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Áreas de Atuação</a>
             <a href="#advogado" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Sobre o Escritório</a>
             <a href="#metodologia" className="text-xs text-gray-300 hover:text-accent transition-colors font-medium">Como Atuamos</a>
@@ -61,13 +67,13 @@ export default function Header() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-[#0B0F19]/95 border-b border-accent/10 px-4 pt-2 pb-6 space-y-3">
-          <Link
-            href="/"
-            onClick={() => setIsOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50"
+          <a
+            href="#"
+            onClick={handleScrollToTop}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800/50 cursor-pointer"
           >
             Início
-          </Link>
+          </a>
           <a
             href="#servicos"
             onClick={() => setIsOpen(false)}

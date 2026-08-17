@@ -32,7 +32,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a href="/" className="hover:text-accent transition-colors">
+                <a href="#" className="hover:text-accent transition-colors">
                   Início
                 </a>
               </li>
