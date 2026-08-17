@@ -83,41 +83,41 @@ export default function Home() {
 
       <main className="flex-1 bg-[#0B0F19] text-gray-100 font-sans">
         {/* HERO SECTION */}
-        <section className="relative pt-20 pb-24 md:pt-28 md:pb-32 overflow-hidden bg-radial from-[#131C31] via-[#0B0F19] to-[#0B0F19] border-b border-accent/10">
+        <section className="relative pt-16 pb-20 md:pt-28 md:pb-32 overflow-hidden bg-radial from-[#131C31] via-[#0B0F19] to-[#0B0F19] border-b border-accent/10">
           {/* Elementos Dinâmicos de Iluminação e Tecnologia */}
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] sm:w-[800px] h-[350px] bg-accent/15 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
           <div className="absolute -top-16 -left-20 w-[400px] sm:w-[500px] h-[400px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-float-slow" />
           <div className="absolute top-1/3 -right-20 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] bg-amber-500/10 rounded-full blur-[150px] pointer-events-none animate-float-reverse" />
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20 mb-8">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-accent/10 text-accent border border-accent/20 mb-6 sm:mb-8">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent animate-pulse" />
               Direito Digital, IA &amp; Ativos Tecnológicos
             </div>
 
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.15] max-w-4xl mx-auto">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.2] max-w-4xl mx-auto">
               Direito Digital e Governança de IA{" "}
-              <span className="gold-text-gradient block mt-2 sm:inline sm:mt-0">
+              <span className="gold-text-gradient block mt-1.5 sm:inline sm:mt-0">
                 sem Travar a Sua Engenharia
               </span>
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
               Proteção jurídica integrada diretamente ao ciclo de desenvolvimento da sua tecnologia. Blindamos seu código-fonte, estruturamos contratos SaaS, garantimos conformidade em IA e registramos marcas no INPI sem desacelerar seu produto.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
               <a
                 href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
               >
                 Agendar Consulta Estratégica
               </a>
               <a
                 href="#servicos"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
               >
                 Conhecer Áreas de Atuação
               </a>
@@ -126,124 +126,122 @@ export default function Home() {
         </section>
 
         {/* ÁREAS DE ATUAÇÃO */}
-        <section id="servicos" className="py-24 bg-[#090D16] border-b border-accent/5">
+        <section id="servicos" className="py-16 sm:py-24 bg-[#090D16] border-b border-accent/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 max-w-3xl mx-auto">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Especialidades &amp; Soluções</span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+            <div className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto">
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-accent">Especialidades &amp; Soluções</span>
+              <h2 className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight">
                 Áreas de Atuação Especializada
               </h2>
-              <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
+              <p className="mt-2.5 sm:mt-3 text-gray-400 text-xs sm:text-sm md:text-base leading-relaxed">
                 Estruturação jurídica e conformidade técnica para negócios de base tecnológica, inteligência artificial e proteção de ativos proprietários.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               {/* Pillar 1 */}
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+              <div className="glass-card rounded-2xl p-6 sm:p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-4 sm:space-y-6">
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-4 sm:mb-6">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
                     Auditoria de PI (Due Diligence)
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                     Avaliação minuciosa do patrimônio de tecnologia, identificando gargalos, riscos de infração e oportunidades para novos registros de marcas, patentes e programas de computador (software).
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/5">
-                  <span className="text-xs text-accent font-medium uppercase tracking-wider">Proteção de Patrimônio &bull; Software &bull; Marcas</span>
+                <div className="pt-3 sm:pt-4 border-t border-white/5">
+                  <span className="text-[11px] sm:text-xs text-accent font-medium uppercase tracking-wider">Proteção de Patrimônio &bull; Software &bull; Marcas</span>
                 </div>
               </div>
 
               {/* Pillar 2 */}
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+              <div className="glass-card rounded-2xl p-6 sm:p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-4 sm:space-y-6">
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-4 sm:mb-6">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
                     Governança &amp; Estratégia de PI para IA
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                     Estruturação jurídica para proteger algoritmos, modelos de IA, bases de dados e códigos-fonte, assegurando conformidade com <em>Privacy and Ethics by Design</em> e segurança em integrações de APIs.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/5">
-                  <span className="text-xs text-accent font-medium uppercase tracking-wider">LLMs &bull; Privacy by Design &bull; APIs</span>
+                <div className="pt-3 sm:pt-4 border-t border-white/5">
+                  <span className="text-[11px] sm:text-xs text-accent font-medium uppercase tracking-wider">LLMs &bull; Privacy by Design &bull; APIs</span>
                 </div>
               </div>
 
               {/* Pillar 3 */}
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+              <div className="glass-card rounded-2xl p-6 sm:p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-4 sm:space-y-6">
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-4 sm:mb-6">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
                     Gestão e Monitoramento de Portfólio
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                     Acompanhamento contínuo e vigilância ativa de marcas e softwares no INPI, defesas contra oposições, cumprimento de exigências e notificações extrajudiciais contra infrações de terceiros.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/5">
-                  <span className="text-xs text-accent font-medium uppercase tracking-wider">INPI &bull; Vigilância Ativa &bull; Defesas</span>
+                <div className="pt-3 sm:pt-4 border-t border-white/5">
+                  <span className="text-[11px] sm:text-xs text-accent font-medium uppercase tracking-wider">INPI &bull; Vigilância Ativa &bull; Defesas</span>
                 </div>
               </div>
 
               {/* Pillar 4 */}
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-6">
+              <div className="glass-card rounded-2xl p-6 sm:p-8 hover:border-accent/30 transition-all flex flex-col justify-between space-y-4 sm:space-y-6">
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center mb-4 sm:mb-6">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
                     Licenciamento e Contratos de Tecnologia
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                     Elaboração e negociação estratégica de contratos de software (SaaS), acordos de nível de serviço (SLA), cessão de propriedade intelectual, transferência de tecnologia e parcerias para integração segura de modelos de IA e APIs.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/5">
-                  <span className="text-xs text-accent font-medium uppercase tracking-wider">Contratos SaaS &bull; Transferência de Tech &bull; NDAs</span>
+                <div className="pt-3 sm:pt-4 border-t border-white/5">
+                  <span className="text-[11px] sm:text-xs text-accent font-medium uppercase tracking-wider">Contratos SaaS &bull; Transferência de Tech &bull; NDAs</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-
-
         {/* SEÇÃO O ADVOGADO */}
-        <section id="advogado" className="py-24 bg-[#080C14] relative border-b border-accent/10">
+        <section id="advogado" className="py-16 sm:py-24 bg-[#080C14] relative border-b border-accent/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 max-w-3xl mx-auto">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Liderança &amp; Experiência</span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+            <div className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto">
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-accent">Liderança &amp; Experiência</span>
+              <h2 className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight">
                 Advocacia Especializada em Tecnologia
               </h2>
-              <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
+              <p className="mt-2.5 sm:mt-3 text-gray-400 text-xs sm:text-sm md:text-base leading-relaxed">
                 Consultoria jurídica preventiva na mesma linguagem da sua equipe de TI.
               </p>
             </div>
 
             {/* Card Unificado - Perfil & Atuação */}
-            <div className="glass-card rounded-3xl border border-accent/20 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <div className="glass-card rounded-3xl border border-accent/20 p-5 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
                 {/* Foto Integrada */}
                 <div className="lg:col-span-4 relative group w-full">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/30 to-blue-600/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-85 transition duration-500 pointer-events-none" />
-                  <div className="relative mx-auto w-full max-w-md sm:max-w-sm lg:max-w-none rounded-2xl overflow-hidden border border-accent/30 shadow-2xl bg-[#080C14]">
+                  <div className="relative mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none rounded-2xl overflow-hidden border border-accent/30 shadow-2xl bg-[#080C14]">
                     <Image
                       src="/felipe_dutra.jpg"
                       alt="Felipe Dutra Gonçalves — Advogado Especialista em Direito Digital e IA"
@@ -254,23 +252,23 @@ export default function Home() {
                     />
                     {/* Máscara de iluminação e degradê suave */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#080C14] via-transparent to-transparent opacity-70" />
-                    <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-[#0B0F19]/90 backdrop-blur-md border border-accent/20 text-center">
-                      <span className="text-[10px] text-accent font-semibold uppercase tracking-wider block">Advogado Titular</span>
-                      <p className="text-white text-xs font-mono font-bold">OAB/SP nº 459.254</p>
+                    <div className="absolute bottom-2.5 left-2.5 right-2.5 p-2 sm:p-3 rounded-xl bg-[#0B0F19]/90 backdrop-blur-md border border-accent/20 text-center">
+                      <span className="text-[9px] sm:text-[10px] text-accent font-semibold uppercase tracking-wider block">Advogado Titular</span>
+                      <p className="text-white text-[11px] sm:text-xs font-mono font-bold">OAB/SP nº 459.254</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Conteúdo Integrado */}
-                <div className="lg:col-span-8 space-y-5">
-                  <div className="border-b border-white/10 pb-4">
-                    <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold block mb-1">Direito Digital &amp; Empresarial</span>
-                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+                <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+                  <div className="border-b border-white/10 pb-3 sm:pb-4">
+                    <span className="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-accent font-semibold block mb-1">Direito Digital &amp; Empresarial</span>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white tracking-tight">
                       Felipe Dutra Gonçalves
                     </h3>
                   </div>
 
-                  <div className="space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
+                  <div className="space-y-3 sm:space-y-4 text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed">
                     <p>
                       Com formação em Direito e base sólida em desenvolvimento de software, elimino a barreira de comunicação entre a equipe jurídica e o time de engenharia. Essa visão multidisciplinar permite traduzir normas regulatórias em requisitos técnicos objetivos, garantindo a proteção de ativos digitais sem comprometer a velocidade do desenvolvimento.
                     </p>
@@ -283,14 +281,14 @@ export default function Home() {
                   </div>
 
                   {/* Badges / Competências Técnicas */}
-                  <div className="pt-2 flex flex-wrap gap-2">
-                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                  <div className="pt-1 sm:pt-2 flex flex-wrap gap-2">
+                    <span className="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
                       Privacy by Design
                     </span>
-                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                    <span className="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
                       Governança de IA
                     </span>
-                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                    <span className="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
                       Contratos SaaS &amp; INPI
                     </span>
                   </div>
@@ -301,39 +299,39 @@ export default function Home() {
         </section>
 
         {/* METODOLOGIA / COMO ATUAMOS */}
-        <section id="metodologia" className="py-24 bg-[#090D16] border-b border-accent/5">
+        <section id="metodologia" className="py-16 sm:py-24 bg-[#090D16] border-b border-accent/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 max-w-3xl mx-auto">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Nossa Abordagem</span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+            <div className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto">
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-accent">Nossa Abordagem</span>
+              <h2 className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight">
                 Como Atuamos no Seu Negócio
               </h2>
-              <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
+              <p className="mt-2.5 sm:mt-3 text-gray-400 text-xs sm:text-sm md:text-base leading-relaxed">
                 Processo prático em 3 etapas para blindar seu software da concepção à escala.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block mb-3">01</span>
-                <h3 className="text-lg font-bold text-white mb-1.5">Diagnóstico &amp; Mapeamento</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="glass-card p-6 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-3xl sm:text-4xl font-serif font-bold text-accent block mb-2 sm:mb-3">01</span>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Diagnóstico &amp; Mapeamento</h3>
+                <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                   Análise profunda da arquitetura de software, bases de dados, contratos vigentes e presença de marca para identificar vulnerabilidades e oportunidades.
                 </p>
               </div>
 
-              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block mb-3">02</span>
-                <h3 className="text-lg font-bold text-white mb-1.5">Governança &amp; Blindagem</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
+              <div className="glass-card p-6 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-3xl sm:text-4xl font-serif font-bold text-accent block mb-2 sm:mb-3">02</span>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Governança &amp; Blindagem</h3>
+                <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                   Implementação de Privacy by Design, elaboração de instrumentos contratuais (SaaS/NDA) e protocolo de proteção para código-fonte e IA.
                 </p>
               </div>
 
-              <div className="glass-card p-7 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
-                <span className="text-4xl font-serif font-bold text-accent block mb-3">03</span>
-                <h3 className="text-lg font-bold text-white mb-1.5">Monitoramento Contínuo</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
+              <div className="glass-card p-6 sm:p-8 rounded-2xl border border-accent/10 hover:border-accent/30 transition-all">
+                <span className="text-3xl sm:text-4xl font-serif font-bold text-accent block mb-2 sm:mb-3">03</span>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Monitoramento Contínuo</h3>
+                <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                   Suporte jurídico consultivo permanente para o lançamento de novas features, integrações de modelos de IA e adequação a atualizações regulatórias.
                 </p>
               </div>
@@ -342,12 +340,12 @@ export default function Home() {
         </section>
 
         {/* CTA FINAL */}
-        <section className="py-16 sm:py-20 md:py-24 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5 relative z-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight leading-snug">
+        <section className="py-14 sm:py-20 md:py-24 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3 sm:space-y-5 relative z-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-white tracking-tight leading-snug">
               Pronto para construir uma base jurídica sólida para sua tecnologia?
             </h2>
-            <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            <p className="text-gray-300 text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
               Agende uma consulta estratégica com nossa equipe e garanta o alinhamento regulatório e a proteção dos seus ativos digitais.
             </p>
             <div className="pt-2">
@@ -355,7 +353,7 @@ export default function Home() {
                 href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
+                className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
               >
                 Agendar Consulta Estratégica
               </a>
