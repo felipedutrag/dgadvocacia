@@ -231,41 +231,39 @@ export default function Home() {
                 Advocacia Especializada em Tecnologia
               </h2>
               <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
-                Atuação consultiva e estratégica combinando domínio técnico em sistemas com rigor jurídico e conformidade ética.
+                Consultoria jurídica preventiva na mesma linguagem da sua equipe de engenharia.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-              {/* Foto do Dr. Felipe Dutra Gonçalves */}
-              <div className="lg:col-span-5 relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-blue-600/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition duration-500 pointer-events-none" />
-                <div className="relative mx-auto max-w-sm rounded-2xl overflow-hidden border border-accent/30 shadow-2xl group bg-[#0B0F19]">
-                  <Image
-                    src="/felipe_dutra.jpg"
-                    alt="Dr. Felipe Dutra Gonçalves — Advogado Especialista em Direito Digital e IA"
-                    width={600}
-                    height={800}
-                    priority
-                    className="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
-                  />
-                  {/* Máscara de iluminação e degradê suave */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080C14] via-transparent to-transparent opacity-60" />
-                  <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#0B0F19]/80 backdrop-blur-md border border-accent/20 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-accent font-semibold uppercase tracking-wider">Felipe Dutra Gonçalves</p>
-                      <p className="text-white text-xs font-serif font-bold">OAB/SP 459.254</p>
+            {/* Card Unificado - Perfil & Atuação */}
+            <div className="glass-card rounded-3xl border border-accent/20 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                {/* Foto Integrada */}
+                <div className="lg:col-span-4 relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-accent/30 to-blue-600/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-85 transition duration-500 pointer-events-none" />
+                  <div className="relative mx-auto max-w-xs sm:max-w-sm rounded-2xl overflow-hidden border border-accent/30 shadow-2xl bg-[#080C14]">
+                    <Image
+                      src="/felipe_dutra.jpg"
+                      alt="Felipe Dutra Gonçalves — Advogado Especialista em Direito Digital e IA"
+                      width={600}
+                      height={800}
+                      priority
+                      className="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
+                    />
+                    {/* Máscara de iluminação e degradê suave */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080C14] via-transparent to-transparent opacity-70" />
+                    <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-[#0B0F19]/90 backdrop-blur-md border border-accent/20 text-center">
+                      <span className="text-[10px] text-accent font-semibold uppercase tracking-wider block">Advogado Titular</span>
+                      <p className="text-white text-xs font-mono font-bold">OAB/SP nº 459.254</p>
                     </div>
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Atendimento Ativo" />
                   </div>
                 </div>
-              </div>
 
-              {/* Bio & Credenciais */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="glass-card p-8 sm:p-10 rounded-2xl border border-accent/20 space-y-6">
-                  <div>
-                    <span className="text-xs uppercase tracking-widest text-accent font-semibold block mb-1">Direito Digital e Empresarial</span>
-                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+                {/* Conteúdo Integrado */}
+                <div className="lg:col-span-8 space-y-5">
+                  <div className="border-b border-white/10 pb-4">
+                    <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold block mb-1">Direito Digital &amp; Empresarial</span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
                       Felipe Dutra Gonçalves
                     </h3>
                   </div>
@@ -279,15 +277,20 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
-                    <a
-                      href="https://wa.me/5513988658518?text=Ol%C3%A1+Dr.+Felipe+Dutra%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 transition-all shadow-lg"
-                    >
-                      Agende uma Consulta
-                    </a>
+                  {/* Badges / Competências Técnicas */}
+                  <div className="pt-2 flex flex-wrap gap-2">
+                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                      Engenharia &amp; Direito
+                    </span>
+                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                      Privacy by Design
+                    </span>
+                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                      Governança de IA
+                    </span>
+                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
+                      Contratos SaaS &amp; INPI
+                    </span>
                   </div>
                 </div>
               </div>
@@ -337,22 +340,22 @@ export default function Home() {
         </section>
 
         {/* CTA FINAL */}
-        <section className="py-16 sm:py-36 md:py-44 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-8 relative z-10">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
+        <section className="py-16 sm:py-20 md:py-24 bg-radial from-[#131C31] to-[#0B0F19] border-b border-accent/10 text-center relative overflow-hidden flex items-center">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5 relative z-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white tracking-tight leading-snug">
               Pronto para construir uma base jurídica sólida para sua tecnologia?
             </h2>
-            <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+            <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
               Agende uma consulta estratégica com nossa equipe e garanta o alinhamento regulatório e a proteção dos seus ativos digitais.
             </p>
-            <div className="pt-2 sm:pt-4">
+            <div className="pt-2">
               <a
                 href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 transition-all shadow-xl shadow-accent/10"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#0B0F19] gold-gradient hover:opacity-95 active:scale-[0.98] transition-all shadow-xl shadow-accent/10"
               >
-                Agendar Consulta Estratégica via WhatsApp
+                Agendar Consulta Estratégica
               </a>
             </div>
           </div>
@@ -363,7 +366,7 @@ export default function Home() {
           faqs={faqs}
           title="Dúvidas Frequentes"
           subtitle="Direito Digital, IA & Propriedade Intelectual"
-          description="Esclareça os principais pontos sobre conformidade jurídica, governança de IA e auditoria de propriedade intelectual."
+          description="Respostas diretas sobre governança de IA, contratos de tecnologia e proteção no INPI."
         />
       </main>
 
