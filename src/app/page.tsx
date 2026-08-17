@@ -95,9 +95,9 @@ export default function Home() {
               Direito Digital, IA &amp; Ativos Tecnológicos
             </div>
 
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.2] max-w-4xl mx-auto">
+            <h1 className="text-[1.35rem] min-[390px]:text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-white tracking-tight leading-[1.2] max-w-4xl mx-auto">
               Direito Digital e Governança de IA{" "}
-              <span className="gold-text-gradient block mt-1.5 sm:inline sm:mt-0">
+              <span className="gold-text-gradient inline-block whitespace-nowrap mt-1 sm:mt-0">
                 sem Travar a Sua Engenharia
               </span>
             </h1>
