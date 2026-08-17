@@ -18,6 +18,15 @@
   --font-serif: var(--font-serif), Georgia, serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -34,9 +43,14 @@ body {
 }
 
 .glass-card {
-  background: rgba(17, 24, 39, 0.7);
+  background: rgba(17, 24, 39, 0.85);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(197, 168, 128, 0.15);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .glass-card:hover {

@@ -101,7 +101,7 @@ export default function Home() {
             </h1>
 
             <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
-              Proteção jurídica integrada ao ciclo de desenvolvimento. Blindamos código-fonte, garantimos conformidade em IA e registramos marcas no INPI sem desacelerar seu produto.
+              Proteção jurídica integrada diretamente ao ciclo de desenvolvimento da sua tecnologia. Blindamos seu código-fonte, estruturamos contratos SaaS, garantimos conformidade em IA e registramos marcas no INPI sem desacelerar seu produto.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -270,18 +270,18 @@ export default function Home() {
 
                   <div className="space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
-                      Com formação em Direito e base sólida em desenvolvimento de software, elimino a barreira de comunicação entre a equipe jurídica e o time de engenharia. Essa visão multidisciplinar permite traduzir exigências regulatórias em requisitos técnicos claros, garantindo a proteção de ativos digitais sem comprometer a velocidade do desenvolvimento.
+                      Com formação em Direito e base sólida em desenvolvimento de software, elimino a barreira de comunicação entre a equipe jurídica e o time de engenharia. Essa visão multidisciplinar permite traduzir normas regulatórias em requisitos técnicos objetivos, garantindo a proteção de ativos digitais sem comprometer a velocidade do desenvolvimento.
                     </p>
                     <p>
-                      Atuando de forma preventiva e estratégica, auxilio fundadores, CTOs e empresas de tecnologia na estruturação de contratos SaaS, blindagem de código-fonte, registro de marcas no INPI e governança em Inteligência Artificial sob as diretrizes de <em>Privacy and Ethics by Design</em>.
+                      Atuo lado a lado com fundadores, CTOs e empresas de tecnologia na blindagem de código-fonte proprietário, registro de marcas no INPI, formalização de contratos SaaS de alta complexidade e governança de Inteligência Artificial orientada por <em>Privacy and Ethics by Design</em>.
+                    </p>
+                    <p>
+                      A consultoria vai além do cumprimento legal tradicional: construímos uma base jurídica e técnica auditável, preparando sua operação para rodadas de investimento (<em>Due Diligence</em>), contratos <em>enterprise</em> e escala de produto com total segurança patrimonial.
                     </p>
                   </div>
 
                   {/* Badges / Competências Técnicas */}
                   <div className="pt-2 flex flex-wrap gap-2">
-                    <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
-                      Engenharia &amp; Direito
-                    </span>
                     <span className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-gray-300">
                       Privacy by Design
                     </span>
@@ -307,7 +307,7 @@ export default function Home() {
                 Como Atuamos no Seu Negócio
               </h2>
               <p className="mt-3 text-gray-400 text-sm sm:text-base leading-relaxed">
-                Um fluxo de consultoria contínuo projetado para acompanhar o ciclo de vida do seu produto digital.
+                Processo prático em 3 etapas para blindar seu software da concepção à escala.
               </p>
             </div>
 
