@@ -6,7 +6,7 @@ export default function WhatsAppFloating() {
   return (
     <aside aria-label="Contato direto via WhatsApp" className="fixed bottom-6 right-6 z-50">
       <a
-        href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+        href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
         target="_blank"
         rel="noopener noreferrer"
         className="group relative flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#0B0F19]/95 backdrop-blur-md border-2 border-emerald-500/80 hover:border-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.35)] hover:shadow-[0_0_22px_rgba(16,185,129,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none"

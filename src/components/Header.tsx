@@ -34,7 +34,7 @@ export default function Header() {
           {/* Call to Action */}
           <div className="hidden md:flex">
             <a
-              href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+              href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-primary gold-gradient hover:opacity-90 active:scale-[0.98] transition-all"
@@ -104,7 +104,7 @@ export default function Header() {
           </a>
           <div className="pt-3 px-1">
             <a
-              href="https://wa.me/5513988658518?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
+              href="https://wa.me/5511972667778?text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta+estrat%C3%A9gica+sobre+Direito+Digital%2C+IA+e+Propriedade+Intelectual."
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-primary gold-gradient"
