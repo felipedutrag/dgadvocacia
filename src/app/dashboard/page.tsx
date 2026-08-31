@@ -579,8 +579,8 @@ export default function DashboardPage() {
 
           {/* TAB 2: RADAR INPI */}
           {activeTab === "marcas" && (
-            <div className="space-y-6">
-              <div className="border-b border-border/60 pb-4">
+            <div className="space-y-3.5">
+              <div className="border-b border-border/60 pb-2.5">
                 <h1 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
                   <span>Radar INPI</span>
                   <span className="font-mono text-[10px] text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-normal">

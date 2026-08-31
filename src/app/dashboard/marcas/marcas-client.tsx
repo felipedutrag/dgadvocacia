@@ -235,7 +235,7 @@ export function MarcasClient() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3.5">
       {/* Feedback Alerts */}
       {errorMsg && (
         <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
@@ -263,7 +263,7 @@ export function MarcasClient() {
 
       {/* Card de Adição Rápida ao Radar */}
       <Card className="bg-card/60 backdrop-blur-md border-border/70">
-        <CardHeader className="pb-3 border-b border-border/40">
+        <CardHeader className="py-2.5 px-4 sm:px-6 border-b border-border/40">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Plus className="size-4 text-primary" />
             Rastrear Novo Processo no Radar
@@ -272,7 +272,7 @@ export function MarcasClient() {
             Insira o número do processo do INPI (9 dígitos). O sistema irá consultar a base oficial, puxar a marca, status, titular e monitorar despachos toda terça-feira.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-4">
+        <CardContent className="pt-3 px-4 sm:px-6 pb-4">
           <form onSubmit={handleAddMarca} className="flex flex-col sm:flex-row gap-3">
             <Input
               placeholder="Ex: 934821902 ou 790330172"
