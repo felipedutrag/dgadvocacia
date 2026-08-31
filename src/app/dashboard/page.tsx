@@ -330,28 +330,40 @@ export default function DashboardPage() {
       <div>
         {/* Sidebar Header */}
         <div className="relative flex h-14 items-center border-b border-border/70 px-3">
-          <div className="flex flex-1 items-center justify-center">
-            <Link href="/" className="flex items-center justify-center overflow-hidden transition-transform hover:opacity-95">
-              {(sidebarOpen || isDrawer) ? (
-                <SmartDocBrand size="md" />
-              ) : (
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 border border-primary/25 shadow-xs text-primary font-bold">
-                  <SmartDocLogo className="text-base font-bold" />
-                </div>
-              )}
-            </Link>
-          </div>
+          {(sidebarOpen || isDrawer) ? (
+            <>
+              <div className="flex flex-1 items-center justify-center">
+                <Link href="/" className="flex items-center justify-center overflow-hidden transition-transform hover:opacity-95">
+                  <SmartDocBrand size="md" />
+                </Link>
+              </div>
 
-          {!isMobile && !isDrawer && sidebarOpen && (
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              onClick={() => setSidebarOpen(false)}
-              className="absolute right-2 text-muted-foreground hover:text-foreground size-7 rounded-md"
-              title="Recolher menu"
-            >
-              <ChevronLeft className="size-4" />
-            </Button>
+              {!isMobile && !isDrawer && (
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={() => setSidebarOpen(false)}
+                  className="absolute right-2 text-muted-foreground hover:text-foreground size-7 rounded-md"
+                  title="Recolher menu"
+                >
+                  <ChevronLeft className="size-4" />
+                </Button>
+              )}
+            </>
+          ) : (
+            <div className="flex flex-1 items-center justify-center">
+              {!isMobile && !isDrawer && (
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={() => setSidebarOpen(true)}
+                  className="text-muted-foreground hover:text-foreground size-8 rounded-md"
+                  title="Expandir menu"
+                >
+                  <ChevronRight className="size-4" />
+                </Button>
+              )}
+            </div>
           )}
         </div>
 
