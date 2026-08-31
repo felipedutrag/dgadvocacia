@@ -375,7 +375,7 @@ export default function DashboardPage() {
             }`}
           >
             <Shield className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Radar INPI (Acompanhamento)</span>}
+            {(sidebarOpen || isDrawer) && <span>Radar INPI</span>}
           </button>
 
           <button
@@ -468,7 +468,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-foreground capitalize">
                 {activeTab === "consultas" && "Pesquisa de Marcas & IA"}
-                {activeTab === "marcas" && "Radar INPI (Acompanhamento)"}
+                {activeTab === "marcas" && "Radar INPI"}
                 {activeTab === "plans" && "Serviços & Assessoria INPI"}
                 {activeTab === "profile" && "Configurações da Conta"}
               </span>
@@ -502,22 +502,22 @@ export default function DashboardPage() {
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-xs font-bold leading-none">{profile?.name}</p>
-                    <p className="text-[10px] leading-none text-muted-foreground">{profile?.email}</p>
+                    <p className="text-[11px] leading-none text-muted-foreground">{profile?.email}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setActiveTab("profile")}>
+                <DropdownMenuItem onClick={() => setActiveTab("profile")} className="text-xs">
                   <User className="mr-2 size-3.5" />
-                  <span>Perfil & Segurança</span>
+                  <span>Minha Conta</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setActiveTab("plans")}>
+                <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
                   <Crown className="mr-2 size-3.5 text-amber-500" />
                   <span>Serviços & Planos</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
                   <LogOut className="mr-2 size-3.5" />
-                  <span>Sair da Conta</span>
+                  <span>Encerrar Sessão</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -536,7 +536,7 @@ export default function DashboardPage() {
             <div className="space-y-6">
               <div className="border-b border-border/60 pb-4">
                 <h1 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span>Radar INPI (Acompanhamento Oficial)</span>
+                  <span>Radar INPI</span>
                   <span className="font-mono text-[10px] text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-normal">
                     Automático
                   </span>
