@@ -363,7 +363,7 @@ export default function DashboardPage() {
             }`}
           >
             <Search className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Consultas INPI & IA</span>}
+            {(sidebarOpen || isDrawer) && <span>Consultas INPI</span>}
           </button>
 
           <button
@@ -467,7 +467,7 @@ export default function DashboardPage() {
 
             <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-foreground capitalize">
-                {activeTab === "consultas" && "Pesquisa de Marcas & IA"}
+                {activeTab === "consultas" && "Pesquisa de Marcas"}
                 {activeTab === "marcas" && "Radar INPI"}
                 {activeTab === "plans" && "Serviços & Assessoria INPI"}
                 {activeTab === "profile" && "Configurações da Conta"}
