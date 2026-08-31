@@ -20,6 +20,8 @@ import {
   KeyRound,
   Mail,
   Shield,
+  FileText,
+  Lock,
   Menu,
   Crown,
   Check,
@@ -416,6 +418,30 @@ export default function DashboardPage() {
             <User className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Minha Conta</span>}
           </button>
+
+          {/* Divisor */}
+          <div className="my-2 border-t border-border/60" />
+
+          {/* Links Legais */}
+          <Link
+            href="/termos-de-uso"
+            target="_blank"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            title="Termos de Uso"
+          >
+            <FileText className="size-4 shrink-0" />
+            {(sidebarOpen || isDrawer) && <span>Termos de Uso</span>}
+          </Link>
+
+          <Link
+            href="/politica-de-privacidade"
+            target="_blank"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            title="Política de Privacidade"
+          >
+            <Lock className="size-4 shrink-0" />
+            {(sidebarOpen || isDrawer) && <span>Privacidade</span>}
+          </Link>
         </div>
       </div>
 
