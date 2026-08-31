@@ -329,25 +329,28 @@ export default function DashboardPage() {
     <div className="flex flex-col h-full justify-between bg-card/60 backdrop-blur-xl border-r border-border/70">
       <div>
         {/* Sidebar Header */}
-        <div className="flex h-14 items-center justify-between border-b border-border/70 px-4">
-          <Link href="/" className="flex items-center overflow-hidden transition-transform hover:opacity-95">
-            {(sidebarOpen || isDrawer) ? (
-              <SmartDocBrand size="sm" />
-            ) : (
-              <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 border border-primary/25 shadow-xs text-primary">
-                <SmartDocLogo className="size-4" />
-              </div>
-            )}
-          </Link>
+        <div className="relative flex h-14 items-center border-b border-border/70 px-3">
+          <div className="flex flex-1 items-center justify-center">
+            <Link href="/" className="flex items-center justify-center overflow-hidden transition-transform hover:opacity-95">
+              {(sidebarOpen || isDrawer) ? (
+                <SmartDocBrand size="md" />
+              ) : (
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 border border-primary/25 shadow-xs text-primary font-bold">
+                  <SmartDocLogo className="text-base font-bold" />
+                </div>
+              )}
+            </Link>
+          </div>
 
-          {!isMobile && !isDrawer && (
+          {!isMobile && !isDrawer && sidebarOpen && (
             <Button
               variant="ghost"
               size="icon-xs"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-muted-foreground hover:text-foreground size-7 rounded-md"
+              onClick={() => setSidebarOpen(false)}
+              className="absolute right-2 text-muted-foreground hover:text-foreground size-7 rounded-md"
+              title="Recolher menu"
             >
-              {sidebarOpen ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
+              <ChevronLeft className="size-4" />
             </Button>
           )}
         </div>
