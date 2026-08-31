@@ -378,6 +378,7 @@ export default function DashboardPage() {
                 ? "bg-primary text-primary-foreground font-bold shadow-xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             }`}
+            title="Consultas INPI"
           >
             <Search className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Consultas INPI</span>}
@@ -390,21 +391,10 @@ export default function DashboardPage() {
                 ? "bg-primary text-primary-foreground font-bold shadow-xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             }`}
+            title="Radar INPI"
           >
             <Shield className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Radar INPI</span>}
-          </button>
-
-          <button
-            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "plans"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <Crown className="size-4 shrink-0 text-amber-500" />
-            {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
           </button>
 
           <button
@@ -414,6 +404,7 @@ export default function DashboardPage() {
                 ? "bg-primary text-primary-foreground font-bold shadow-xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             }`}
+            title="Minha Conta"
           >
             <User className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Minha Conta</span>}
@@ -421,6 +412,20 @@ export default function DashboardPage() {
 
           {/* Divisor */}
           <div className="my-2 border-t border-border/60" />
+
+          {/* Destaque Serviços & Planos */}
+          <button
+            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "plans"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20"
+            }`}
+            title="Serviços & Planos"
+          >
+            <Crown className="size-4 shrink-0 text-amber-500" />
+            {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
+          </button>
 
           {/* Links Legais */}
           <Link
