@@ -1,443 +1,249 @@
-# ⚖️ SmartDoc / Extrajus
+# ⚖️ DG Advocacia — Inteligência Jurídica & Registro de Marcas no INPI
 
-> **Plataforma de Notificação Extrajudicial com Inteligência Artificial** — Conte seu problema por voz ou texto e receba um documento jurídico profissional em minutos.
+<p align="center">
+  <img src="public/icon.png" width="96" height="96" alt="DG Advocacia Logo" style="border-radius: 20px;" />
+</p>
+
+<p align="center">
+  <strong>Plataforma jurídica de alta performance para consulta de anterioridades, diagnóstico preditivo com IA e monitoramento contínuo da RPI no INPI.</strong>
+</p>
+
+<p align="center">
+  <a href="https://dgadvocacia.online"><strong>dgadvocacia.online »</strong></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js 16" />
+  <img src="https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript_5-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS v4" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Gemini_2.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
+  <img src="https://img.shields.io/badge/GGPIX_API-32BCAD?style=for-the-badge&logo=pix&logoColor=white" alt="Pix Instantâneo" />
+</p>
 
 ---
 
-## 📋 Índice
+## 📋 Sumário Executivo
 
-- [Funcionalidades](#-funcionalidades)
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades Principais](#-funcionalidades-principais)
+- [Arquitetura de Inteligência Artificial](#-arquitetura-de-inteligência-artificial-marcashield-ai)
+- [Radar INPI & Monitoramento de Despachos](#-radar-inpi--monitoramento-de-despachos)
 - [Stack Tecnológica](#-stack-tecnológica)
-- [Fluxo da Aplicação](#-fluxo-da-aplicação)
-- [Páginas](#-páginas)
-- [API Routes](#-api-routes)
-- [Componentes](#-componentes)
-- [Hooks](#-hooks)
-- [Utils / Lib](#-utils--lib)
-- [Estilos e Tema](#-estilos-e-tema)
-- [Estrutura de Diretórios](#-estrutura-de-diretórios)
+- [Rotas de API (Endpoints)](#-rotas-de-api-endpoints)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Configuração e Instalação](#-configuração-e-instalação)
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
-- [Como Rodar](#-como-rodar)
-- [Deploy](#-deploy)
+- [Conformidade Legal](#-conformidade-legal)
 
 ---
 
-## ✨ Funcionalidades
+## 🏛️ Visão Geral
 
-### 🤖 Inteligência Artificial (Gemini + Groq)
+A plataforma da **DG Advocacia** une a excelência técnica em Direito da Propriedade Intelectual com tecnologia proprietária e inteligência artificial para proteger o ativo mais valioso de qualquer negócio: **a sua marca**.
 
-| Funcionalidade | Descrição |
-|---|---|
-| **Assistente de Voz "Aura"** | Conversação em tempo real via WebSocket com Gemini 3.1 Flash Live. Coleta fatos, tira dúvidas e guia o usuário. |
-| **Chat de Triagem** | Modo texto usando Gemini 2.5 Flash + Function Calling para estruturar a coleta de dados. |
-| **Geração Automática de Documentos** | IA redige notificações extrajudiciais completas em HTML com fundamentação jurídica (CC, CDC, CF, etc.). |
-| **Edição Cirúrgica por Voz/Texto** | Edite trechos específicos do documento conversando com a IA. Usa Groq (Llama 3.3-70B) com fallback para Gemini 3.1 Flash Lite. |
-| **Highlight de Alterações (Diff Visual)** | Trechos modificados são destacados com `<mark>` azul para fácil identificação. |
-| **Desconto Negociado por IA** | A IA pode ativar ofertas e contagem regressiva via `apply_discount`. |
-| **Ping Pró-ativo** | Após 45s de inatividade, a IA inicia conversa automaticamente. |
+Com integração direta e autenticada aos sistemas do **Instituto Nacional da Propriedade Industrial (INPI)**, o sistema permite:
+1. Pesquisar anterioridades em segundos com filtros por Classificação Internacional de Nice (NCL) e Classificação de Viena (CFE);
+2. Emitir diagnósticos jurídicos preditivos de viabilidade e risco fundamentados na **Lei nº 9.279/1996 (LPI)**;
+3. Rastrear marcas registradas através do **Radar RPI**, identificando despachos, oposições e tentativas de registro de concorrentes em tempo real;
+4. Contratar assessoria jurídica especializada e protocolar pedidos com liquidação instantânea via Pix.
 
-### 📝 Editor de Documentos (TipTap v3)
+---
 
-| Funcionalidade | Descrição |
-|---|---|
-| **Editor WYSIWYG Completo** | Headings (H1-H6), parágrafos, listas, imagens, links, citações, código. |
-| **Formatação de Texto** | Negrito, itálico, sublinhado, tachado, subscrito, sobrescrito, código inline. |
-| **Alinhamento** | Esquerda, centro, direita, justificado. |
-| **Highlight Colorido** | Paleta de cores para destaque de texto (verde, azul, vermelho, roxo, amarelo). |
-| **Background de Bloco** | Extensão personalizada para cor de fundo em parágrafos, headings, blockquotes. |
-| **Upload de Imagens** | Upload com drag-and-drop via nó personalizado. |
-| **Listas** | Ordenadas, não ordenadas e task lists. |
-| **Barra de Ferramentas Responsiva** | Layout adaptável para desktop e mobile. |
-| **Atalhos de Teclado** | Exibidos em tooltips (⌘B, ⌘I, etc.). |
-| **Tema Claro/Escuro** | Alterna entre light/dark mode. |
+## ✨ Funcionalidades Principais
 
-### 💳 Monetização
+### 🔍 1. Mecanismo de Busca & Raio-X no INPI
+- **Busca por Nome & Classes Nice:** Consulta instantânea na base de marcas do INPI com extração dinâmica de processos, titulares, classes e status legal.
+- **Busca por Classificação de Figuras (Viena / CFE):** Pesquisa gráfica estruturada por categoria, divisão e seção de imagens registradas.
+- **Raio-X Completo do Processo (9 Dígitos / CodPedido):** Visualização detalhada do histórico de despachos, titulares, procuradores, classe de atividade e timeline oficial.
+- **Proxy Autenticado de Logotipos:** Download e renderização segura de imagens e logomarcas oficiais diretamente da base do INPI contornando bloqueios de CORS e sessão.
+- **Sincronização "Meus Pedidos":** Sincronização automatizada de processos favoritados na conta do INPI.
 
-| Funcionalidade | Descrição |
-|---|---|
-| **Pagamento via Pix** | Integração com GGPix API para gerar QR Code e código Pix Copia e Cola. |
-| **Checkout Multi-etapas** | Step 1: dados do cliente + upsells. Step 2: QR Code Pix. |
-| **Upsell - Revisão de Advogado** | Opção de revisão e assinatura por advogado parceiro (+R$ 47,00). |
-| **Upsell - WhatsApp** | Opção de entrega e acompanhamento via WhatsApp (+R$ 27,00). |
-| **Contagem Regressiva de Desconto** | Timer de oferta especial com estilização vermelha pulsante. |
-| **Proteção Anti-Cópia** | Bloqueia copiar/recortar/menu de contexto antes do pagamento. |
+### 🤖 2. Diagnóstico Preditivo de Viabilidade (MarcaShield AI)
+- **Score de Viabilidade (0 a 100):** Cálculo do índice de registrabilidade com base no Art. 124, XIX da LPI.
+- **Análise Fonética, Gráfica e Ideológica:** Identificação de colidências potenciais mesmo com grafias divergentes.
+- **Recomendações Estratégicas:** Parecer prévio orientando sobre a conveniência de depósito, necessidade de aditivos distintivos ou risco iminente de oposição.
 
-### 📄 Exportação
+### 📡 3. Radar INPI (Acompanhamento Contínuo)
+- **Monitoramento da RPI:** Varredura semanal a cada publicação da Revista da Propriedade Industrial (terças-feiras).
+- **Prevenção de Perda de Prazos:** Alertas antecipados para cumprimento de exigências formais, manifestação contra oposições e pagamento do decênio.
+- **Gestão de Carteira:** Adição simplificada de processos pelo número de 9 dígitos com auto-preenchimento dos dados oficiais e proteção contra duplicidade (`upsert`).
 
-| Funcionalidade | Descrição |
-|---|---|
-| **DOCX Profissional** | Gera arquivo .docx formatado com padrões jurídicos brasileiros. |
-| **HTML para Word** | Conversão de HTML para DOCX via `html-to-docx`. |
-| **Estilos Inline para Word** | Injeção automática de estilos CSS inline (justificação, formatação de headings). |
+### 💳 4. Gateway de Pagamentos Pix (GGPIX)
+- **Checkout Dinâmico:** Geração de QR Code Pix e código Copia e Cola em tempo real com expiração configurada.
+- **Webhooks & Sincronização:** Confirmação de recebimento automática e ativação imediata do serviço no Supabase.
 
-### 📧 Email (Resend)
+---
 
-| Funcionalidade | Descrição |
-|---|---|
-| **Confirmação ao Cliente** | Email automático após pagamento com link para o editor e DOCX anexado. |
-| **Alerta ao Administrador** | Notificação por email com dados do cliente, fatos narrados e rascunho do documento. |
+## 🧠 Arquitetura de Inteligência Artificial (MarcaShield AI)
 
-### 🔒 Segurança e Sessão
+A plataforma implementa um pipeline em cascata com 3 níveis de resiliência:
 
-| Funcionalidade | Descrição |
-|---|---|
-| **Persistência em localStorage** | Sessão de voz, rascunho e dados de checkout salvos localmente. |
-| **Sessão de Voz** | Reconecta automaticamente com histórico preservado. |
-| **Detecção de Rascunho** | Banner na home page avisa sobre rascunho em andamento. |
-| **Modo Dev** | Comando oculto "modo dev" para testar com dados fictícios. |
-
-### 📊 Analytics
-
-| Funcionalidade | Descrição |
-|---|---|
-| **Google Ads Conversion Tracking** | Eventos de pageview, início de checkout e compra. |
-| **SEO** | Meta tags OG, keywords, favicon. |
+```
+[Requisição de Diagnóstico]
+           │
+           ▼
+┌─────────────────────────────────────────┐
+│ 1. Primário: Gemini 2.5 Flash (Google)   │  ──► Análise de alta precisão em < 1.5s
+└─────────────────────────────────────────┘
+           │ (Fallback em caso de falha/rate-limit)
+           ▼
+┌─────────────────────────────────────────┐
+│ 2. Secundário: Llama 3.3-70B (Groq)     │  ──► Velocidade extrema e robustez
+└─────────────────────────────────────────┘
+           │ (Fallback de contingência)
+           ▼
+┌─────────────────────────────────────────┐
+│ 3. Motor Heurístico Jurídico (LPI)      │  ──► Parecer determinístico baseado na LPI
+└─────────────────────────────────────────┘
+```
 
 ---
 
 ## 🛠️ Stack Tecnológica
 
-| Camada | Tecnologia |
-|--------|-----------|
-| **Framework** | Next.js 16.2.9 (App Router) |
-| **Linguagem** | TypeScript 5 |
-| **UI / Estilização** | React 19.2.4 + Tailwind CSS v4 + SCSS |
-| **Editor** | TipTap v3.26.1 (`@tiptap/react`, `@tiptap/core`, `@tiptap/pm`) |
-| **IA Principal** | Google Gemini 2.5 Flash / 3.1 Flash Live (`@google/generative-ai`) |
-| **IA Fallback (Edição)** | Groq Llama 3.3-70B / Gemini 3.1 Flash Lite |
-| **Componentes** | Radix UI Popover + DropdownMenu, Floating UI |
-| **Ícones** | Lucide React + 38 ícones SVG customizados |
-| **Pagamento** | GGPix API (Pix) |
-| **Email** | Resend |
-| **Exportação DOCX** | html-to-docx |
-| **QR Code** | qrcode.react |
-| **Real-time** | WebSocket (ws) |
-| **Utilitários** | clsx, tailwind-merge, class-variance-authority, lodash.throttle |
+| Camada | Tecnologia | Descrição |
+|---|---|---|
+| **Framework** | Next.js 16 (App Router + Turbopack) | Arquitetura moderna com Server & Client Components |
+| **Linguagem** | TypeScript 5 | Tipagem estrita de ponta a ponta |
+| **Estilização** | Tailwind CSS v4 + Shadcn UI | Design Dark Luxury com paleta institucional |
+| **Banco de Dados** | Supabase (PostgreSQL) | Autenticação, RLS, gestão de perfis e marcas monitoradas |
+| **Inteligência Artificial** | Google Gemini 2.5 Flash + Groq Llama 3.3 | Avaliação de viabilidade e risco marcário |
+| **Integração Governamental** | INPI Service (Cheerio + Puppeteer + Session Engine) | Web crawler e parser de sessões autenticadas |
+| **Pagamentos** | GGPIX API | Pagamentos instantâneos via Pix |
+| **Comunicação Transacional** | Resend + Telegram Bot API | Disparo de relatórios por e-mail e alertas de despachos |
 
 ---
 
-## 🔄 Fluxo da Aplicação
+## 🌐 Rotas de API (Endpoints)
 
 ```
-Usuário acessa a Home (/)
-  │
-  ├─ Modo Voz: Conecta via WebSocket com "Aura"
-  │   └─ IA faz 4+ perguntas sobre o conflito
-  │   └─ Coleta completa → redirect para /editor?generate=true
-  │
-  ├─ Modo Chat: Usuário descreve o problema em texto
-  │   └─ POST /api/gemini → se IA coletou tudo, redirect
-  │   └─ Ou salva direto no localStorage e redirect
-  │
-  └─ Redireciona para /editor
-      │
-      ├─ POST /api/gemini/document → stream HTML para o editor
-      │
-      ├─ Editor exibe o documento (não editável, sem export)
-      │   └─ IA "Aura" disponível para conversa + edições
-      │   └─ Edições via POST /api/gemini/rewrite (Groq → Gemini)
-      │
-      ├─ Checkout (multi-step):
-      │   Step 1: Nome, Email, WhatsApp, Upsells
-      │   Step 2: QR Code Pix (POST /api/payment)
-      │   └─ Polling a cada 3s (GET /api/payment/status)
-      │
-      ├─ Pagamento Confirmado:
-      │   ├─ POST /api/payment/confirm-email
-      │   ├─ Editor liberado para edição
-      │   ├─ Botão "Baixar DOCX" aparece
-      │   └─ POST /api/document/docx → download
-      │
-      └─ Documento finalizado
+src/app/api/
+├── auth/
+│   ├── forgot-password/    # Solicitação de redefinição de senha
+│   ├── register/           # Cadastro de novo cliente
+│   └── update-password/    # Atualização segura de credenciais
+├── inpi/
+│   ├── check-trademark/    # Busca de marcas por Nome e Classe Nice
+│   ├── figura/             # Busca por Classificação de Viena (CFE)
+│   ├── image/              # Proxy autenticado de imagens/logotipos do INPI
+│   ├── meus-pedidos/       # Sincronização de pedidos favoritados
+│   ├── processo/           # Raio-X completo do processo (9 dígitos)
+│   ├── ai-score/           # Diagnóstico preditivo de viabilidade (MarcaShield AI)
+│   └── send-report/        # Envio de relatório jurídico por e-mail
+├── marcas/
+│   ├── route.ts            # CRUD de marcas monitoradas (GET, POST upsert, DELETE)
+│   └── notificacoes/       # Consulta de alertas e despachos da RPI
+├── payment/
+│   ├── route.ts            # Criação de cobrança Pix via GGPIX
+│   ├── status/             # Verificação de status de transação
+│   ├── confirm-email/      # Confirmação pós-pagamento por e-mail
+│   └── webhook/            # Callback de notificação de pagamento Pix
+├── user/
+│   └── profile/            # Gestão de dados do titular
+└── webhooks/
+    └── telegram/           # Disparo de notificações para canal oficial
 ```
 
 ---
 
-## 📄 Páginas
-
-### `/` — Home / Landing Page
-- `src/app/page.tsx`
-- Coleta de fatos via voz (WebSocket Gemini Live) ou chat (texto)
-- Orbe animada reativa ao nível de áudio
-- Carrossel de depoimentos (6 relatos)
-- Alternância modo Voz/Chat
-- Tema claro/escuro
-- Banner de rascunho persistente
-- Google Ads conversion tracking
-- Comando oculto "modo dev"
-
-### `/editor` — Editor + Checkout
-- `src/app/editor/page.tsx`
-- Editor TipTap com streaming de documento gerado por IA
-- Assistente de voz "Aura" para tirar dúvidas e editar o documento
-- Paywall completo com checkout Pix multi-etapas
-- Timer de desconto com negociação por IA
-- Proteção anti-cópia antes do pagamento
-- Exportação DOCX após pagamento
-- Envio de email de confirmação
-
-### `/simple` — Editor Simples (Demo)
-- `src/app/simple/page.tsx`
-- Renderiza o `<SimpleEditor />` isolado para testes.
-
----
-
-## 🌐 API Routes
-
-| Rota | Método | Descrição |
-|------|--------|-----------|
-| `/api/gemini` | POST | Chat de triagem com Gemini 2.5 Flash + function calling |
-| `/api/gemini/document` | POST | Gera documento jurídico em HTML (streaming) |
-| `/api/gemini/rewrite` | POST | Edita trecho do documento (Groq → Gemini fallback) |
-| `/api/config/gemini-live-setup` | GET | Configuração WebSocket para voz na home |
-| `/api/config/gemini-editor-setup` | GET | Configuração WebSocket para voz no editor |
-| `/api/payment` | POST | Gera cobrança Pix via GGPix |
-| `/api/payment/status` | GET | Polling de status do pagamento |
-| `/api/payment/confirm-email` | POST | Envia email de confirmação + alerta admin |
-| `/api/document/docx` | POST | Exporta documento para .docx |
-
----
-
-## 🧩 Componentes
-
-### Templates
-| Componente | Descrição |
-|---|---|
-| `simple-editor` | Editor TipTap completo com toolbar responsiva, theming, proteção anti-cópia, paywall e integração com IA. |
-
-### Extensões TipTap
-| Extensão | Descrição |
-|---|---|
-| `node-background-extension` | Adiciona cor de fundo a blocos (parágrafos, headings, blockquotes). |
-
-### Nodes TipTap
-| Node | Descrição |
-|---|---|
-| `image-upload-node` | Upload de imagens com drag-and-drop |
-| `horizontal-rule-node` | Linha horizontal customizada |
-| `blockquote-node`, `code-block-node`, `heading-node`, `image-node`, `list-node`, `paragraph-node` | Estilizações SCSS |
-
-### UI Components (tiptap-ui)
-| Componente | Descrição |
-|---|---|
-| `mark-button` | Botão toggle para marks (bold, italic, underline, strike, code) |
-| `heading-dropdown-menu` | Dropdown de níveis de heading (H1-H6) |
-| `list-dropdown-menu` | Dropdown de tipos de lista |
-| `link-popover` | Popover para inserir/editar/remover links |
-| `color-highlight-popover` | Popover com paleta de cores para highlight |
-| `text-align-button` | Botão de alinhamento (esquerda, centro, direita, justificado) |
-| `undo-redo-button` | Botões desfazer/refazer |
-| `blockquote-button`, `code-block-button`, `image-upload-button` | Botões específicos |
-
-### UI Primitives (tiptap-ui-primitive)
-| Componente | Descrição |
-|---|---|
-| `button` | Botão reutilizável com tooltip, atalho, variantes e tamanhos |
-| `toolbar` | Toolbar acessível com navegação por teclado |
-| `tooltip` | Tooltip customizado com Floating UI (delay, portal, hover/focus) |
-| `popover` | Wrapper do Radix UI Popover |
-| `dropdown-menu` | Wrapper do Radix UI DropdownMenu |
-| `separator`, `spacer`, `badge`, `button-group`, `card`, `input` | Componentes utilitários |
-
-### Ícones (38 SVG Components)
-`align-center`, `align-justify`, `align-left`, `align-right`, `arrow-left`, `ban`, `blockquote`, `bold`, `check`, `chevron-down`, `close`, `code-block`, `code2`, `corner-down-left`, `external-link`, `heading` (1-6), `highlighter`, `image-plus`, `italic`, `link`, `list`, `list-ordered`, `list-todo`, `moon-star`, `redo2`, `strike`, `subscript`, `sun`, `superscript`, `trash`, `underline`, `undo2`
-
----
-
-## 🪝 Hooks
-
-| Hook | Descrição |
-|---|---|
-| `useGeminiLive` | Gerencia conexão WebSocket bidirecional com Gemini 3.1 Flash Live. Áudio, transcrição, tool calls, sessão. |
-| `useTiptapEditor` | Wrapper do `useCurrentEditor` + `useEditorState` para gerenciar o editor ativo. |
-| `useMenuNavigation` | Navegação por teclado (setas, Tab, Enter, Escape) para menus/paletas. |
-| `useComposedRef` | Compõe refs de bibliotecas com refs do usuário. |
-| `useCursorVisibility` | Mantém o cursor visível quando oculto atrás da toolbar fixa. |
-| `useElementRect` | Monitora bounding rect de elementos com ResizeObserver. |
-| `useIsBreakpoint` | Media query CSS para breakpoints responsivos. |
-| `useScrolling` | Detecta se o usuário está rolando a página. |
-| `useThrottledCallback` | Throttle de callbacks com lodash.throttle. |
-| `useUnmount` | Executa callback no unmount do componente. |
-| `useWindowSize` | Monitora visual viewport (útil para teclado mobile). |
-
----
-
-## 🔧 Utils / Lib
-
-### utils/
-| Arquivo | Descrição |
-|---|---|
-| `audio-player.ts` | `AudioStreamPlayer` — toca áudio PCM16 (24kHz) do Gemini Live. Singleton `globalAudioPlayer`. |
-| `docx.ts` | `getWordBuffer()`, `compileWordHtml()`, `generateDocxBase64()` — geração de arquivos DOCX. |
-
-### lib/
-| Arquivo | Descrição |
-|---|---|
-| `tiptap-utils.ts` | Utilitários: `cn()`, `isMac()`, `formatShortcutKey()`, `handleImageUpload()`, `sanitizeUrl()`, `findNodeAtPosition()`, etc. |
-| `resend.ts` | Inicialização do cliente Resend. |
-
----
-
-## 🎨 Estilos e Tema
-
-### Sistema de Design (`_variables.scss`)
-- Escalas de cinza (alpha e sólida) para light/dark
-- Cores de marca (âmbar/dourado)
-- Cores semânticas (verde, amarelo, vermelho)
-- Sombras, border-radius, transições
-- Cores de texto e highlight com variantes dark
-
-### Animações (`_keyframe-animations.scss`)
-- `waveformPulse`, `fadeInUp`, `fadeOut`, `zoomIn/Out`
-- `slideFromTop/Right/Left/Bottom`
-- `pulseGreen`, `spin`, `breathe`
-
-### Orb (Globo Animado)
-- Animações CSS: `spaceTimeMesh`, `spaceTimeGlow`, `orbFloat`, `orbPulse`, `orbRotate`, `shimmer`
-- Camadas: glow, base, highlight, atmosphere, shadow, noise
-- Reagente ao nível de áudio
-- Reflexo "puddle" e anel de água
-
-### Tema
-- Light/dark mode com detecção de preferência do sistema
-- CSS custom properties via `globals.css`
-- Botão de toggle no header
-
----
-
-## 📁 Estrutura de Diretórios
+## 📁 Estrutura do Projeto
 
 ```
-extrajus/
-├── .env.local                      # Variáveis de ambiente
-├── AGENTS.md                       # Instruções para agentes de IA
-├── next.config.ts                  # Configuração Next.js
-├── package.json                    # Dependências e scripts
-├── postcss.config.mjs              # PostCSS + Tailwind
-├── tsconfig.json                   # TypeScript config
-├── eslint.config.mjs               # ESLint config
-│
-├── public/                         # Assets estáticos
-│
+dgadvocacia/
+├── public/                     # Favicons oficiais e ativos estáticos
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx              # Layout raiz (SEO, GA, tema)
-│   │   ├── page.tsx                # Home / Landing Page
-│   │   ├── globals.css             # Estilos globais + animações
-│   │   ├── favicon.ico
-│   │   │
-│   │   ├── editor/page.tsx         # Editor + Checkout
-│   │   ├── simple/page.tsx         # Editor demo isolado
-│   │   │
-│   │   └── api/
-│   │       ├── gemini/route.ts
-│   │       ├── gemini/document/route.ts
-│   │       ├── gemini/rewrite/route.ts
-│   │       ├── config/gemini-live-setup/route.ts
-│   │       ├── config/gemini-editor-setup/route.ts
-│   │       ├── payment/route.ts
-│   │       ├── payment/status/route.ts
-│   │       ├── payment/confirm-email/route.ts
-│   │       ├── document/docx/route.ts
-│   │       ├── auth/google/callback/ (placeholder)
-│   │       └── docs/create/ (placeholder)
-│   │
+│   │   ├── (auth)/             # Telas de login, registro e redefinição de senha
+│   │   ├── dashboard/          # Painel do cliente (Consultas, Radar, Planos, Perfil)
+│   │   │   ├── consultas/      # Módulo de busca e diagnóstico IA
+│   │   │   └── marcas/         # Módulo do Radar INPI
+│   │   ├── politica-de-privacidade/ # Termos em conformidade com a LGPD
+│   │   ├── termos-de-uso/      # Condições gerais de contratação e LPI
+│   │   ├── layout.tsx          # Layout raiz, SEO, metadados e Google Analytics
+│   │   └── page.tsx            # Landing Page institucional e educativa
 │   ├── components/
-│   │   ├── footer.tsx
-│   │   ├── tiptap-templates/simple/  # SimpleEditor, ThemeToggle
-│   │   ├── tiptap-extension/         # Extensões customizadas
-│   │   ├── tiptap-node/              # Nodes com estilos SCSS
-│   │   ├── tiptap-ui/                # Componentes de UI do editor
-│   │   ├── tiptap-ui-primitive/      # Primitivas reutilizáveis
-│   │   └── tiptap-icons/             # 38 ícones SVG
-│   │
-│   ├── hooks/                        # 11 hooks customizados
-│   ├── lib/                          # Utilitários e configurações
-│   ├── styles/                       # SCSS variables + animações
-│   ├── types/                        # Tipagens (html-to-docx)
-│   └── utils/                        # Audio player, DOCX generator
-│
-└── test-ws.mjs
+│   │   ├── brand-logo.tsx      # Identidade visual oficial DG Advocacia
+│   │   └── ui/                 # Componentes de interface (Radix / Base-UI)
+│   └── lib/
+│       ├── email.ts            # Templates transacionais e cliente Resend
+│       ├── inpi-service.ts     # Core de integração e parsing com o INPI
+│       ├── supabase/           # Clientes Supabase (Client, Server, Admin)
+│       └── telegram.ts         # Integração com Telegram Bot
+└── scripts/                    # Scripts de migração SQL e utilitários
 ```
 
 ---
 
-## 🔑 Variáveis de Ambiente
-
-```env
-# GEMINI
-GEMINI_API_KEY=
-GEMINI_AUDIO_API_KEY=
-GEMINI_API_KEY_FALLBACK_2=
-NEXT_PUBLIC_GEMINI_API_KEY=
-NEXT_PUBLIC_GEMINI_API_KEY_FALLBACK_2=
-NEXT_PUBLIC_GEMINI_API_KEY_FALLBACK_3=
-
-# GROQ (Edição de Documento)
-GROQ_API_KEY=
-
-# PAGAMENTO (GGPix)
-GGPIX_API_KEY=
-GGPIX_WEBHOOK_SECRET=
-
-# EMAIL (Resend)
-RESEND_API_KEY=
-
-# APP
-NEXT_PUBLIC_APP_URL=
-```
-
----
-
-## 🚀 Como Rodar
+## 🚀 Configuração e Instalação
 
 ### Pré-requisitos
-- Node.js 20+
-- npm, yarn, pnpm ou bun
+- **Node.js 20+**
+- **npm**, **pnpm** ou **yarn**
+- Projeto configurado no **Supabase**
 
-### Instalação
-
+### 1. Clonar o repositório
 ```bash
-git clone https://github.com/fdutragon/extrajus.git
-cd extrajus
+git clone https://github.com/felipedutrag/dgadvocacia.git
+cd dgadvocacia
+```
+
+### 2. Instalar dependências
+```bash
 npm install
-cp .env.example .env.local   # Preencha as chaves necessárias
+```
+
+### 3. Configurar variáveis de ambiente
+Crie o arquivo `.env` na raiz do projeto com as credenciais necessárias:
+
+```env
+# URL da Aplicação
+NEXT_PUBLIC_APP_URL=https://dgadvocacia.online
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-anon-key
+SUPABASE_SERVICE_ROLE_KEY=sua-service-role-key
+
+# Credenciais de Consulta INPI
+INPI_USER=seu_usuario_inpi
+INPI_PASS=sua_senha_inpi
+
+# Inteligência Artificial
+GEMINI_API_KEY=sua-gemini-api-key
+GROQ_API_KEY=sua-groq-api-key
+
+# Pagamentos (GGPIX)
+GGPIX_API_KEY=sua-chave-ggpix
+GGPIX_WEBHOOK_SECRET=seu-segredo-webhook
+
+# E-mail (Resend)
+RESEND_API_KEY=sua-chave-resend
+```
+
+### 4. Executar em modo de desenvolvimento
+```bash
 npm run dev
 ```
+A aplicação estará disponível em `http://localhost:3000`.
 
-O servidor sobe em [http://localhost:3001](http://localhost:3001).
-
-### Scripts
-
+### 5. Build de produção
 ```bash
-npm run dev      # Desenvolvimento (porta 3001)
-npm run build    # Build de produção
-npm run start    # Inicia build de produção
-npm run lint     # Lint do código
+npm run build
+npm run start
 ```
 
 ---
 
-## 📦 Deploy
+## ⚖️ Conformidade Legal
 
-O projeto é otimizado para deploy na **Vercel**:
-
-```bash
-vercel deploy
-# Ou conecte o repositório em https://vercel.com/new
-```
-
----
-
-## 📄 Licença
-
-Projeto privado — todos os direitos reservados © 2026 Extrajus.
+- **Lei de Propriedade Industrial:** Desenvolvido em estrita consonância com a **Lei nº 9.279/1996 (LPI)** e resoluções do INPI.
+- **Privacidade e Proteção de Dados:** Conformidade integral com a **Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD)**, garantindo sigilo absoluto e criptografia SSL/TLS de 256 bits sobre todos os dados processuais e cadastrais.
 
 ---
 
 <p align="center">
-  Feito com ⚖️ e ☕ por <a href="https://github.com/fdutragon">Felipe Dutra</a>
+  <strong>DG Advocacia — Excelência Jurídica & Tecnologia em Propriedade Intelectual</strong><br/>
+  © 2026 DG Advocacia. Todos os direitos reservados.
 </p>
-#   d g a d v o c a c i a  
- #   d g a d v o c a c i a  
- 
