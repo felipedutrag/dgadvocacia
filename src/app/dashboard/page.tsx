@@ -901,7 +901,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex">
+    <div className="min-h-screen bg-background text-foreground flex dashboard-viewport">
       {/* ── Desktop Sidebar ── */}
       {!isMobile && (
         <aside className={`sticky top-0 h-screen shrink-0 transition-all duration-300 ${sidebarOpen ? "w-60" : "w-14"}`}>
