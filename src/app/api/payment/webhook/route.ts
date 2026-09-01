@@ -150,34 +150,35 @@ export async function POST(request: Request) {
         }
       }
 
-      // Determinar pacote de processos / marcas adquirido
-      let marcasToAdd = 30;
-      let packName = "Pacote Carteira B2B (30 Processos)";
+      // Determinar plano e limite de marcas adquirido
+      let marcasToAdd = 3;
+      let packName = "Radar RPI (3 Marcas)";
 
       const paidAmount = payload.amount ? Math.round(payload.amount * 100) : (paymentRecord?.amount_cents || 9700);
 
-      if (
-        (externalId && (externalId.includes("pack_10") || externalId.includes("start") || externalId.includes("pack_start"))) ||
-        paidAmount === 4700 || payload.amount === 47 || paidAmount === 500 || payload.amount === 5 || paidAmount === 100 || payload.amount === 1 || paidAmount === 4700 || payload.amount === 47
-      ) {
+      // 1. Extração dinâmica de quantidade do ID (ex: radar_5_marcas, pack_10, etc.)
+      const dynamicMatch = externalId ? externalId.match(/radar_(\d+)_marcas/i) : null;
+      if (dynamicMatch && dynamicMatch[1]) {
+        const qty = parseInt(dynamicMatch[1], 10);
+        if (!isNaN(qty) && qty > 0) {
+          marcasToAdd = qty;
+          packName = `Radar RPI (${qty} ${qty === 1 ? "Marca" : "Marcas"})`;
+        }
+      } else if (externalId && (externalId.includes("pack_10") || externalId.includes("start"))) {
         marcasToAdd = 10;
-        packName = "Pacote Start B2B (10 Processos)";
-      } else if (
-        (externalId && (externalId.includes("pack_80") || externalId.includes("office") || externalId.includes("pack_office"))) ||
-        paidAmount === 19700 || payload.amount === 197
-      ) {
+        packName = "Radar RPI (10 Marcas)";
+      } else if (externalId && (externalId.includes("pack_80") || externalId.includes("office") || externalId.includes("scale"))) {
         marcasToAdd = 80;
-        packName = "Pacote Scale B2B (80 Processos)";
-      } else if (
-        (externalId && (externalId.includes("pack_200") || externalId.includes("elite") || externalId.includes("pack_elite"))) ||
-        paidAmount === 34700 || payload.amount === 347
-      ) {
+        packName = "Radar RPI (80 Marcas)";
+      } else if (externalId && (externalId.includes("pack_200") || externalId.includes("elite") || externalId.includes("corporativo"))) {
         marcasToAdd = 200;
-        packName = "Pacote Corporativo (200 Processos)";
-      } else {
-        // Padrão ou R$ 97
-        marcasToAdd = 30;
-        packName = "Pacote Carteira B2B (30 Processos)";
+        packName = "Radar RPI (200 Marcas)";
+      } else if (paidAmount === 4700 || payload.amount === 47) {
+        marcasToAdd = 1;
+        packName = "Radar RPI (1 Marca)";
+      } else if (paidAmount === 9700 || payload.amount === 97) {
+        marcasToAdd = 3;
+        packName = "Radar RPI (3 Marcas)";
       }
 
       // Ativar / Adicionar Limite de Processos ao Usuário
@@ -191,26 +192,29 @@ export async function POST(request: Request) {
           console.error("Erro ao atualizar user_metadata no Auth:", authErr);
         }
 
-        // 2. Adicionar limite de marcas de forma cumulativa na tabela profiles
+        // 2. Atualizar limite de marcas e plano na tabela profiles
         try {
           const { data: currentProfile } = await supabase
             .from("profiles")
-            .select("marcas_limit, marcas_used")
+            .select("marcas_limit")
             .eq("id", targetUserId)
             .maybeSingle();
 
-          const currentLimit = currentProfile?.marcas_limit ?? 10;
-          const newLimit = currentLimit + marcasToAdd;
+          const currentLimit = currentProfile?.marcas_limit ?? 1;
+          // Se for compra de plano da calculadora, define a nova capacidade (ou soma se for cumulativo)
+          const newLimit = Math.max(currentLimit, marcasToAdd);
 
           await supabase
             .from("profiles")
             .update({
               marcas_limit: newLimit,
+              plan: packName,
+              plan_status: "active",
               updated_at: new Date().toISOString(),
             })
             .eq("id", targetUserId);
 
-          console.log(`[WEBHOOK] Adicionados +${marcasToAdd} processos para o parceiro ${targetUserId}. Novo total: ${newLimit} processos.`);
+          console.log(`[WEBHOOK] Plano ativado com sucesso para ${targetUserId}: ${packName} com limite de ${newLimit} marcas.`);
         } catch (profileErr) {
           console.warn("Aviso ao atualizar profiles:", profileErr);
         }

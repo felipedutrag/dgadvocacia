@@ -16,12 +16,13 @@ export async function GET(req: Request) {
     const result = await inpiConsultarProcesso(numero);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 404 });
+      const isNotFound = result.error?.includes('não encontrado');
+      return NextResponse.json({ error: result.error }, { status: isNotFound ? 404 : 503 });
     }
 
     return NextResponse.json(result.data);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Erro interno ao consultar INPI' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'O portal oficial do INPI está temporariamente fora do ar ou inacessível.' }, { status: 500 });
   }
 }
 
@@ -40,11 +41,12 @@ export async function POST(req: Request) {
     const result = await inpiConsultarProcesso(numero);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 404 });
+      const isNotFound = result.error?.includes('não encontrado');
+      return NextResponse.json({ error: result.error }, { status: isNotFound ? 404 : 503 });
     }
 
     return NextResponse.json(result.data);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Erro interno ao consultar INPI' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'O portal oficial do INPI está temporariamente fora do ar ou inacessível.' }, { status: 500 });
   }
 }

@@ -95,11 +95,55 @@ interface ConsultasClientProps {
   initialQuery?: string;
   initialProcesso?: string;
   initialClasse?: string;
+  initialSubTab?: "marca" | "processo" | "figura" | "meus_pedidos";
+  onSubTabChange?: (tab: "marca" | "processo" | "figura" | "meus_pedidos") => void;
 }
 
-export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }: ConsultasClientProps) {
+export function ConsultasClient({
+  initialQuery,
+  initialProcesso,
+  initialClasse,
+  initialSubTab = "marca",
+  onSubTabChange,
+}: ConsultasClientProps) {
   const supabase = createClient();
-  const [activeSubTab, setActiveSubTab] = useState<"marca" | "processo" | "figura" | "meus_pedidos">("marca");
+  const [activeSubTab, setActiveSubTab] = useState<"marca" | "processo" | "figura" | "meus_pedidos">(
+    initialSubTab || (initialProcesso ? "processo" : "marca")
+  );
+
+  React.useEffect(() => {
+    if (initialSubTab) {
+      setActiveSubTab(initialSubTab);
+    }
+  }, [initialSubTab]);
+
+  React.useEffect(() => {
+    if (initialProcesso) {
+      setNumeroProcesso(initialProcesso);
+      setActiveSubTab("processo");
+    }
+  }, [initialProcesso]);
+
+  React.useEffect(() => {
+    if (initialQuery) {
+      setNomeMarca(initialQuery);
+      setActiveSubTab("marca");
+    }
+    if (initialClasse) {
+      setClasseNice(initialClasse);
+    }
+  }, [initialQuery, initialClasse]);
+
+  const switchTab = (tab: "marca" | "processo" | "figura" | "meus_pedidos") => {
+    setActiveSubTab(tab);
+    setResultsList([]);
+    setSelectedProcesso(null);
+    setErrorMsg(null);
+    setAiReport(null);
+    if (onSubTabChange) {
+      onSubTabChange(tab);
+    }
+  };
 
   // Form States
   const [nomeMarca, setNomeMarca] = useState(initialQuery || "");
@@ -125,10 +169,76 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
   const [loadingAi, setLoadingAi] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
 
+  // Histórico de Pesquisas Salvas
+  const [savedSearches, setSavedSearches] = useState<Array<{
+    id: string;
+    termo: string;
+    classe?: string;
+    tipo: "marca" | "processo" | "figura";
+    totalResultados: number;
+    dataHora: string;
+  }>>([]);
+
+  React.useEffect(() => {
+    try {
+      const stored = localStorage.getItem("dg_saved_searches_v1");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setSavedSearches(parsed);
+        }
+      }
+    } catch (e) {
+      console.warn("Erro ao carregar histórico de buscas:", e);
+    }
+  }, []);
+
+  const addSearchToHistory = (item: {
+    termo: string;
+    classe?: string;
+    tipo: "marca" | "processo" | "figura";
+    totalResultados: number;
+  }) => {
+    const newItem = {
+      ...item,
+      id: "search_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+      dataHora: new Date().toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    setSavedSearches((prev) => {
+      const updated = [newItem, ...prev.filter((s) => s.termo !== item.termo || s.tipo !== item.tipo)].slice(0, 20);
+      try {
+        localStorage.setItem("dg_saved_searches_v1", JSON.stringify(updated));
+      } catch (e) {
+        console.warn("Erro ao salvar histórico:", e);
+      }
+      return updated;
+    });
+  };
+
+  const removeSearchHistoryItem = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSavedSearches((prev) => {
+      const updated = prev.filter((s) => s.id !== id);
+      try {
+        localStorage.setItem("dg_saved_searches_v1", JSON.stringify(updated));
+      } catch (e) {
+        console.warn("Erro ao salvar histórico:", e);
+      }
+      return updated;
+    });
+  };
+
   // 1. Busca por Nome
-  const handleSearchMarca = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nomeMarca.trim()) return;
+  const handleSearchMarca = async (e: React.FormEvent, overrideName?: string, overrideClass?: string) => {
+    if (e) e.preventDefault();
+    const targetName = overrideName || nomeMarca;
+    const targetClass = overrideClass !== undefined ? overrideClass : classeNice;
+    if (!targetName.trim()) return;
 
     setLoading(true);
     setErrorMsg(null);
@@ -138,10 +248,10 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
 
     try {
       const params = new URLSearchParams({
-        marca: nomeMarca.trim(),
+        marca: targetName.trim(),
         exata: buscaExata ? "sim" : "nao",
       });
-      if (classeNice.trim()) params.append("classe", classeNice.trim());
+      if (targetClass.trim()) params.append("classe", targetClass.trim());
 
       const res = await fetch(`/api/inpi/check-trademark?${params.toString()}`);
       const data = await res.json();
@@ -153,11 +263,19 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
       const procs = data.processos || [];
       setResultsList(procs);
 
+      // Salva no histórico de pesquisas
+      addSearchToHistory({
+        termo: targetName.trim(),
+        classe: targetClass.trim(),
+        tipo: "marca",
+        totalResultados: procs.length,
+      });
+
       // Dispara automaticamente a análise de viabilidade por IA
-      triggerAiAnalysis(nomeMarca.trim(), classeNice.trim(), procs);
+      triggerAiAnalysis(targetName.trim(), targetClass.trim(), procs);
 
       if (procs.length === 0) {
-        setSuccessMsg(`Nenhuma anterioridade idêntica encontrada para "${nomeMarca.trim()}". Caminho livre!`);
+        setSuccessMsg(`Nenhuma anterioridade idêntica encontrada para "${targetName.trim()}". Caminho livre!`);
       }
     } catch (err: any) {
       setErrorMsg(err.message);
@@ -211,6 +329,12 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
       }
 
       setSelectedProcesso(data);
+
+      addSearchToHistory({
+        termo: targetNum.trim(),
+        tipo: "processo",
+        totalResultados: 1,
+      });
     } catch (err: any) {
       setErrorMsg(err.message);
     } finally {
@@ -219,9 +343,11 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
   };
 
   // 3. Busca por Figura (Viena / CFE)
-  const handleSearchFigura = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!vienaCodigo.trim()) return;
+  const handleSearchFigura = async (e: React.FormEvent, overrideViena?: string, overrideClasse?: string) => {
+    if (e) e.preventDefault();
+    const targetViena = overrideViena || vienaCodigo;
+    const targetClasse = overrideClasse !== undefined ? overrideClasse : vienaClasse;
+    if (!targetViena.trim()) return;
 
     setLoading(true);
     setErrorMsg(null);
@@ -231,9 +357,9 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
 
     try {
       const params = new URLSearchParams({
-        viena: vienaCodigo.trim(),
+        viena: targetViena.trim(),
       });
-      if (vienaClasse.trim()) params.append("classe", vienaClasse.trim());
+      if (targetClasse.trim()) params.append("classe", targetClasse.trim());
 
       const res = await fetch(`/api/inpi/figura?${params.toString()}`);
       const data = await res.json();
@@ -242,8 +368,17 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
         throw new Error(data.error || "Erro ao consultar figura no INPI");
       }
 
-      setResultsList(data.processos || []);
-      if ((data.processos || []).length === 0) {
+      const procs = data.processos || [];
+      setResultsList(procs);
+
+      addSearchToHistory({
+        termo: targetViena.trim(),
+        classe: targetClasse.trim(),
+        tipo: "figura",
+        totalResultados: procs.length,
+      });
+
+      if (procs.length === 0) {
         setErrorMsg("Nenhuma marca encontrada com este Código de Viena.");
       }
     } catch (err: any) {
@@ -332,81 +467,6 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
 
   return (
     <div className="space-y-6">
-      {/* ── Top Header ── */}
-      <div className="border-b border-border/60 pb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-              <span>Central de Consultas & Inteligência INPI</span>
-              <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
-                Conexão Ativa
-              </span>
-            </h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Varredura de colidência, Raio-X de processos e Score de Viabilidade com Inteligência Artificial.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleFetchMeusPedidos}
-              disabled={loading}
-              className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/60 hover:bg-card"
-            >
-              <Bookmark className="size-3.5 text-primary" />
-              <span>Sincronizar Meus Pedidos INPI</span>
-            </Button>
-          </div>
-        </div>
-
-        {/* ── Sub-Navigation Tabs ── */}
-        <div className="flex items-center gap-1 mt-4 overflow-x-auto pb-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => { setActiveSubTab("marca"); setResultsList([]); setSelectedProcesso(null); setErrorMsg(null); setAiReport(null); }}
-            className={`text-xs h-8 px-3 rounded-lg font-medium gap-1.5 transition-all ${
-              activeSubTab === "marca"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <Search className="size-3.5" />
-            <span>Nome & Classe Nice</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => { setActiveSubTab("processo"); setResultsList([]); setSelectedProcesso(null); setErrorMsg(null); setAiReport(null); }}
-            className={`text-xs h-8 px-3 rounded-lg font-medium gap-1.5 transition-all ${
-              activeSubTab === "processo"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <FileText className="size-3.5" />
-            <span>Nº do Processo (Raio-X)</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => { setActiveSubTab("figura"); setResultsList([]); setSelectedProcesso(null); setErrorMsg(null); setAiReport(null); }}
-            className={`text-xs h-8 px-3 rounded-lg font-medium gap-1.5 transition-all ${
-              activeSubTab === "figura"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <Layers className="size-3.5" />
-            <span>Elementos Figurativos (Viena)</span>
-          </Button>
-        </div>
-      </div>
-
       {/* ── Feedback Alerts ── */}
       {errorMsg && (
         <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
@@ -432,19 +492,104 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
         </div>
       )}
 
+      {/* ── Histórico de Pesquisas Salvas ── */}
+      {savedSearches.length > 0 && (
+        <div className="p-3 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Clock className="size-3.5 text-primary" />
+              <span className="text-xs font-bold text-foreground">
+                Pesquisas Recentes Salvas ({savedSearches.length})
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setSavedSearches([]);
+                localStorage.removeItem("dg_saved_searches_v1");
+              }}
+              className="text-[10px] text-muted-foreground hover:text-destructive font-mono transition-colors"
+            >
+              Limpar Histórico
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+            {savedSearches.map((s) => (
+              <div
+                key={s.id}
+                onClick={() => {
+                  if (s.tipo === "processo") {
+                    setNumeroProcesso(s.termo);
+                    setActiveSubTab("processo");
+                    handleSearchProcesso(null as any, s.termo);
+                  } else if (s.tipo === "figura") {
+                    setVienaCodigo(s.termo);
+                    if (s.classe) setVienaClasse(s.classe);
+                    setActiveSubTab("figura");
+                    handleSearchFigura(null as any, s.termo, s.classe);
+                  } else {
+                    setNomeMarca(s.termo);
+                    if (s.classe) setClasseNice(s.classe);
+                    setActiveSubTab("marca");
+                    handleSearchMarca(null as any, s.termo, s.classe);
+                  }
+                }}
+                className="group inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/70 bg-muted/30 hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all text-xs cursor-pointer shadow-xs"
+              >
+                <span className="font-bold text-foreground group-hover:text-primary">
+                  {s.termo}
+                </span>
+                {s.classe && (
+                  <span className="text-[10px] font-mono text-muted-foreground bg-background/80 px-1 py-0.2 rounded border border-border/50">
+                    NCL {s.classe}
+                  </span>
+                )}
+                <span className="text-[9px] font-mono text-muted-foreground">
+                  {s.dataHora}
+                </span>
+                <button
+                  type="button"
+                  onClick={(e) => removeSearchHistoryItem(s.id, e)}
+                  className="size-4 inline-flex items-center justify-center rounded text-muted-foreground hover:text-destructive transition-colors ml-0.5"
+                  title="Remover do histórico"
+                >
+                  <X className="size-2.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── TAB 1: BUSCA POR NOME / CLASSE ── */}
       {activeSubTab === "marca" && (
         <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-          <CardHeader className="pb-3 border-b border-border/40">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <Search className="size-4 text-primary" />
-              Pesquisa de Marca por Denominação & Classe Nice
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Consulte anterioridades e receba um Score de Viabilidade instantâneo emitido pelo MarcaShield AI.
-            </CardDescription>
+          <CardHeader className="pb-3 border-b border-border/60">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <Search className="size-4 text-primary" />
+                  Pesquisa de Marca por Denominação & Classe Nice
+                </CardTitle>
+                <CardDescription className="text-xs mt-0.5">
+                  Consulte anterioridades e receba um Score de Viabilidade instantâneo emitido pelo MarcaShield AI.
+                </CardDescription>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleFetchMeusPedidos}
+                disabled={loading}
+                className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/60 hover:bg-card shrink-0 self-start sm:self-auto"
+              >
+                <Bookmark className="size-3.5 text-primary" />
+                <span>Sincronizar Meus Pedidos INPI</span>
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="pt-4">
+          <CardContent className="pt-2">
             <form onSubmit={handleSearchMarca} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input
@@ -485,16 +630,31 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
       {/* ── TAB 2: BUSCA POR NÚMERO DO PROCESSO (RAIO-X) ── */}
       {activeSubTab === "processo" && (
         <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-          <CardHeader className="pb-3 border-b border-border/40">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <FileText className="size-4 text-primary" />
-              Raio-X de Processo por Número
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Informe os 9 dígitos do processo para extrair o histórico completo de despachos da RPI, titular e logotipo.
-            </CardDescription>
+          <CardHeader className="pb-3 border-b border-border/60">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <FileText className="size-4 text-primary" />
+                  Raio-X de Processo por Número
+                </CardTitle>
+                <CardDescription className="text-xs mt-0.5">
+                  Informe os 9 dígitos do processo para extrair o histórico completo de despachos da RPI, titular e logotipo.
+                </CardDescription>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleFetchMeusPedidos}
+                disabled={loadingDetail}
+                className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/60 hover:bg-card shrink-0 self-start sm:self-auto"
+              >
+                <Bookmark className="size-3.5 text-primary" />
+                <span>Sincronizar Meus Pedidos INPI</span>
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="pt-4">
+          <CardContent className="pt-2">
             <form onSubmit={handleSearchProcesso} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 max-w-md">
                 <Input
@@ -516,16 +676,31 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
       {/* ── TAB 3: BUSCA POR CÓDIGO DE FIGURA (VIENA - CFE) ── */}
       {activeSubTab === "figura" && (
         <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-          <CardHeader className="pb-3 border-b border-border/40">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <Layers className="size-4 text-primary" />
-              Busca por Elementos Figurativos (Classificação de Viena - CFE)
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Pesquise logotipos e marcas figurativas pelo código CFE (ex: 26.01.01 para Círculos, 01.01.01 para Estrelas).
-            </CardDescription>
+          <CardHeader className="pb-3 border-b border-border/60">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <Layers className="size-4 text-primary" />
+                  Busca por Elementos Figurativos (Classificação de Viena - CFE)
+                </CardTitle>
+                <CardDescription className="text-xs mt-0.5">
+                  Pesquise logotipos e marcas figurativas pelo código CFE (ex: 26.01.01 para Círculos, 01.01.01 para Estrelas).
+                </CardDescription>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleFetchMeusPedidos}
+                disabled={loading}
+                className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/60 hover:bg-card shrink-0 self-start sm:self-auto"
+              >
+                <Bookmark className="size-3.5 text-primary" />
+                <span>Sincronizar Meus Pedidos INPI</span>
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="pt-4">
+          <CardContent className="pt-2">
             <form onSubmit={handleSearchFigura} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input

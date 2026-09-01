@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export type NamingSuggestion = {
   nome: string;
@@ -7,17 +7,34 @@ export type NamingSuggestion = {
   estilo: string;
   classeSugerida: string;
   distintividadeScore: number;
+  analiseJuridicaLPI?: string;
   pontosFortes: string[];
+  sugestoesDominio?: string[];
+  paletaRecomendada?: {
+    nome: string;
+    cores: string[];
+  };
+  simboloSugerido?: string;
 };
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { segmento, descricao, palavrasChave, estilo, classe } = body;
+    const {
+      segmento,
+      descricao,
+      palavrasChave,
+      publicoAlvo,
+      tomVoz,
+      estilo,
+      idiomaOrigem,
+      classe,
+      variacaoDe,
+    } = body;
 
-    if (!segmento && !descricao) {
+    if (!segmento && !descricao && !variacaoDe) {
       return NextResponse.json(
-        { error: "Informe o segmento ou a descrição do negócio" },
+        { error: "Informe o segmento, a proposta de valor ou a marca base para variações." },
         { status: 400 }
       );
     }
@@ -25,45 +42,73 @@ export async function POST(req: Request) {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-    const prompt = `Você é o MarcaShield Naming AI, especialista sênior em Naming Corporativo, Branding e Direito da Propriedade Industrial (Lei 9.279/96 - LPI).
-Sua missão é criar 6 sugestões de nomes de marcas comerciais de alto impacto, modernas e com ALTA DISTINTIVIDADE JURÍDICA perante o INPI.
+    const variationClause = variacaoDe
+      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário gostou do nome "${variacaoDe}". Crie 6 novas variações e desdobramentos inteligentes mantendo a raiz semântica, fonética ou o conceito central de "${variacaoDe}", mas explorando sufixos nobres, prefixos dinâmicos, fusões morfológicas ou sinônimos refinados.`
+      : `MISSÃO: Criar 6 nomes de marcas comerciais de altíssimo nível, altamente memoráveis, foneticamente elegantes e com CONEXÃO DIRETA e PROFUNDA com o segmento e proposta de valor do cliente.`;
 
-DIRETRIZES DA LPI (Art. 124 da Lei 9.279/96):
-- EVITE termos genéricos, descritivos, vulgares ou de uso comum para o segmento (ex: se for advocacia, não use "Justiça", se for café, não use "Grão").
-- PRIORIZE marcas Fantasiosas (palavras inventadas) ou Evocativas/Sugestivas sutis.
-- Os nomes devem ser fáceis de pronunciar, memoráveis, sonoros e com potencial de registro e concessão no INPI.
+    const prompt = `Você é o MarcaShield Naming & Brand Strategy AI, autoridade máxima em Naming Corporativo, Semiótica, Linguística Aplicada e Direito da Propriedade Industrial (Lei 9.279/96 - LPI).
 
-BRIEFING DO PROJETO:
-- Segmento/Nicho: "${segmento || 'Não especificado'}"
-- Descrição da Proposta de Valor: "${descricao || 'Não especificado'}"
-- Palavras-Chave de Inspiração: "${palavrasChave || 'Livre'}"
-- Estilo Desejado: "${estilo || 'Moderno, Tecnológico e Sofisticado'}"
-- Classe Nice Pretendida: "${classe || 'Não especificada'}"
+${variationClause}
 
-Retorne APENAS um JSON válido seguindo estritamente este formato:
+DIRETRIZES CRÍTICAS DE CONEXÃO E RELEVÂNCIA (LEIA COM EXTREMA ATENÇÃO):
+1. **PROIBIDO GERAR NOMES ALEATÓRIOS OU DESCONECTADOS**: Cada nome DEVE nascer de raízes etimológicas, metáforas do nicho, analogias reais de valor ou fusões morfológicas (portmanteau) que façam total sentido para o cliente final.
+2. **DISTINTIVIDADE LEGAL (Art. 124, VI e XIX da Lei 9.279/96)**:
+   - Evite termos genéricos puros ou meramente descritivos (ex: não usar "Café Bom" para café ou "Advocacia Rápida" para direito).
+   - Crie nomes **Evocativos/Sugestivos de Alto Impacto**, **Neologismos/Fusões Inteligentes** ou **Fantasiosos com Raízes Léxicas Setoriais** que garantam registro e exclusividade no INPI com risco quase nulo de colidência.
+3. **SONORIDADE E FONÉTICA COMERCIAL**: Nomes fáceis de pronunciar, sem encontros consonantais desagradáveis, com excelente ritmo verbal, sem duplo sentido cômico ou pejorativo.
+4. **DIVERSIDADE ESTRATÉGICA DAS 6 SUGESTÕES**:
+   - Sugestão 1: **Neologismo / Fusão Inteligente (Portmanteau)** (ex: estilo Netflix, Nubank, Spotify, Omie).
+   - Sugestão 2: **Evocativo & Metafórico** (remete à sensação, poder, transformação ou resultado gerado).
+   - Sugestão 3: **Fantasioso Premium com Raiz Setorial** (palavra exclusiva mas que soa natural e respeitada no nicho).
+   - Sugestão 4: **Curto & Punchy (4 a 6 letras)** (impacto rápido, fácil de digitar e viralizar).
+   - Sugestão 5: **Moderno & Autoridade Composta** (posicionamento de liderança de mercado).
+   - Sugestão 6: **Global / Internacional Fluido** (soa impecável tanto em português quanto internacionalmente).
+
+BRIEFING DETALHADO DO PROJETO:
+- **Segmento / Nicho de Atuação:** "${segmento || 'Não especificado'}"
+- **Proposta de Valor / Diferenciais:** "${descricao || 'Não especificado'}"
+- **Palavras-Chave de Inspiração:** "${palavrasChave || 'Livre'}"
+- **Público-Alvo / ICP:** "${publicoAlvo || 'Público Geral e Corporativo'}"
+- **Tom de Voz / Personalidade:** "${tomVoz || 'Inovador, Autoritário e Sofisticado'}"
+- **Estilo de Naming Preferido:** "${estilo || 'Equilibrado e Moderno'}"
+- **Idioma / Raiz Fonética:** "${idiomaOrigem || 'Português e Raiz Latina / Universal'}"
+- **Classe Nice Pretendida:** "${classe || 'Identificar automaticamente a classe ideal'}"
+
+Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
 {
   "sugestoes": [
     {
       "nome": "NomeDaMarca",
-      "slogan": "Slogan curto de alto impacto",
-      "racional": "Explicação linguística e semiótica da criação do nome",
-      "estilo": "Fantasiosa",
-      "classeSugerida": "Classe Nice 35",
+      "slogan": "Tagline ou slogan potente de posicionamento",
+      "racional": "Explicação profunda e clara de como este nome foi construído: suas raízes de palavras, significado semiótico e por que ele expressa com precisão o negócio do cliente.",
+      "estilo": "Neologismo Inteligente",
+      "classeSugerida": "Classe Nice 35 (Serviços de Negócios e Gestão)",
       "distintividadeScore": 95,
+      "analiseJuridicaLPI": "Alta registrabilidade perante o Art. 124 da LPI. Não possui caráter genérico direto e ostenta distintividade intrínseca favorável ao deferimento no INPI.",
       "pontosFortes": [
-        "Forte distintividade perante a LPI",
-        "Fonética fluida e internacional",
-        "Baixa probabilidade de colidência direta"
-      ]
+        "Conexão imediata com a proposta de valor do nicho",
+        "Fonética fluida de fácil memorização",
+        "Alta probabilidade de domínio e handles disponíveis"
+      ],
+      "sugestoesDominio": [
+        "nomedamarca.com.br",
+        "nomedamarca.com",
+        "usenomedamarca.com.br"
+      ],
+      "paletaRecomendada": {
+        "nome": "Dark Luxury & Ouro",
+        "cores": ["#D4AF37", "#09090B", "#F4F4F5"]
+      },
+      "simboloSugerido": "Escudo geométrico minimalista com traços ascendentes que simbolizam crescimento e segurança"
     }
   ]
 }`;
 
-    // 1. Tentar Gemini (Flash Lite e Flash)
+    // 1. Tentar Gemini (Flash Models - Primário 3.1 Flash Lite)
     if (GEMINI_API_KEY) {
       const models = [
-        "gemini-2.5-flash",
         "gemini-3.1-flash-lite",
+        "gemini-2.5-flash",
         "gemini-1.5-flash"
       ];
 
@@ -77,7 +122,7 @@ Retorne APENAS um JSON válido seguindo estritamente este formato:
               body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: {
-                  temperature: 0.7,
+                  temperature: 0.65,
                   responseMimeType: "application/json",
                 },
               }),
@@ -90,7 +135,7 @@ Retorne APENAS um JSON válido seguindo estritamente este formato:
             if (rawText) {
               const cleanJson = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
               const parsed = JSON.parse(cleanJson);
-              if (parsed.sugestoes && Array.isArray(parsed.sugestoes)) {
+              if (parsed.sugestoes && Array.isArray(parsed.sugestoes) && parsed.sugestoes.length > 0) {
                 return NextResponse.json(parsed);
               }
             }
@@ -113,7 +158,7 @@ Retorne APENAS um JSON válido seguindo estritamente este formato:
           body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
             messages: [{ role: "user", content: prompt }],
-            temperature: 0.7,
+            temperature: 0.65,
             response_format: { type: "json_object" },
           }),
         });
@@ -124,7 +169,7 @@ Retorne APENAS um JSON válido seguindo estritamente este formato:
           if (rawContent) {
             const cleanJson = rawContent.replace(/```json/g, "").replace(/```/g, "").trim();
             const parsed = JSON.parse(cleanJson);
-            if (parsed.sugestoes && Array.isArray(parsed.sugestoes)) {
+            if (parsed.sugestoes && Array.isArray(parsed.sugestoes) && parsed.sugestoes.length > 0) {
               return NextResponse.json(parsed);
             }
           }

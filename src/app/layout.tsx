@@ -72,7 +72,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={cn("dark font-sans", geist.variable)} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -85,7 +87,7 @@ export default function RootLayout({
                   document.documentElement.classList.remove('light');
                 }
               } catch (e) {}
-            `
+            `,
           }}
         />
       </head>

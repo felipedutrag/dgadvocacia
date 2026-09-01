@@ -64,50 +64,146 @@ interface ProcessoDetail {
   }>;
 }
 
+// ── Global In-Memory & LocalStorage Cache (Zero-Loading Navigation) ──
+let memoryCacheMarcas: MarcaItem[] | null = null;
+let lastCacheTimestamp = 0;
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutos
+const LOCAL_STORAGE_CACHE_KEY = "dg_carteira_marcas_cache_v1";
+
+function getStoredCache(): MarcaItem[] | null {
+  if (memoryCacheMarcas && memoryCacheMarcas.length > 0) {
+    return memoryCacheMarcas;
+  }
+  if (typeof window !== "undefined") {
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.data)) {
+          memoryCacheMarcas = parsed.data;
+          lastCacheTimestamp = parsed.timestamp || Date.now();
+          return parsed.data;
+        }
+      }
+    } catch (e) {
+      console.warn("Erro ao ler cache do localStorage:", e);
+    }
+  }
+  return null;
+}
+
+function setStoredCache(data: MarcaItem[]) {
+  memoryCacheMarcas = data;
+  lastCacheTimestamp = Date.now();
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(
+        LOCAL_STORAGE_CACHE_KEY,
+        JSON.stringify({ data, timestamp: Date.now() })
+      );
+    } catch (e) {
+      console.warn("Erro ao salvar cache no localStorage:", e);
+    }
+  }
+}
+
 export function MarcasClient() {
   const supabase = createClient();
+
   const [marcas, setMarcas] = useState<MarcaItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [newNumero, setNewNumero] = useState("");
   const [adding, setAdding] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [quota, setQuota] = useState<{ total: number; used: number; remaining: number; plan: string }>({
+    total: 1,
+    used: 0,
+    remaining: 1,
+    plan: "Gratuito (1 Marca)",
+  });
 
   // Modal de Raio-X
   const [selectedProcesso, setSelectedProcesso] = useState<ProcessoDetail | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
 
-  const fetchMarcas = useCallback(async () => {
+  const fetchMarcas = useCallback(async (isManual = false) => {
     try {
-      setLoading(true);
+      if (isManual) {
+        setIsSyncing(true);
+      }
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        setIsSyncing(false);
+        return;
+      }
 
-      const { data, error } = await supabase
-        .from("marcas")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("updated_at", { ascending: false });
+      const [{ data, error }, { data: profile }] = await Promise.all([
+        supabase
+          .from("marcas")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("updated_at", { ascending: false }),
+        supabase
+          .from("profiles")
+          .select("marcas_limit, plan, plan_status")
+          .eq("id", user.id)
+          .maybeSingle(),
+      ]);
 
       if (error) throw error;
-      if (data) setMarcas(data as MarcaItem[]);
+      if (data) {
+        const list = data as MarcaItem[];
+        setMarcas(list);
+        setStoredCache(list);
+
+        const limit = profile?.marcas_limit ?? 1;
+        setQuota({
+          total: limit,
+          used: list.length,
+          remaining: Math.max(0, limit - list.length),
+          plan: profile?.plan || "Gratuito (1 Marca)",
+        });
+      }
     } catch (err: any) {
       console.error("Erro ao buscar marcas:", err);
     } finally {
       setLoading(false);
+      setIsSyncing(false);
     }
   }, [supabase]);
 
   useEffect(() => {
-    fetchMarcas();
+    const cached = getStoredCache();
+    if (cached) {
+      setMarcas(cached);
+      setLoading(false);
+      // Se o cache tiver mais de 5 minutos, revalida silenciosamente em background
+      if (Date.now() - lastCacheTimestamp > 5 * 60 * 1000) {
+        fetchMarcas(false);
+      }
+    } else {
+      fetchMarcas(false);
+    }
   }, [fetchMarcas]);
 
   const handleAddMarca = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanNum = newNumero.trim();
     if (!cleanNum) return;
+
+    // Checagem de limite no frontend
+    const alreadyExists = marcas.some(m => m.numero_inpi === cleanNum);
+    if (!alreadyExists && marcas.length >= quota.total) {
+      setErrorMsg(
+        `Limite de acompanhamento atingido (${marcas.length}/${quota.total} marca ativa). Exclua o processo abaixo para liberar sua vaga gratuita ou contrate o Radar RPI para monitorar mais marcas.`
+      );
+      return;
+    }
 
     setAdding(true);
     setErrorMsg(null);
@@ -138,32 +234,37 @@ export function MarcasClient() {
         console.warn("Consulta ao INPI falhou, inserindo registro base:", inpiErr);
       }
 
-      // 2. Insere ou atualiza via UPSERT no Supabase
-      const { error } = await supabase.from("marcas").upsert(
-        {
-          user_id: user.id,
+      // 2. Chama a API protegida /api/marcas que valida cotas e permissões
+      const apiRes = await fetch("/api/marcas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           numero_inpi: cleanNum,
           nome_marca: nomeMarca,
           titular: titular,
           classe_nice: classeNice,
           status_ipas: statusIpas,
           imagem_url: logoUrl,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id, numero_inpi" }
-      );
+        }),
+      });
 
-      if (error) throw error;
+      const apiData = await apiRes.json();
+
+      if (!apiRes.ok || apiData.error) {
+        throw new Error(apiData.error || "Erro ao adicionar processo");
+      }
 
       setNewNumero("");
       setSuccessMsg(`Processo ${cleanNum} (${nomeMarca}) adicionado e sincronizado com o Radar!`);
       setTimeout(() => setSuccessMsg(null), 5000);
-      fetchMarcas();
+      
+      // Atualiza o cache e quotas imediatamente
+      fetchMarcas(false);
     } catch (err: any) {
       if (err.message?.includes("duplicate key") || err.code === "23505") {
         setErrorMsg(`O processo nº ${cleanNum} já está cadastrado no seu Radar.`);
       } else {
-        setErrorMsg("Erro ao rastrear processo: " + err.message);
+        setErrorMsg(err.message || "Erro ao rastrear processo");
       }
     } finally {
       setAdding(false);
@@ -178,10 +279,22 @@ export function MarcasClient() {
     setErrorMsg(null);
 
     try {
-      const { error } = await supabase.from("marcas").delete().eq("id", id);
-      if (error) throw error;
+      const res = await fetch(`/api/marcas?id=${id}`, { method: "DELETE" });
+      const resData = await res.json();
+      if (!res.ok || resData.error) {
+        throw new Error(resData.error || "Erro ao remover processo");
+      }
 
-      setMarcas(prev => prev.filter(m => m.id !== id));
+      setMarcas(prev => {
+        const filtered = prev.filter(m => m.id !== id);
+        setStoredCache(filtered);
+        setQuota(q => ({
+          ...q,
+          used: filtered.length,
+          remaining: Math.max(0, q.total - filtered.length),
+        }));
+        return filtered;
+      });
       setSuccessMsg(`Processo ${numero} removido do Radar.`);
       setTimeout(() => setSuccessMsg(null), 4000);
     } catch (err: any) {
@@ -234,8 +347,40 @@ export function MarcasClient() {
     (m.titular && m.titular.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  const isAtLimit = marcas.length >= quota.total;
+
   return (
     <div className="space-y-6">
+      {/* ── Status de Capacidade e Vagas de Monitoramento ── */}
+      <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <Shield className="size-4 text-primary" />
+            <span className="text-xs font-bold text-foreground">
+              Vagas de Acompanhamento no Radar RPI
+            </span>
+            <span className="text-[10px] font-mono font-bold bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full">
+              {quota.plan}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Acompanhamento contínuo e vigilância semanal de publicações e despachos na Revista da Propriedade Industrial (RPI).
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
+          <div className="text-right">
+            <div className="text-[10px] font-mono uppercase text-muted-foreground">Em Uso</div>
+            <div className="text-sm font-extrabold font-mono text-foreground">
+              <span className={isAtLimit ? "text-amber-500" : "text-emerald-500"}>
+                {marcas.length}
+              </span>{" "}
+              / {quota.total} {quota.total === 1 ? "Marca" : "Marcas"}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Feedback Alerts */}
       {errorMsg && (
         <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
@@ -263,16 +408,28 @@ export function MarcasClient() {
 
       {/* Card de Cadastro do Protocolo do Pedido */}
       <Card className="bg-card/60 backdrop-blur-md border-border/70">
-        <CardHeader className="pb-3 border-b border-border/40">
+        <CardHeader className="pb-3 border-b border-border/60">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Plus className="size-4 text-primary" />
-            Cadastrar Protocolo do Pedido para Acompanhamento
+            Acompanhar Processo no Radar RPI
           </CardTitle>
           <CardDescription className="text-xs">
-            Insira o número do protocolo/processo do INPI do seu cliente. Nossa plataforma sincroniza os dados oficiais, ativa o acompanhamento automático das publicações na RPI e prepara o backend para defesas e prazos.
+            Insira o número do processo para monitoramento contínuo na RPI e controle automático de prazos e despachos.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-4">
+        <CardContent className="pt-2 space-y-3">
+          {isAtLimit && (
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2.5">
+              <ShieldAlert className="size-4 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="font-bold">Limite de acompanhamento ativo atingido ({marcas.length}/{quota.total})</span>
+                <p className="text-[11px] opacity-90">
+                  Para monitorar processos adicionais simultaneamente, acesse a aba <strong>Planos</strong> e contrate mais vagas no Radar RPI.
+                </p>
+              </div>
+            </div>
+          )}
+
           <form onSubmit={handleAddMarca} className="flex flex-col sm:flex-row gap-3">
             <Input
               placeholder="Ex: 934821902 ou 790330172"
@@ -280,7 +437,11 @@ export function MarcasClient() {
               onChange={(e) => setNewNumero(e.target.value)}
               className="max-w-xs text-xs font-mono h-9 bg-card/80"
             />
-            <Button type="submit" disabled={adding || !newNumero.trim()} className="text-xs font-bold h-9 px-5 gap-1.5">
+            <Button
+              type="submit"
+              disabled={adding || !newNumero.trim()}
+              className="text-xs font-bold h-9 px-5 gap-1.5"
+            >
               {adding ? <Loader2 className="size-3.5 animate-spin" /> : <Plus className="size-3.5" />}
               <span>{adding ? "Sincronizando Processo..." : "Cadastrar Protocolo"}</span>
             </Button>
@@ -304,12 +465,12 @@ export function MarcasClient() {
         <Button
           variant="outline"
           size="sm"
-          onClick={fetchMarcas}
-          disabled={loading}
-          className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/40"
+          onClick={() => fetchMarcas(true)}
+          disabled={isSyncing}
+          className="text-xs font-semibold h-8 gap-1.5 border-border/70 bg-card/40 hover:bg-card/70"
         >
-          <RefreshCw className={`size-3.5 ${loading ? "animate-spin" : ""}`} />
-          <span>Atualizar Lista</span>
+          <RefreshCw className={`size-3.5 ${isSyncing ? "animate-spin text-primary" : ""}`} />
+          <span>{isSyncing ? "Sincronizando..." : "Atualizar Lista"}</span>
         </Button>
       </div>
 

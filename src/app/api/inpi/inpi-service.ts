@@ -54,6 +54,40 @@ const COMMON_HEADERS = {
   'Connection': 'keep-alive',
 };
 
+/**
+ * Formata erros de comunicação com o portal do INPI de forma amigável e profissional
+ */
+export function formatInpiErrorMessage(statusOrError?: number | string): string {
+  if (typeof statusOrError === 'number') {
+    if (statusOrError === 503 || statusOrError === 502 || statusOrError === 504) {
+      return 'O portal oficial do INPI está temporariamente fora do ar ou em manutenção técnica. Por favor, tente novamente em alguns instantes.';
+    }
+    if (statusOrError === 500) {
+      return 'O servidor do INPI encontrou uma instabilidade interna temporária. Por favor, tente novamente em instantes.';
+    }
+    if (statusOrError === 429) {
+      return 'Limite temporário de requisições ao portal do INPI atingido. Aguarde alguns segundos e tente novamente.';
+    }
+    return `O sistema de buscas do INPI está temporariamente indisponível no momento. Por favor, tente novamente em instantes.`;
+  }
+
+  const errStr = String(statusOrError || '');
+  if (
+    errStr.includes('503') ||
+    errStr.includes('502') ||
+    errStr.includes('504') ||
+    errStr.includes('fetch failed') ||
+    errStr.includes('ECONNREFUSED') ||
+    errStr.includes('ENOTFOUND') ||
+    errStr.includes('ETIMEDOUT') ||
+    errStr.includes('UND_ERR_CONNECT_TIMEOUT')
+  ) {
+    return 'O portal oficial do INPI está temporariamente fora do ar ou em manutenção técnica. Por favor, tente novamente em alguns instantes.';
+  }
+
+  return errStr || 'O portal do INPI está temporariamente indisponível. Tente novamente em instantes.';
+}
+
 async function getInpiSessionCookies(user?: string, pass?: string): Promise<string> {
   const inpiUser = user || process.env.INPI_USER;
   const inpiPass = pass || process.env.INPI_PASSWORD;
@@ -225,7 +259,7 @@ export default async function inpiConsulta(
     );
 
     if (!searchResponse.ok) {
-      throw new Error(`Erro na busca INPI: ${searchResponse.status}`);
+      throw new Error(formatInpiErrorMessage(searchResponse.status));
     }
 
     const arrayBuffer = await searchResponse.arrayBuffer();
@@ -240,10 +274,11 @@ export default async function inpiConsulta(
       processos,
     };
   } catch (error: any) {
-    log(`Erro na consulta INPI: ${error.message}`);
+    const formattedErr = formatInpiErrorMessage(error.message);
+    log(`Erro na consulta INPI: ${formattedErr}`);
     return {
       success: false,
-      error: error.message,
+      error: formattedErr,
       marca,
       buscaExata,
       classeInter: classeInter ?? null,
@@ -285,7 +320,7 @@ export async function inpiConsultaFigura(
     });
 
     if (!res.ok) {
-      throw new Error(`Erro na busca por figura no INPI: ${res.status}`);
+      throw new Error(formatInpiErrorMessage(res.status));
     }
 
     const html = iconv.decode(Buffer.from(await res.arrayBuffer()), 'ISO-8859-1');
@@ -298,7 +333,7 @@ export async function inpiConsultaFigura(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message,
+      error: formatInpiErrorMessage(error.message),
     };
   }
 }
@@ -339,7 +374,7 @@ export async function inpiConsultarProcesso(
       });
 
       if (!searchRes.ok) {
-        throw new Error(`Erro na busca de processo INPI: ${searchRes.status}`);
+        throw new Error(formatInpiErrorMessage(searchRes.status));
       }
 
       const searchHtml = iconv.decode(Buffer.from(await searchRes.arrayBuffer()), 'ISO-8859-1');
@@ -373,7 +408,7 @@ export async function inpiConsultarProcesso(
     });
 
     if (!detailRes.ok) {
-      throw new Error(`Erro ao carregar detalhes do processo: ${detailRes.status}`);
+      throw new Error(formatInpiErrorMessage(detailRes.status));
     }
 
     const detailHtml = iconv.decode(Buffer.from(await detailRes.arrayBuffer()), 'ISO-8859-1');
@@ -399,7 +434,15 @@ export async function inpiConsultarProcesso(
       if (ths.length >= 3) dataVigencia = $(ths[2]).text().trim();
     });
 
-    const logoUrl = `/api/inpi/image?codProcesso=${codPedido}`;
+    let logoUrl: string | undefined;
+    const imgEl = $('img[src*="LogoMarcasServletController"]');
+    if (imgEl.length > 0) {
+      const src = imgEl.attr('src');
+      const codProcessoMatch = src?.match(/codProcesso=(\d+)/);
+      if (codProcessoMatch) {
+        logoUrl = `/api/inpi/image?codProcesso=${codProcessoMatch[1]}`;
+      }
+    }
 
     const classes: Array<{ classe: string; subClasse?: string; especificacao?: string }> = [];
     $('#accordion-classificacao-produto-servico').closest('.accordion-item').find('table tbody tr').each((_, tr) => {
@@ -462,7 +505,7 @@ export async function inpiConsultarProcesso(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message,
+      error: formatInpiErrorMessage(error.message),
     };
   }
 }
@@ -486,7 +529,7 @@ export async function inpiListarMeusPedidos(
     });
 
     if (!res.ok) {
-      throw new Error(`Erro ao acessar Meus Pedidos no INPI: ${res.status}`);
+      throw new Error(formatInpiErrorMessage(res.status));
     }
 
     const html = iconv.decode(Buffer.from(await res.arrayBuffer()), 'ISO-8859-1');
@@ -499,7 +542,7 @@ export async function inpiListarMeusPedidos(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message,
+      error: formatInpiErrorMessage(error.message),
     };
   }
 }

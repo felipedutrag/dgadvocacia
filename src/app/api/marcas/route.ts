@@ -10,14 +10,33 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data, error } = await supabase
-      .from("marcas")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("updated_at", { ascending: false });
+    // Busca marcas e perfil do usuário para quotas
+    const [{ data: marcas, error: marcasErr }, { data: profile }] = await Promise.all([
+      supabase
+        .from("marcas")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false }),
+      supabase
+        .from("profiles")
+        .select("marcas_limit, plan, plan_status")
+        .eq("id", user.id)
+        .maybeSingle(),
+    ]);
 
-    if (error) throw error;
-    return NextResponse.json({ marcas: data });
+    if (marcasErr) throw marcasErr;
+
+    const marcasLimit = profile?.marcas_limit ?? 1;
+
+    return NextResponse.json({
+      marcas: marcas || [],
+      quota: {
+        total: marcasLimit,
+        used: (marcas || []).length,
+        remaining: Math.max(0, marcasLimit - (marcas || []).length),
+        plan: profile?.plan || "Gratuito (1 Marca)",
+      }
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -39,11 +58,53 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Número INPI obrigatório" }, { status: 400 });
     }
 
+    const cleanNum = numero_inpi.trim();
+
+    // 1. Verifica se esta marca já existe para o usuário (caso de atualização)
+    const { data: existingMarca } = await supabase
+      .from("marcas")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("numero_inpi", cleanNum)
+      .maybeSingle();
+
+    // 2. Se for uma nova marca, checar limite do plano
+    if (!existingMarca) {
+      const [{ count }, { data: profile }] = await Promise.all([
+        supabase
+          .from("marcas")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id),
+        supabase
+          .from("profiles")
+          .select("marcas_limit, plan")
+          .eq("id", user.id)
+          .maybeSingle(),
+      ]);
+
+      const marcasLimit = profile?.marcas_limit ?? 1;
+      const currentActiveCount = count || 0;
+
+      if (currentActiveCount >= marcasLimit) {
+        return NextResponse.json(
+          {
+            error: `Limite de marcas atingido. Seu plano atual permite acompanhar ${marcasLimit} marca(s) ativa(s). Exclua a marca atual para liberar sua vaga gratuita ou contrate o Radar RPI para monitorar mais marcas.`,
+            limitReached: true,
+            currentLimit: marcasLimit,
+            activeCount: currentActiveCount,
+            plan: profile?.plan || "Gratuito (1 Marca)",
+          },
+          { status: 403 }
+        );
+      }
+    }
+
+    // 3. Upsert da marca
     const { data, error } = await supabase
       .from("marcas")
       .upsert({
         user_id: user.id,
-        numero_inpi: numero_inpi.trim(),
+        numero_inpi: cleanNum,
         nome_marca: nome_marca || "Processo INPI",
         titular: titular || "",
         classe_nice: classe_nice || "",

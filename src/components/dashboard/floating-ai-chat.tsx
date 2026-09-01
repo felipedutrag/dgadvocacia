@@ -122,7 +122,7 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
       id: "1",
       role: "assistant",
       content: isSales
-        ? "Olá! Sou **Sofia**, assistente virtual de inteligência marcária da **DG Advocacia**.\n\nPosso pesquisar a viabilidade da sua marca no **INPI em tempo real**, explicar como funciona o **Radar RPI por R$ 47/mês** e demonstrar todas as ferramentas do nosso ecossistema. Qual marca você quer proteger hoje?"
+        ? "Olá! Sou **Sofia**, assistente virtual de inteligência marcária da **DG Advocacia**.\n\nPosso pesquisar a viabilidade da sua marca no **INPI em tempo real**, explicar como funciona o **Radar RPI por R$ 97/mês** e demonstrar todas as ferramentas do nosso ecossistema. Qual marca você quer proteger hoje?"
         : "Olá! Sou **Sofia**, assistente de IA da DG Advocacia. Posso pesquisar marcas no INPI em tempo real, analisar processos pelo número e calcular riscos de colidência. Como posso ajudar?",
       time: "Agora"
     }
@@ -197,183 +197,28 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
     }
   };
 
+  const whatsappUrl = "https://wa.me/5513988658518?text=" + encodeURIComponent("Olá! Gostaria de falar com um especialista sobre registro de marcas e a plataforma DG Advocacia.");
+
   return (
-    <>
-      {/* Botão Flutuante (Canto Inferior Direito) */}
-      {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs px-4 py-3 rounded-full shadow-2xl transition-all transform hover:scale-105"
-        >
-          <Bot className="size-5" />
-          <span>{isSales ? "Precisa de ajuda?" : "Consultoria IA (INPI)"}</span>
-        </button>
-      )}
-
-      {/* Janela do Chat Flutuante */}
-      {open && (
-        <div
-          className={`fixed bottom-6 right-6 z-50 bg-card border border-border/80 rounded-2xl shadow-2xl backdrop-blur-2xl flex flex-col transition-all overflow-hidden animate-slide-up ${
-            expanded ? "w-[90vw] sm:w-[600px] h-[80vh]" : "w-[90vw] sm:w-[400px] h-[520px]"
-          }`}
-        >
-          {/* Header do Chat */}
-          <div className="flex items-center justify-between p-3.5 border-b border-border/60 bg-muted/40">
-            <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                <Bot className="size-4" />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                  <span>Sofia &bull; IA INPI</span>
-                  <span className="size-2 rounded-full bg-emerald-500 inline-block"></span>
-                </div>
-                <div className="text-[10px] font-mono text-muted-foreground">DG Advocacia &bull; LPI 9.279/96</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                onClick={() => setExpanded((prev) => !prev)}
-                className="size-7 text-muted-foreground hover:text-foreground"
-                title={expanded ? "Reduzir" : "Expandir"}
-              >
-                {expanded ? <Minimize2 className="size-3.5" /> : <Maximize2 className="size-3.5" />}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                onClick={() => setOpen(false)}
-                className="size-7 text-muted-foreground hover:text-foreground"
-                title="Fechar"
-              >
-                <X className="size-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Área de Mensagens */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3.5 text-xs">
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex gap-2.5 ${m.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                {m.role === "assistant" && (
-                  <div className="size-6 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                    <Bot className="size-3.5" />
-                  </div>
-                )}
-
-                <div
-                  className={`max-w-[85%] rounded-2xl p-3 leading-relaxed ${
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground font-medium rounded-tr-none"
-                      : "bg-muted/60 border border-border/60 text-foreground rounded-tl-none space-y-2"
-                  }`}
-                >
-                  <FormattedMessageView content={m.content} />
-
-                  {/* Badge de Tool Function Acionada */}
-                  {m.toolUsed && (
-                    <div className="mt-2 p-2 rounded-lg bg-background/80 border border-border/60 text-[10px] font-mono space-y-1">
-                      <div className="flex items-center gap-1.5 text-primary font-bold">
-                        <Search className="size-3" />
-                        <span>Base Oficial do INPI Consultada</span>
-                      </div>
-                      <div className="text-muted-foreground truncate">
-                        Função: {m.toolUsed.name}({JSON.stringify(m.toolUsed.args)})
-                      </div>
-                    </div>
-                  )}
-
-                  <span className={`block text-[9px] font-mono mt-1 ${m.role === "user" ? "text-primary-foreground/70 text-right" : "text-muted-foreground"}`}>
-                    {m.time}
-                  </span>
-                </div>
-              </div>
-            ))}
-
-            {loading && (
-              <div className="flex gap-2.5 items-center text-xs text-muted-foreground animate-pulse">
-                <div className="size-6 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                  <Bot className="size-3.5" />
-                </div>
-                <div className="p-3 rounded-2xl bg-muted/40 border border-border/40 flex items-center gap-2">
-                  <Loader2 className="size-3.5 animate-spin text-primary" />
-                  <span>Consultando INPI e analisando LPI...</span>
-                </div>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Sugestões Rápidas de Prompt */}
-          {messages.length <= 2 && (
-            <div className="px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto border-t border-border/40 bg-muted/20">
-              {isSales ? (
-                <>
-                  <button
-                    onClick={() => setInput("Quais são todos os recursos que a plataforma oferece?")}
-                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
-                  >
-                    O que a plataforma faz?
-                  </button>
-                  <button
-                    onClick={() => setInput("Como funciona o Radar RPI de R$ 47/mês?")}
-                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
-                  >
-                    Radar RPI R$ 47/mês
-                  </button>
-                  <button
-                    onClick={() => setInput("Pesquise se a marca 'NEXUS' está livre no INPI")}
-                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
-                  >
-                    Testar pesquisa de marca
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setInput("Pesquise a marca 'NEXUS' na classe 35")}
-                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
-                  >
-                    Pesquisar marca NEXUS
-                  </button>
-                  <button
-                    onClick={() => setInput("Como funciona o prazo de 60 dias de oposição?")}
-                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
-                  >
-                    Prazo de 60 dias
-                  </button>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* Formulário de Input */}
-          <form onSubmit={handleSendMessage} className="p-3 border-t border-border/60 bg-muted/30 flex gap-2">
-            <Input
-              placeholder="Pergunte sobre uma marca, processo ou artigo..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="text-xs h-9 bg-card"
-              disabled={loading}
-            />
-            <Button
-              type="submit"
-              disabled={loading || !input.trim()}
-              size="icon-xs"
-              className="size-9 shrink-0 bg-primary text-primary-foreground font-bold"
-            >
-              <Send className="size-4" />
-            </Button>
-          </form>
-        </div>
-      )}
-    </>
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-xs px-4 py-3 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-[0_10px_25px_-5px_rgba(37,211,102,0.5)] cursor-pointer"
+      title="Falar no WhatsApp (13) 98865-8518"
+    >
+      <svg
+        className="size-5 fill-current shrink-0"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+      <span className="font-extrabold tracking-tight">Suporte</span>
+      <span className="relative flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+      </span>
+    </a>
   );
 }

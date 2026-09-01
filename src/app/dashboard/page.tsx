@@ -6,6 +6,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { MarcasClient } from "./marcas/marcas-client";
 import { ConsultasClient } from "./consultas/consultas-client";
 import { NamingClient } from "./naming/naming-client";
+import { ConsultoriaClient } from "./consultoria/consultoria-client";
+import { ComplianceClient } from "./compliance/compliance-client";
+import { InovacaoClient } from "./inovacao/inovacao-client";
 import { CommandPalette } from "@/components/dashboard/command-palette";
 import { NotificationsPopover } from "@/components/dashboard/notifications-popover";
 import { FloatingAiChat } from "@/components/dashboard/floating-ai-chat";
@@ -17,6 +20,10 @@ import {
   LogOut,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
+  ArrowRight,
+  Sparkles,
+  Radio,
   ShieldCheck,
   Sun,
   Moon,
@@ -43,6 +50,8 @@ import {
   Scale,
   Palette,
   Globe,
+  Building2,
+  Rocket,
   ShieldAlert,
   Minus,
   Plus,
@@ -96,8 +105,21 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "plans" | "profile"
-  >("consultas");
+    | "consultas"
+    | "consultas-nome"
+    | "consultas-processo"
+    | "consultas-figura"
+    | "marcas"
+    | "naming"
+    | "logos"
+    | "nice"
+    | "domains"
+    | "plans"
+    | "profile"
+    | "consultoria"
+    | "compliance"
+    | "inovacao"
+  >("marcas");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [injectedQuery, setInjectedQuery] = useState<{ query?: string; processo?: string; classe?: string } | null>(null);
 
@@ -106,27 +128,56 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [isDark, setIsDark] = useState(true);
 
-  // Listener Global de Teclas de Atalho (Ctrl+K / Cmd+K, Ctrl+N, Ctrl+M, Ctrl+P)
+  // Listener Global de Teclas de Atalho (Ctrl+K, Ctrl+M, Ctrl+B, Ctrl+P, Ctrl+F, Ctrl+N, Ctrl+L, Ctrl+I, Ctrl+D, Ctrl+E, Ctrl+T, Ctrl+G, Ctrl+U, Ctrl+O)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const isCtrlOrCmd = e.ctrlKey || e.metaKey;
       if (!isCtrlOrCmd) return;
 
-      if (e.key.toLowerCase() === "k") {
+      const key = e.key.toLowerCase();
+
+      if (key === "k") {
         e.preventDefault();
         setCommandPaletteOpen((prev) => !prev);
-      } else if (e.key.toLowerCase() === "n") {
-        e.preventDefault();
-        setActiveTab("naming");
-      } else if (e.key.toLowerCase() === "m") {
+      } else if (key === "m") {
         e.preventDefault();
         setActiveTab("marcas");
-      } else if (e.key.toLowerCase() === "p") {
+      } else if (key === "b") {
         e.preventDefault();
-        setActiveTab("consultas");
-      } else if (e.key.toLowerCase() === "l") {
+        setActiveTab("consultas-nome");
+      } else if (key === "p") {
+        e.preventDefault();
+        setActiveTab("consultas-processo");
+      } else if (key === "f") {
+        e.preventDefault();
+        setActiveTab("consultas-figura");
+      } else if (key === "n") {
+        e.preventDefault();
+        setActiveTab("naming");
+      } else if (key === "l") {
+        e.preventDefault();
+        setActiveTab("logos");
+      } else if (key === "i") {
+        e.preventDefault();
+        setActiveTab("nice");
+      } else if (key === "d") {
+        e.preventDefault();
+        setActiveTab("domains");
+      } else if (key === "e") {
+        e.preventDefault();
+        setActiveTab("consultoria");
+      } else if (key === "t") {
+        e.preventDefault();
+        setActiveTab("inovacao");
+      } else if (key === "g") {
+        e.preventDefault();
+        setActiveTab("compliance");
+      } else if (key === "u") {
         e.preventDefault();
         setActiveTab("plans");
+      } else if (key === "o") {
+        e.preventDefault();
+        setActiveTab("profile");
       }
     };
 
@@ -155,21 +206,21 @@ export default function DashboardPage() {
   const [pixSuccess, setPixSuccess] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
 
-  // Calculadora de Processos B2B (Radar RPI - Base R$ 47 até 3 marcas + adicional)
+  // Calculadora de Processos B2B (Radar RPI - Base R$ 97 até 3 marcas + adicional)
   const [calcProcessos, setCalcProcessos] = useState<number>(3);
 
   const getRadarPricing = (qty: number) => {
     const count = Math.max(1, qty);
     if (count <= 3) {
-      return { total: 47, unit: 47 / count, isBase: true };
+      return { total: 97, unit: 97 / count, isBase: true };
     }
-    // A partir da 4ª marca: R$ 47 base (cobre 3 marcas) + R$ 15 por marca extra (com desconto para volumes grandes)
+    // A partir da 4ª marca: R$ 97 base (cobre 3 marcas) + R$ 20 por marca extra (com desconto para volumes grandes)
     const extra = count - 3;
-    let extraRate = 15;
-    if (count > 50) extraRate = 9.90;
-    else if (count > 20) extraRate = 12.00;
+    let extraRate = 20;
+    if (count > 50) extraRate = 12.00;
+    else if (count > 20) extraRate = 15.00;
     
-    const total = 47 + Math.round(extra * extraRate);
+    const total = 97 + Math.round(extra * extraRate);
     return { total, unit: total / count, isBase: false };
   };
 
@@ -400,217 +451,356 @@ export default function DashboardPage() {
 
   // Sidebar Component
   const renderSidebarNavigation = (isDrawer = false) => (
-    <div className="flex flex-col h-full justify-between bg-card/60 backdrop-blur-xl border-r border-border/70">
-      <div>
-        {/* Sidebar Header */}
-        <div className="relative flex h-14 items-center border-b border-border/70 px-3">
+    <div className="flex flex-col h-full justify-between bg-card/60 backdrop-blur-xl border-r border-border/70 overflow-hidden select-none font-sans">
+      <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col">
+        {/* Sidebar Header - Perfeitamente alinhado com o h-14 do Navbar */}
+        <div className="relative flex h-14 shrink-0 items-center justify-between border-b border-border/70 px-3">
           {(sidebarOpen || isDrawer) ? (
             <>
-              <div className="flex flex-1 items-center justify-center">
-                <Link href="/" className="flex items-center justify-center overflow-hidden transition-transform hover:opacity-95">
+              {/* Logomarca Oficial Centralizada */}
+              <div className="flex flex-1 items-center justify-center min-w-0">
+                <Link
+                  href="/"
+                  className="flex items-center justify-center transition-all hover:opacity-90 group"
+                >
                   <SmartDocBrand size="md" />
                 </Link>
               </div>
 
-              {!isMobile && !isDrawer && (
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  onClick={() => setSidebarOpen(false)}
-                  className="absolute right-2 text-muted-foreground hover:text-foreground size-7 rounded-md"
-                  title="Recolher menu"
+              {/* Quick Actions (Search & Collapse) */}
+              <div className="flex items-center gap-0.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setCommandPaletteOpen(true)}
+                  className="size-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all"
+                  title="Buscar ou comandos (Ctrl+K)"
                 >
-                  <ChevronLeft className="size-4" />
-                </Button>
-              )}
+                  <Search className="size-3.5" />
+                </button>
+
+                {!isMobile && !isDrawer && (
+                  <button
+                    type="button"
+                    onClick={() => setSidebarOpen(false)}
+                    className="size-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all"
+                    title="Recolher menu"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                )}
+              </div>
             </>
           ) : (
             <div className="flex flex-1 items-center justify-center">
               {!isMobile && !isDrawer && (
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
+                <button
+                  type="button"
                   onClick={() => setSidebarOpen(true)}
-                  className="text-muted-foreground hover:text-foreground size-8 rounded-md"
-                  title="Expandir menu"
+                  className="size-8.5 rounded-xl border border-border/80 bg-muted/40 hover:bg-primary/10 hover:border-primary/40 text-muted-foreground hover:text-primary flex items-center justify-center transition-all cursor-pointer shadow-xs group"
+                  title="Expandir menu lateral"
                 >
-                  <ChevronRight className="size-4" />
-                </Button>
+                  <ChevronRight className="size-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                </button>
               )}
             </div>
           )}
         </div>
 
-        {/* Navigation Items */}
-        <div className="p-3 space-y-1">
-          {/* GRUPO 1: PESQUISAS & TELEMETRIA */}
-          {(sidebarOpen || isDrawer) && (
-            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
-              INPI & Vigilância
-            </div>
-          )}
+        {/* Linear Navigation Menu with Indented Sub-items */}
+        <div className="p-2 space-y-3 flex-1">
+          {/* GRUPO 1: CONSULTAS & VIGILÂNCIA */}
+          <div className="space-y-0.5">
+            {(sidebarOpen || isDrawer) && (
+              <div className="px-2 pt-1 pb-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground/80 tracking-tight">
+                <span>Consultas & Vigilância</span>
+                <ChevronDown className="size-2.5 opacity-60" />
+              </div>
+            )}
 
-          <button
-            onClick={() => { setActiveTab("consultas"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "consultas"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Consultas INPI"
-          >
-            <Search className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Consultas INPI</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("marcas"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "marcas"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Vigilância de Marcas (RPI)"
+            >
+              <Shield className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && (
+                <div className="flex items-center justify-between flex-1">
+                  <span>Vigilância RPI</span>
+                  <span className="size-1.5 rounded-full bg-emerald-400"></span>
+                </div>
+              )}
+            </button>
 
-          <button
-            onClick={() => { setActiveTab("marcas"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "marcas"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Radar RPI"
-          >
-            <Shield className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Radar RPI</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("consultas-nome"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                (activeTab === "consultas-nome" || activeTab === "consultas")
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Pesquisar Marca no INPI"
+            >
+              <Search className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Pesquisar Marca</span>}
+            </button>
 
-          {/* GRUPO 2: FERRAMENTAS & ESTÚDIO IA */}
-          <div className="my-2 border-t border-border/60" />
-          {(sidebarOpen || isDrawer) && (
-            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
-              Inteligência & Ativos
-            </div>
-          )}
+            <button
+              onClick={() => { setActiveTab("consultas-processo"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "consultas-processo"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Consultar Processo"
+            >
+              <FileText className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Consultar Processo</span>}
+            </button>
 
-          <button
-            onClick={() => { setActiveTab("naming"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "naming"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Gerador de Nomes"
-          >
-            <Lightbulb className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Gerador de Nomes</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("consultas-figura"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "consultas-figura"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Elementos Figurativos (Viena)"
+            >
+              <Layers className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Elementos Figurativos</span>}
+            </button>
+          </div>
 
-          <button
-            onClick={() => { setActiveTab("logos"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "logos"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Criador de Logos"
-          >
-            <Palette className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Criador de Logos</span>}
-          </button>
+          {/* GRUPO 2: FERRAMENTAS & IA */}
+          <div className="space-y-0.5">
+            {(sidebarOpen || isDrawer) && (
+              <div className="px-2 pt-1 pb-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground/80 tracking-tight">
+                <span>Ferramentas & IA</span>
+                <ChevronDown className="size-2.5 opacity-60" />
+              </div>
+            )}
 
-          <button
-            onClick={() => { setActiveTab("nice"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "nice"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Enquadrador Nice"
-          >
-            <Layers className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Enquadrador Nice</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("nice"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "nice"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Enquadrador Nice"
+            >
+              <Layers className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Enquadrador Nice</span>}
+            </button>
 
-          <button
-            onClick={() => { setActiveTab("domains"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "domains"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Domínios & @"
-          >
-            <Globe className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Domínios & @</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("naming"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "naming"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Gerador de Marcas"
+            >
+              <Lightbulb className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Gerador de Marcas</span>}
+            </button>
 
-          {/* GRUPO 3: CONTA & PLANOS */}
-          <div className="my-2 border-t border-border/60" />
-          {(sidebarOpen || isDrawer) && (
-            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
-              Gestão & B2B
-            </div>
-          )}
+            <button
+              onClick={() => { setActiveTab("domains"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "domains"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Domínios & @"
+            >
+              <Globe className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Domínios & @</span>}
+            </button>
+          </div>
 
-          <button
-            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "plans"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Serviços & Planos"
-          >
-            <Crown className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
-          </button>
+          {/* GRUPO 3: ASSESSORIA & B2B */}
+          <div className="space-y-0.5">
+            {(sidebarOpen || isDrawer) && (
+              <div className="px-2 pt-1 pb-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground/80 tracking-tight">
+                <span>Assessoria & B2B</span>
+                <ChevronDown className="size-2.5 opacity-60" />
+              </div>
+            )}
 
-          <button
-            onClick={() => { setActiveTab("profile"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "profile"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Minha Conta"
-          >
-            <User className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Minha Conta</span>}
-          </button>
+            <button
+              onClick={() => { setActiveTab("consultoria"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "consultoria"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Consultoria Empresarial"
+            >
+              <Building2 className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Consultoria Empresarial</span>}
+            </button>
 
-          {/* Links Legais */}
-          {(sidebarOpen || isDrawer) && (
-            <div className="mt-4 pt-3 border-t border-border/40 px-3 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted-foreground">
-              <Link href="/termos-de-uso" target="_blank" className="hover:text-foreground transition-colors">Termos</Link>
-              <Link href="/politica-de-privacidade" target="_blank" className="hover:text-foreground transition-colors">Privacidade</Link>
-            </div>
-          )}
+            <button
+              onClick={() => { setActiveTab("inovacao"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "inovacao"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Patentes & Startups Tech"
+            >
+              <Rocket className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Patentes & Startups</span>}
+            </button>
+
+            <button
+              onClick={() => { setActiveTab("compliance"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "compliance"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Compliance & LGPD"
+            >
+              <ShieldCheck className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Compliance & LGPD</span>}
+            </button>
+          </div>
+
+          {/* GRUPO 4: GESTÃO & CONTA */}
+          <div className="space-y-0.5">
+            {(sidebarOpen || isDrawer) && (
+              <div className="px-2 pt-1 pb-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground/80 tracking-tight">
+                <span>Gestão</span>
+                <ChevronDown className="size-2.5 opacity-60" />
+              </div>
+            )}
+
+            <button
+              onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`group flex items-center justify-between py-1.75 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "plans"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-foreground/90 bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:border-primary/40 hover:text-primary"
+              }`}
+              title="Proteção de Marcas"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Crown className={`size-3.5 shrink-0 transition-colors ${activeTab === "plans" ? "text-primary-foreground" : "text-primary"}`} />
+                {(sidebarOpen || isDrawer) && <span className="font-semibold truncate">Proteção de Marcas</span>}
+              </div>
+              {(sidebarOpen || isDrawer) && (
+                <ChevronRight className={`size-3.5 shrink-0 transition-transform group-hover:translate-x-0.5 ${activeTab === "plans" ? "text-primary-foreground/80" : "text-primary/70 group-hover:text-primary"}`} />
+              )}
+            </button>
+
+            <button
+              onClick={() => { setActiveTab("profile"); if (isDrawer) setMobileDrawerOpen(false); }}
+              className={`flex items-center gap-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                (sidebarOpen || isDrawer) ? "ml-2.5 w-[calc(100%-10px)] px-2.5" : "w-full justify-center px-2"
+              } ${
+                activeTab === "profile"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
+              title="Minha Conta"
+            >
+              <User className="size-3.5 shrink-0 opacity-90" />
+              {(sidebarOpen || isDrawer) && <span>Minha Conta</span>}
+            </button>
+          </div>
         </div>
+
+        {/* LINEAR PROMO / TELEMETRY CARD (Bottom Feature Widget) */}
+        {(sidebarOpen || isDrawer) && (
+          <div
+            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className="m-2 p-3 rounded-xl bg-card/90 border border-primary/25 hover:border-primary/60 hover:bg-primary/5 transition-all cursor-pointer group shadow-sm backdrop-blur-md"
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-mono text-primary font-bold flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Radar INPI</span>
+              </span>
+              <span className="text-[10px] font-medium text-muted-foreground group-hover:text-primary flex items-center gap-0.5 transition-colors">
+                <span>Planos</span>
+                <ChevronRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+            </div>
+            <div className="text-[12px] font-bold text-foreground group-hover:text-primary transition-colors flex items-center justify-between">
+              <span>Assessoria & Telemetria</span>
+              <ArrowRight className="size-3.5 text-muted-foreground/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+            </div>
+            <div className="text-[10.5px] text-muted-foreground leading-tight mt-1">
+              Varredura de colidências na RPI ativa.
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Rodapé / Perfil */}
+      {/* Bottom User Row */}
       {sidebarOpen ? (
-        <div className="p-3 border-t border-border/70 bg-card/40 flex items-center justify-between">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <Avatar className="size-8 border border-border">
-              <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">
+        <div className="p-2.5 border-t border-border/70 bg-card/40 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <Avatar className="size-7 border border-border shrink-0 rounded-lg">
+              <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs rounded-lg">
                 {profile?.name?.charAt(0).toUpperCase() || "D"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-bold truncate text-foreground">{profile?.name || "Parceiro DG"}</div>
-              <div className="text-[10px] text-muted-foreground truncate">{profile?.email}</div>
+              <div className="text-xs font-bold truncate text-foreground leading-tight">
+                {profile?.name || "DG Parceiro"}
+              </div>
+              <div className="text-[9.5px] text-muted-foreground truncate leading-tight">
+                {profile?.email}
+              </div>
             </div>
           </div>
           <Button
             variant="ghost"
             size="icon-xs"
             onClick={handleLogout}
-            className="text-muted-foreground hover:text-destructive size-7"
+            className="text-muted-foreground hover:text-destructive size-7 rounded-md"
             title="Sair"
           >
             <LogOut className="size-3.5" />
           </Button>
         </div>
       ) : (
-        <div className="p-2 border-t border-border/70 flex flex-col items-center gap-2">
+        <div className="p-2 border-t border-border/70 flex flex-col items-center gap-1 shrink-0">
           <Button
             variant="ghost"
             size="icon-xs"
             onClick={handleLogout}
-            className="text-muted-foreground hover:text-destructive size-8"
+            className="text-muted-foreground hover:text-destructive size-8 rounded-md"
             title="Sair"
           >
             <LogOut className="size-3.5" />
@@ -624,7 +814,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background text-foreground flex">
       {/* ── Desktop Sidebar ── */}
       {!isMobile && (
-        <aside className={`sticky top-0 h-screen shrink-0 transition-all duration-300 ${sidebarOpen ? "w-64" : "w-16"}`}>
+        <aside className={`sticky top-0 h-screen shrink-0 transition-all duration-300 ${sidebarOpen ? "w-60" : "w-14"}`}>
           {renderSidebarNavigation(false)}
         </aside>
       )}
@@ -651,19 +841,6 @@ export default function DashboardPage() {
                 </SheetContent>
               </Sheet>
             )}
-
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-foreground capitalize">
-                {activeTab === "consultas" && "Pesquisa de Marcas & Viabilidade (INPI)"}
-                {activeTab === "marcas" && "Acompanhamento de Protocolos (Radar RPI)"}
-                {activeTab === "naming" && "Gerador Estratégico de Nomes Marcários"}
-                {activeTab === "logos" && "Criador de Logomarcas & Identidade Visual"}
-                {activeTab === "nice" && "Enquadrador Inteligente de Classes Nice (NCL)"}
-                {activeTab === "domains" && "Checador de Domínios (.com.br / .com) & Redes Sociais"}
-                {activeTab === "plans" && "Serviços B2B & Assessoria Jurídica"}
-                {activeTab === "profile" && "Configurações da Empresa Parceira"}
-              </span>
-            </div>
           </div>
 
             <div className="flex items-center gap-2">
@@ -687,7 +864,7 @@ export default function DashboardPage() {
                 <NotificationsPopover
                   onSelectProcesso={(num) => {
                     setInjectedQuery({ processo: num });
-                    setActiveTab("consultas");
+                    setActiveTab("consultas-processo");
                   }}
                   onNavigateTab={(tab) => setActiveTab(tab)}
                 />
@@ -726,17 +903,25 @@ export default function DashboardPage() {
                       <User className="mr-2 size-3.5" />
                       <span>Minha Conta</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
-                      <Lightbulb className="mr-2 size-3.5" />
-                      <span>Gerador de Nomes</span>
+                    <DropdownMenuItem onClick={() => setActiveTab("consultas-nome")} className="text-xs">
+                      <Search className="mr-2 size-3.5" />
+                      <span>Pesquisar Marca no INPI</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("logos")} className="text-xs">
-                      <Palette className="mr-2 size-3.5" />
-                      <span>Criador de Logos</span>
+                    <DropdownMenuItem onClick={() => setActiveTab("consultas-processo")} className="text-xs">
+                      <FileText className="mr-2 size-3.5" />
+                      <span>Consultar Processo</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("consultas-figura")} className="text-xs">
+                      <Layers className="mr-2 size-3.5" />
+                      <span>Elementos Figurativos</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("nice")} className="text-xs">
                       <Layers className="mr-2 size-3.5" />
                       <span>Enquadrador Nice</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
+                      <Lightbulb className="mr-2 size-3.5" />
+                      <span>Gerador de Marcas</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("domains")} className="text-xs">
                       <Globe className="mr-2 size-3.5" />
@@ -744,7 +929,7 @@ export default function DashboardPage() {
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
                       <Crown className="mr-2 size-3.5" />
-                      <span>Serviços & Pacotes B2B</span>
+                      <span>Proteção de Marcas</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
@@ -758,73 +943,214 @@ export default function DashboardPage() {
 
             {/* ── Main Dashboard Content ── */}
             <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
-              {/* TAB 1: CONSULTAS & IA */}
-              {activeTab === "consultas" && (
-                <ConsultasClient
-                  initialQuery={injectedQuery?.query}
-                  initialProcesso={injectedQuery?.processo}
-                  initialClasse={injectedQuery?.classe}
-                />
+              {/* TAB 1: CONSULTAS INPI & TELEMETRIA */}
+              {(activeTab === "consultas-nome" || activeTab === "consultas-processo" || activeTab === "consultas-figura" || activeTab === "consultas") && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="border-b border-border/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                          <span>
+                            {activeTab === "consultas-processo"
+                              ? "Consultar Processo"
+                              : activeTab === "consultas-figura"
+                              ? "Elementos Figurativos"
+                              : "Pesquisar Marca no INPI"}
+                          </span>
+                          <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                            {activeTab === "consultas-processo"
+                              ? "Telemetria em Tempo Real"
+                              : activeTab === "consultas-figura"
+                              ? "Classificação de Viena (CFE)"
+                              : "Base Oficial INPI"}
+                          </span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {activeTab === "consultas-processo"
+                            ? "Consulte despachos, prazos legais, titularidade e eventos oficiais de qualquer processo no INPI."
+                            : activeTab === "consultas-figura"
+                            ? "Consulte códigos de Viena e logotipos com elementos gráficos cadastrados no INPI."
+                            : "Pesquise marcas idênticas ou semelhantes em todas as classes Nice e verifique a viabilidade de registro."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ConsultasClient
+                    initialQuery={injectedQuery?.query}
+                    initialProcesso={injectedQuery?.processo}
+                    initialClasse={injectedQuery?.classe}
+                    initialSubTab={
+                      activeTab === "consultas-processo"
+                        ? "processo"
+                        : activeTab === "consultas-figura"
+                        ? "figura"
+                        : "marca"
+                    }
+                    onSubTabChange={(subTab) => {
+                      if (subTab === "processo") setActiveTab("consultas-processo");
+                      else if (subTab === "figura") setActiveTab("consultas-figura");
+                      else setActiveTab("consultas-nome");
+                    }}
+                  />
+                </div>
               )}
 
-              {/* PÁGINAS DEDICADAS DE FERRAMENTAS INTELIGENTES */}
-              {activeTab === "naming" && (
+              {/* PÁGINAS DEDICADAS DE FERRAMENTAS INTELIGENTES (PRESERVAÇÃO TOTAL EM MEMÓRIA) */}
+              <div
+                className={
+                  activeTab === "naming" ||
+                  activeTab === "logos" ||
+                  activeTab === "nice" ||
+                  activeTab === "domains"
+                    ? "space-y-6 animate-fade-in"
+                    : "hidden"
+                }
+              >
+                <div className="border-b border-border/60 pb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                        <span>
+                          {activeTab === "logos"
+                            ? "Estúdio de Logomarcas & Vetorização"
+                            : activeTab === "nice"
+                            ? "Enquadrador de Classes Nice com IA"
+                            : activeTab === "domains"
+                            ? "Domínios & Redes Sociais"
+                            : "Gerador de Marcas com IA"}
+                        </span>
+                        <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                          {activeTab === "logos"
+                            ? "Vetor SVG & PNG Transparente"
+                            : activeTab === "nice"
+                            ? "45 Classes LPI"
+                            : activeTab === "domains"
+                            ? "Disponibilidade Digital"
+                            : "Inteligência Estratégica LPI"}
+                        </span>
+                      </h1>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {activeTab === "logos"
+                          ? "Crie logomarcas profissionais escaláveis em vetor com paletas nobres e fundo transparente prontas para depósito."
+                          : activeTab === "nice"
+                          ? "Mapeamento inteligente de classes de produtos e serviços e especificações pré-aprovadas pelo INPI."
+                          : activeTab === "domains"
+                          ? "Verifique a disponibilidade imediata da sua marca em domínios nacionais (.com.br), internacionais (.com) e redes sociais."
+                          : "Crie marcas comerciais exclusivas de alto impacto com análise etimológica, score de distintividade e conformidade com o Art. 124 da LPI."}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <NamingClient
-                  initialTab="naming"
+                  initialTab={
+                    activeTab === "logos"
+                      ? "logos"
+                      : activeTab === "nice"
+                      ? "nice"
+                      : activeTab === "domains"
+                      ? "domains"
+                      : "naming"
+                  }
                   onVerifyTrademark={(marca, classe) => {
                     setInjectedQuery({ query: marca, classe });
-                    setActiveTab("consultas");
+                    setActiveTab("consultas-nome");
                   }}
                 />
-              )}
-
-              {activeTab === "logos" && (
-                <NamingClient
-                  initialTab="logos"
-                  onVerifyTrademark={(marca, classe) => {
-                    setInjectedQuery({ query: marca, classe });
-                    setActiveTab("consultas");
-                  }}
-                />
-              )}
-
-              {activeTab === "nice" && (
-                <NamingClient
-                  initialTab="nice"
-                  onVerifyTrademark={(marca, classe) => {
-                    setInjectedQuery({ query: marca, classe });
-                    setActiveTab("consultas");
-                  }}
-                />
-              )}
-
-              {activeTab === "domains" && (
-                <NamingClient
-                  initialTab="domains"
-                  onVerifyTrademark={(marca, classe) => {
-                    setInjectedQuery({ query: marca, classe });
-                    setActiveTab("consultas");
-                  }}
-                />
-              )}
-
-          {/* TAB 2: RADAR INPI */}
-          {activeTab === "marcas" && (
-            <div className="space-y-6">
-              <div className="border-b border-border/60 pb-4">
-                <h1 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span>Acompanhamento de Protocolos & Carteira</span>
-                  <span className="font-mono text-[10px] text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-normal">
-                    Radar RPI Automático
-                  </span>
-                </h1>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Cadastre o número do protocolo do pedido para que a DG Advocacia monitore despachos, prazos e atue no backend jurídico.
-                </p>
               </div>
-              <MarcasClient />
-            </div>
-          )}
+
+              {/* TAB 2: RADAR INPI */}
+              {activeTab === "marcas" && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="border-b border-border/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                          <span>Radar de Colidências & RPI</span>
+                          <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                            Monitoramento Ativo
+                          </span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Acompanhe despachos semanais da Revista da Propriedade Industrial (RPI) e monitore processos e marcas concorrentes.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <MarcasClient />
+                </div>
+              )}
+
+              {/* TAB: CONSULTORIA EMPRESARIAL */}
+              {activeTab === "consultoria" && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="border-b border-border/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                          <span>Consultoria Empresarial & Governança B2B</span>
+                          <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                            Direito Societário & M&A
+                          </span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Estruturação de Holdings Patrimoniais Familiares, segregação de riscos operacionais e governança societária.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ConsultoriaClient />
+                </div>
+              )}
+
+              {/* TAB: COMPLIANCE & LGPD */}
+              {activeTab === "compliance" && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="border-b border-border/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                          <span>Compliance & Adequação Regulatória LGPD</span>
+                          <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                            Lei 13.709/2018 & ANPD
+                          </span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Raio-X de risco de sanções ANPD, gerador de Políticas de Privacidade oficiais e checklist de conformidade contínua.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ComplianceClient />
+                </div>
+              )}
+
+              {/* TAB: PATENTES & STARTUPS TECH */}
+              {activeTab === "inovacao" && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="border-b border-border/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                          <span>Patentes & Startups Tech</span>
+                          <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                            Inovação & Software INPI
+                          </span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Proteção de patentes, registro de código-fonte no INPI (Hash SHA-512) e contratos de Vesting para startups.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <InovacaoClient />
+                </div>
+              )}
 
           {/* TAB 3: SERVIÇOS & PLANOS (CALCULADORA DE PROCESSOS B2B) */}
           {activeTab === "plans" && (
@@ -843,7 +1169,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <div className="text-xs font-mono bg-muted border border-border/60 px-3 py-1.5 rounded-xl self-start sm:self-auto">
-                    Limite Atual: <span className="font-bold text-primary">{profile?.marcas_limit || 10}</span> processos
+                    Limite Atual: <span className="font-bold text-primary">{profile?.marcas_limit ?? 1}</span> {(profile?.marcas_limit ?? 1) === 1 ? "marca" : "marcas"}
                   </div>
                 </div>
               </div>
@@ -854,17 +1180,17 @@ export default function DashboardPage() {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
-                        Radar RPI Automático
+                        Assessoria Integral & Radar RPI
                       </span>
                       <span className="text-xs text-primary font-bold font-mono">
                         Recorrência Mensal
                       </span>
                     </div>
                     <h3 className="text-xl font-bold text-foreground">
-                      Calculadora de Monitoramento da Carteira
+                      Acompanhamento Completo
                     </h3>
-                    <p className="text-xs text-muted-foreground">
-                      Vigilância ativa semanal na Revista da Propriedade Industrial (RPI) contra cópias e colidências.
+                    <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                      Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número na plataforma. A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, suporte a oposições e defesas administrativas.
                     </p>
                   </div>
 
@@ -901,8 +1227,8 @@ export default function DashboardPage() {
                         type="button"
                         variant="outline"
                         size="icon-xs"
-                        onClick={() => setCalcProcessos((prev) => Math.max(1, prev - 1))}
-                        disabled={calcProcessos <= 1}
+                        onClick={() => setCalcProcessos((prev) => Math.max(3, prev - 1))}
+                        disabled={calcProcessos <= 3}
                         className="size-8 rounded-lg border-border"
                       >
                         <Minus className="size-3.5" />
@@ -911,14 +1237,14 @@ export default function DashboardPage() {
                       <div className="relative">
                         <input
                           type="number"
-                          min="1"
+                          min="3"
                           max="1000"
                           value={calcProcessos}
                           onChange={(e) => {
                             const val = parseInt(e.target.value, 10);
-                            setCalcProcessos(isNaN(val) ? 1 : Math.max(1, Math.min(1000, val)));
+                            setCalcProcessos(isNaN(val) ? 3 : Math.max(3, Math.min(1000, val)));
                           }}
-                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-primary/30 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-primary/30 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                         <span className="absolute right-2 top-2 text-[9px] text-muted-foreground pointer-events-none font-mono">un</span>
                       </div>
@@ -938,11 +1264,11 @@ export default function DashboardPage() {
                   {/* Slider Horizontal Fluido */}
                   <input
                     type="range"
-                    min="1"
+                    min="3"
                     max="100"
                     step="1"
                     value={calcProcessos}
-                    onChange={(e) => setCalcProcessos(Number(e.target.value))}
+                    onChange={(e) => setCalcProcessos(Math.max(3, Number(e.target.value)))}
                     className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                   />
 
@@ -969,22 +1295,51 @@ export default function DashboardPage() {
                   <div className="text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-wider">
                     O que está incluso no seu plano:
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-foreground">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs text-foreground">
+                    {/* Fase 1: Concepção */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span><strong>Monitoramento de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
+                      <span>Gerador de Marcas Ilimitado</span>
                     </div>
+                    {/* Fase 2: Atos Oficiais */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Alertas automáticos no Telegram</span>
+                      <span>Cumprimento de Exigências INPI</span>
                     </div>
+                    {/* Fase 3: Viabilidade */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span>Consultas e Raio-X IA Ilimitados</span>
                     </div>
+                    {/* Fase 4: Proteção Ativa */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span><strong>Monitoramento de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
+                    </div>
+                    {/* Fase 5: Vigilância */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Varredura Semanal de Toda a RPI</span>
+                    </div>
+                    {/* Fase 6: Notificações */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Alertas Automáticos no App</span>
+                    </div>
+                    {/* Fase 7: Governança */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span>Controle de vigência decenal e prazos</span>
+                    </div>
+                    {/* Fase 8: Defesa */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Manifestação à Oposição</span>
+                    </div>
+                    {/* Fase 9: 2ª Instância */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Recurso Administrativo Indeferimento</span>
                     </div>
                   </div>
                 </div>
@@ -1003,133 +1358,11 @@ export default function DashboardPage() {
                       price: calcTotalPrice,
                       description: `DG Advocacia - Assinatura Radar RPI para ${calcProcessos} marcas monitoradas`,
                     })}
-                    className="w-full sm:w-auto text-xs font-bold h-11 px-6 bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
+                    className="group w-full sm:w-auto text-xs font-semibold h-11 px-6 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5"
                   >
-                    <span>Contratar Radar para {calcProcessos} {calcProcessos === 1 ? "Marca" : "Marcas"} (R$ {calcTotalPrice})</span>
+                    <span>Contratar Radar para {calcProcessos} {calcProcessos === 1 ? "Marca" : "Marcas"}</span>
+                    <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
                   </Button>
-                </div>
-              </div>
-
-              {/* ── SERVIÇOS JURÍDICOS SOB DEMANDA (BACKEND B2B) ── */}
-              <div className="space-y-4">
-                <div className="border-b border-border/60 pb-2">
-                  <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                    <Scale className="size-4 text-primary" />
-                    <span>Serviços Jurídicos Avulsos (Sob Demanda)</span>
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Contrate a atuação técnica da banca da DG Advocacia para atos específicos dos seus clientes no INPI.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* 1. Protocolo de Registro */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-primary uppercase bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md font-bold">Depósito INPI</span>
-                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Taxa Única</span>
-                      </div>
-                      <div className="mt-3 flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-foreground">R$ 490</span>
-                        <span className="text-xs text-muted-foreground font-medium">/processo</span>
-                      </div>
-                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                        Protocolo completo do pedido com qualificação formal, enquadramento de classes e especificação.
-                      </p>
-                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Parecer de Viabilidade IA + Humano</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento no e-Marcas</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Acompanhamento do exame formal</li>
-                      </ul>
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => handleOpenPixModal({
-                        id: "deposito_inpi",
-                        name: "Depósito de Marca no INPI",
-                        price: 490.00,
-                        description: "DG Advocacia - Assessoria Completa para Depósito de Marca no INPI",
-                      })}
-                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
-                    >
-                      <Crown className="size-3.5 text-muted-foreground" />
-                      <span>Contratar Depósito (Pix)</span>
-                    </Button>
-                  </div>
-
-                  {/* 2. Oposição & Manifestação */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">Defesa LPI</span>
-                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Peça Técnica</span>
-                      </div>
-                      <div className="mt-3 flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-foreground">R$ 690</span>
-                        <span className="text-xs text-muted-foreground font-medium">/peça</span>
-                      </div>
-                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                        Elaboração de Oposição contra marcas colidentes ou Manifestação a Oposição sofrida.
-                      </p>
-                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Fundamentação no Art. 124 da LPI</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Assinatura por advogado habilitado</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Protocolo dentro do prazo de 60 dias</li>
-                      </ul>
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => handleOpenPixModal({
-                        id: "oposicao_manifestacao",
-                        name: "Oposição / Manifestação Marcária",
-                        price: 690.00,
-                        description: "DG Advocacia - Elaboração de Oposição ou Manifestação no INPI",
-                      })}
-                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
-                    >
-                      <ShieldCheck className="size-3.5 text-muted-foreground" />
-                      <span>Contratar Defesa (Pix)</span>
-                    </Button>
-                  </div>
-
-                  {/* 3. Recurso contra Indeferimento */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">2ª Instância</span>
-                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Recurso</span>
-                      </div>
-                      <div className="mt-3 flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-foreground">R$ 890</span>
-                        <span className="text-xs text-muted-foreground font-medium">/recurso</span>
-                      </div>
-                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                        Peça recursal técnica ao Presidente do INPI para reverter decisão de indeferimento de marca.
-                      </p>
-                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Análise das razões do indeferimento</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Jurisprudência consolidada do INPI</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento tempestivo (60 dias)</li>
-                      </ul>
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => handleOpenPixModal({
-                        id: "recurso_inpi",
-                        name: "Recurso ao Presidente do INPI",
-                        price: 890.00,
-                        description: "DG Advocacia - Recurso Administrativo contra Indeferimento no INPI",
-                      })}
-                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
-                    >
-                      <Scale className="size-3.5 text-muted-foreground" />
-                      <span>Contratar Recurso (Pix)</span>
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1150,7 +1383,7 @@ export default function DashboardPage() {
                 {/* 1. Informações Pessoais / Dados do Titular */}
                 <Card className="border-border/70 bg-card/60 backdrop-blur-md flex flex-col justify-between">
                   <div>
-                    <CardHeader className="pb-3 border-b border-border/40">
+                    <CardHeader className="pb-3 border-b border-border/60">
                       <CardTitle className="text-sm font-bold flex items-center gap-2">
                         <User className="size-4 text-primary" />
                         Dados do Titular
@@ -1159,7 +1392,7 @@ export default function DashboardPage() {
                         Suas informações oficiais de contato e qualificação.
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-4">
+                    <CardContent className="pt-2">
                       <form id="form-profile" onSubmit={handleSaveProfile} className="space-y-4">
                         {profileMsg && (
                           <div className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
@@ -1206,7 +1439,7 @@ export default function DashboardPage() {
                 {/* 2. Alteração de Senha */}
                 <Card className="border-border/70 bg-card/60 backdrop-blur-md flex flex-col justify-between">
                   <div>
-                    <CardHeader className="pb-3 border-b border-border/40">
+                    <CardHeader className="pb-3 border-b border-border/60">
                       <CardTitle className="text-sm font-bold flex items-center gap-2">
                         <KeyRound className="size-4 text-primary" />
                         Alteração de Senha
@@ -1215,7 +1448,7 @@ export default function DashboardPage() {
                         Defina uma senha forte para proteção do seu painel.
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-4">
+                    <CardContent className="pt-2">
                       <form id="form-password" onSubmit={handleChangePassword} className="space-y-4">
                         {passMsg && (
                           <div className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
@@ -1349,11 +1582,11 @@ export default function DashboardPage() {
           onNavigateTab={(tab) => setActiveTab(tab)}
           onSearchProcesso={(num) => {
             setInjectedQuery({ processo: num });
-            setActiveTab("consultas");
+            setActiveTab("consultas-processo");
           }}
           onSearchMarca={(termo) => {
             setInjectedQuery({ query: termo });
-            setActiveTab("consultas");
+            setActiveTab("consultas-nome");
           }}
         />
 
