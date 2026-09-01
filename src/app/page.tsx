@@ -170,7 +170,8 @@ export default function LandingPage() {
         <div className="flex w-full max-w-4xl flex-col items-center mx-auto">
           <div className="mb-4 sm:mb-5 inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-semibold text-primary tracking-wide backdrop-blur-md">
             <Handshake className="size-3.5" />
-            <span>Parceria Jurídica B2B & Backend de Marcas</span>
+            <span className="sm:hidden">Parceria Jurídica B2B</span>
+            <span className="hidden sm:inline">Parceria Jurídica B2B & Backend de Registro de Marcas</span>
           </div>
 
           <h1 className="mb-3 sm:mb-4 text-[22px] xs:text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.2] sm:leading-[1.15] max-w-3xl mx-auto">
