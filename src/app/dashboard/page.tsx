@@ -1443,7 +1443,7 @@ export default function DashboardPage() {
                     {/* Fase 9: 2ª Instância */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Recurso Administrativo Indeferimento</span>
+                      <span>Recurso Administrativo</span>
                     </div>
                   </div>
                 </div>
