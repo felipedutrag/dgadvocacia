@@ -549,7 +549,7 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          <div className="p-6 sm:p-8 rounded-2xl border border-border/80 bg-card/70 backdrop-blur-xl space-y-4">
+          <div className="p-6 sm:p-8 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/40">
               <span className="text-xs font-bold text-foreground">Fluxo de Protocolo & Radar</span>
               <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-md font-bold">
@@ -570,6 +570,13 @@ export default function LandingPage() {
                   <span className="text-amber-500 font-mono text-[10px]">Em Elaboração</span>
                 </div>
                 <div className="text-muted-foreground text-[11px]">Petição técnica de oposição na Classe 35</div>
+              </div>
+              <div className="p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
+                <div className="font-bold text-foreground flex items-center justify-between">
+                  <span>Parecer Técnico: Concessão Decenal</span>
+                  <span className="text-primary font-mono text-[10px]">Certificado Emitido</span>
+                </div>
+                <div className="text-muted-foreground text-[11px]">Vigência de 10 anos deferida • Dr. Felipe Dutra (OAB/SP)</div>
               </div>
             </div>
             <div className="pt-2">
