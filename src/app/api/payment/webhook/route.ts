@@ -243,22 +243,28 @@ export async function POST(request: Request) {
           console.error("[WEBHOOK] Falha ao disparar e-mail de pagamento:", mailErr);
         }
       }
-    } else if (status === "FAILED" || status === "CANCELED") {
-      let query = supabase.from("payments").update({
-        status: status,
+    // Emitir broadcast em tempo real para qualquer dashboard aberta
+    try {
+      const channel = supabase.channel("global-dashboard-events");
+      await channel.send({
+        type: "broadcast",
+        event: "webhook_received",
+        payload: {
+          externalId,
+          transactionId,
+          status,
+          amount: payload.amount || 47,
+          payerName: payload.payer?.name || "Cliente / Teste Webhook",
+          planName: packName,
+          test: isTestWebhook,
+        },
       });
-
-      if (externalId) {
-        query = query.eq("external_id", externalId);
-      } else if (transactionId) {
-        query = query.eq("ggpix_transaction_id", String(transactionId));
-      }
-
-      await query;
-      console.log(`Pagamento ${externalId || transactionId} marcado como ${status}. Motivo:`, payload.failureReason);
+      supabase.removeChannel(channel);
+    } catch (bErr) {
+      console.warn("Aviso ao emitir broadcast Realtime:", bErr);
     }
 
-    return NextResponse.json({ received: true }, { status: 200 });
+    return NextResponse.json({ received: true, broadcasted: true }, { status: 200 });
   } catch (err: any) {
     console.error("Webhook processing error:", err);
     return NextResponse.json({ error: err?.message || "Internal error" }, { status: 500 });

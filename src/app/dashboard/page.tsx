@@ -309,13 +309,34 @@ export default function DashboardPage() {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Realtime Pix Payment, Webhook & Profile Listener
+  // Realtime Pix Payment, Webhook Broadcast & Profile Listener
   useEffect(() => {
     if (!profile?.id) return;
 
-    // Escuta específica do usuário ou broadcast geral de pagamentos/webhooks
     const channel = supabase
-      .channel(`user-sync-${profile.id}`)
+      .channel("global-dashboard-events")
+      .on(
+        "broadcast",
+        { event: "webhook_received" },
+        (eventPayload: any) => {
+          const p = eventPayload.payload || {};
+          setPixSuccess(true);
+          setPixLoading(false);
+          setPaymentToast({
+            show: true,
+            title: "🔔 Webhook Recebido com Sucesso!",
+            message: `Transação: ${p.externalId || p.transactionId || "Pix"} • ${p.payerName || "Cliente"} (R$ ${(p.amount || 47).toFixed(2)})`,
+            planName: p.planName || "Webhook / Pagamento Confirmado",
+            time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+          });
+          try {
+            const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+            audio.volume = 0.5;
+            audio.play().catch(() => {});
+          } catch {}
+          fetchProfile();
+        }
+      )
       .on(
         "postgres_changes",
         {
@@ -325,10 +346,7 @@ export default function DashboardPage() {
         },
         (payload: any) => {
           const status = String(payload.new?.status || "").toUpperCase();
-          const targetUserId = payload.new?.user_id;
-          
-          // Dispara se for para o usuário atual ou se for webhook de teste / admin
-          if (targetUserId === profile.id || profile.is_admin || !targetUserId) {
+          if (status === "PAID" || status === "COMPLETE" || status === "COMPLETED") {
             setPixSuccess(true);
             setPixLoading(false);
             const payer = payload.new?.payer_name || "Cliente / Teste";
@@ -342,7 +360,6 @@ export default function DashboardPage() {
               time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
             });
 
-            // Tocar som suave de notificação se disponível
             try {
               const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
               audio.volume = 0.5;
@@ -359,10 +376,18 @@ export default function DashboardPage() {
           event: "UPDATE",
           schema: "public",
           table: "profiles",
-          filter: `id=eq.${profile.id}`,
         },
-        () => {
-          fetchProfile();
+        (payload: any) => {
+          if (payload.new?.id === profile.id) {
+            setPaymentToast({
+              show: true,
+              title: "🔔 Plano / Perfil Atualizado via Webhook!",
+              message: `Plano ativo: ${payload.new?.plan || "Radar RPI"} (${payload.new?.marcas_limit || 3} marcas)`,
+              planName: payload.new?.plan || "Assinatura Ativa",
+              time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+            });
+            fetchProfile();
+          }
         }
       )
       .subscribe();
