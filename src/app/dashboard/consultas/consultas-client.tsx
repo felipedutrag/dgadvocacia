@@ -122,11 +122,17 @@ export function ConsultasClient({
           if (data.nomeMarca) setNomeMarca(data.nomeMarca);
           if (data.classeNice) setClasseNice(data.classeNice);
           if (data.resultsList) setResultsList(data.resultsList);
-          if (data.aiReport) setAiReport(data.aiReport);
+          if (data.aiReport) {
+            setAiReport(data.aiReport);
+            setEvaluatedMarca(data.evaluatedMarca || data.nomeMarca || "");
+            setEvaluatedClasse(data.evaluatedClasse || data.classeNice || "");
+          }
           setResultsActiveType("marca");
         } else {
           setResultsList([]);
           setAiReport(null);
+          setEvaluatedMarca("");
+          setEvaluatedClasse("");
         }
       } else if (tab === "processo") {
         const cached = localStorage.getItem("dg_cache_search_processo_v1");
@@ -217,6 +223,8 @@ export function ConsultasClient({
 
   // AI Diagnostic State & Modal PDF
   const [aiReport, setAiReport] = useState<AiViabilityReport | null>(null);
+  const [evaluatedMarca, setEvaluatedMarca] = useState<string>("");
+  const [evaluatedClasse, setEvaluatedClasse] = useState<string>("");
   const [loadingAi, setLoadingAi] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
 
@@ -364,11 +372,15 @@ export function ConsultasClient({
         const data = await res.json();
         if (data.analysis) {
           setAiReport(data.analysis);
+          setEvaluatedMarca(marcaStr);
+          setEvaluatedClasse(classeStr);
           // Atualiza cache de marca com o laudo de IA
           try {
             localStorage.setItem("dg_cache_search_marca_v1", JSON.stringify({
               nomeMarca: marcaStr,
               classeNice: classeStr,
+              evaluatedMarca: marcaStr,
+              evaluatedClasse: classeStr,
               resultsList: procs,
               aiReport: data.analysis,
             }));
@@ -840,15 +852,38 @@ export function ConsultasClient({
           {/* Top Bar with Score */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-5">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-primary/10 border border-primary/20 text-primary mb-2">
-                <Sparkles className="size-3.5" />
-                Diagnóstico de Viabilidade MarcaShield AI
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-primary/10 border border-primary/20 text-primary">
+                  Diagnóstico de Viabilidade MarcaShield AI
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAiReport(null);
+                    setEvaluatedMarca("");
+                    setEvaluatedClasse("");
+                    try {
+                      const cached = localStorage.getItem("dg_cache_search_marca_v1");
+                      if (cached) {
+                        const data = JSON.parse(cached);
+                        data.aiReport = null;
+                        data.evaluatedMarca = "";
+                        data.evaluatedClasse = "";
+                        localStorage.setItem("dg_cache_search_marca_v1", JSON.stringify(data));
+                      }
+                    } catch {}
+                  }}
+                  className="size-6 inline-flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                  title="Fechar Diagnóstico"
+                >
+                  <X className="size-3.5" />
+                </button>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
                 {aiReport.titulo}
               </h2>
               <p className="text-xs text-muted-foreground mt-1">
-                Marca avaliada: <strong className="text-foreground">{nomeMarca.toUpperCase()}</strong> {classeNice ? `(Classe NCL ${classeNice})` : ""}
+                Marca avaliada: <strong className="text-foreground">{(evaluatedMarca || nomeMarca).toUpperCase()}</strong> {(evaluatedClasse || classeNice) ? `(Classe NCL ${evaluatedClasse || classeNice})` : ""}
               </p>
             </div>
 
@@ -1219,21 +1254,7 @@ export function ConsultasClient({
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50 text-xs">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setNumeroProcesso(proc.numero);
-                      handleSearchProcesso(null as any, proc.numero);
-                    }}
-                    disabled={loadingDetail}
-                    className="text-xs font-semibold h-7 px-2.5 text-primary hover:text-primary hover:bg-primary/10 gap-1"
-                  >
-                    <span>Raio-X Completo</span>
-                    <ChevronRight className="size-3.5" />
-                  </Button>
-
+                <div className="flex items-center justify-end mt-4 pt-3 border-t border-border/50 text-xs">
                   <Button
                     variant="outline"
                     size="sm"
@@ -1245,7 +1266,7 @@ export function ConsultasClient({
                       classe: proc.classeInter || undefined
                     })}
                     disabled={trackingLoading === proc.numero}
-                    className="text-xs font-semibold h-7 px-2.5 border-border/70 hover:bg-primary hover:text-primary-foreground gap-1"
+                    className="text-xs font-semibold h-7 px-3 border-border/70 hover:bg-primary hover:text-primary-foreground gap-1.5"
                   >
                     {trackingLoading === proc.numero ? (
                       <Loader2 className="size-3 animate-spin" />
