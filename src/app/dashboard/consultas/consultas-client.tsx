@@ -113,8 +113,13 @@ export function ConsultasClient({
   const [resultsActiveType, setResultsActiveType] = useState<"marca" | "processo" | "figura" | "meus_pedidos" | null>(null);
 
   React.useEffect(() => {
-    if (initialSubTab) {
+    if (initialSubTab && initialSubTab !== activeSubTab) {
       setActiveSubTab(initialSubTab);
+      setResultsList([]);
+      setSelectedProcesso(null);
+      setErrorMsg(null);
+      setSuccessMsg(null);
+      setAiReport(null);
     }
   }, [initialSubTab]);
 
@@ -497,72 +502,77 @@ export function ConsultasClient({
         </div>
       )}
 
-      {/* ── Histórico de Pesquisas Salvas ── */}
-      {savedSearches.length > 0 && (
+      {/* ── Histórico de Pesquisas Salvas da Modalidade Ativa ── */}
+      {savedSearches.filter(s => s.tipo === (activeSubTab === "processo" ? "processo" : activeSubTab === "figura" ? "figura" : "marca")).length > 0 && (
         <div className="p-3 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Clock className="size-3.5 text-primary" />
               <span className="text-xs font-bold text-foreground">
-                Pesquisas Recentes Salvas ({savedSearches.length})
+                Pesquisas Recentes ({savedSearches.filter(s => s.tipo === (activeSubTab === "processo" ? "processo" : activeSubTab === "figura" ? "figura" : "marca")).length})
               </span>
             </div>
             <button
               type="button"
               onClick={() => {
-                setSavedSearches([]);
-                localStorage.removeItem("dg_saved_searches_v1");
+                setSavedSearches(prev => prev.filter(s => s.tipo !== (activeSubTab === "processo" ? "processo" : activeSubTab === "figura" ? "figura" : "marca")));
+                try {
+                  const remaining = savedSearches.filter(s => s.tipo !== (activeSubTab === "processo" ? "processo" : activeSubTab === "figura" ? "figura" : "marca"));
+                  localStorage.setItem("dg_saved_searches_v1", JSON.stringify(remaining));
+                } catch {}
               }}
               className="text-[10px] text-muted-foreground hover:text-destructive font-mono transition-colors"
             >
-              Limpar Histórico
+              Limpar
             </button>
           </div>
 
           <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
-            {savedSearches.map((s) => (
-              <div
-                key={s.id}
-                onClick={() => {
-                  if (s.tipo === "processo") {
-                    setNumeroProcesso(s.termo);
-                    setActiveSubTab("processo");
-                    handleSearchProcesso(null as any, s.termo);
-                  } else if (s.tipo === "figura") {
-                    setVienaCodigo(s.termo);
-                    if (s.classe) setVienaClasse(s.classe);
-                    setActiveSubTab("figura");
-                    handleSearchFigura(null as any, s.termo, s.classe);
-                  } else {
-                    setNomeMarca(s.termo);
-                    if (s.classe) setClasseNice(s.classe);
-                    setActiveSubTab("marca");
-                    handleSearchMarca(null as any, s.termo, s.classe);
-                  }
-                }}
-                className="group inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/70 bg-muted/30 hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all text-xs cursor-pointer shadow-xs"
-              >
-                <span className="font-bold text-foreground group-hover:text-primary">
-                  {s.termo}
-                </span>
-                {s.classe && (
-                  <span className="text-[10px] font-mono text-muted-foreground bg-background/80 px-1 py-0.2 rounded border border-border/50">
-                    NCL {s.classe}
-                  </span>
-                )}
-                <span className="text-[9px] font-mono text-muted-foreground">
-                  {s.dataHora}
-                </span>
-                <button
-                  type="button"
-                  onClick={(e) => removeSearchHistoryItem(s.id, e)}
-                  className="size-4 inline-flex items-center justify-center rounded text-muted-foreground hover:text-destructive transition-colors ml-0.5"
-                  title="Remover do histórico"
+            {savedSearches
+              .filter(s => s.tipo === (activeSubTab === "processo" ? "processo" : activeSubTab === "figura" ? "figura" : "marca"))
+              .map((s) => (
+                <div
+                  key={s.id}
+                  onClick={() => {
+                    if (s.tipo === "processo") {
+                      setNumeroProcesso(s.termo);
+                      setActiveSubTab("processo");
+                      handleSearchProcesso(null as any, s.termo);
+                    } else if (s.tipo === "figura") {
+                      setVienaCodigo(s.termo);
+                      if (s.classe) setVienaClasse(s.classe);
+                      setActiveSubTab("figura");
+                      handleSearchFigura(null as any, s.termo, s.classe);
+                    } else {
+                      setNomeMarca(s.termo);
+                      if (s.classe) setClasseNice(s.classe);
+                      setActiveSubTab("marca");
+                      handleSearchMarca(null as any, s.termo, s.classe);
+                    }
+                  }}
+                  className="group inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border/70 bg-muted/30 hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all text-xs cursor-pointer shadow-xs"
                 >
-                  <X className="size-2.5" />
-                </button>
-              </div>
-            ))}
+                  <span className="font-bold text-foreground group-hover:text-primary">
+                    {s.termo}
+                  </span>
+                  {s.classe && (
+                    <span className="text-[10px] font-mono text-muted-foreground bg-background/80 px-1 py-0.2 rounded border border-border/50">
+                      NCL {s.classe}
+                    </span>
+                  )}
+                  <span className="text-[9px] font-mono text-muted-foreground">
+                    {s.dataHora}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => removeSearchHistoryItem(s.id, e)}
+                    className="size-4 inline-flex items-center justify-center rounded text-muted-foreground hover:text-destructive transition-colors ml-0.5"
+                    title="Remover do histórico"
+                  >
+                    <X className="size-2.5" />
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       )}
