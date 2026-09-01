@@ -44,14 +44,14 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
       .eq("id", user.id)
       .maybeSingle();
 
-    const userMeta = user.user_metadata || {};
+    // A tabela PROFILES é a única e soberana fonte da verdade
+    const isAdmin = Boolean(profile?.is_admin);
+    const plan = (profile?.plan || "").toLowerCase();
+    const planStatus = (profile?.plan_status || "").toLowerCase();
 
-    // Usuário admin ou com plano ativo tem acesso irrestrito
-    const isAdmin = Boolean(profile?.is_admin || userMeta.is_admin);
     const isPaid = Boolean(
       isAdmin ||
-      (profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active") ||
-      userMeta.plan_status === "active"
+      (plan && plan !== "free" && !plan.includes("gratuito") && planStatus === "active")
     );
 
     if (isPaid || isAdmin) {
@@ -63,11 +63,9 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
       };
     }
 
-    // Usuário gratuito: limite de 1 uso persistido na tabela profiles e user_metadata
+    // Usuário gratuito: limite de 1 uso lendo direto da tabela profiles
     const usageKey = `usage_${feature}` as keyof typeof profile;
-    const profileUsage = profile ? Number(profile[usageKey] || 0) : 0;
-    const metaUsage = Number(userMeta[`usage_${feature}`] || 0);
-    const usedCount = Math.max(profileUsage, metaUsage);
+    const usedCount = profile ? Number(profile[usageKey] || 0) : 0;
 
     if (usedCount >= 1) {
       return {
@@ -111,18 +109,6 @@ export async function incrementFeatureQuota(feature: QuotaFeature, userId?: stri
       .from("profiles")
       .update({ [usageKey]: newUsage })
       .eq("id", userId);
-
-    // 2. Atualiza no user_metadata para dupla garantia
-    const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
-    if (user) {
-      const userMeta = user.user_metadata || {};
-      await supabaseAdmin.auth.admin.updateUserById(userId, {
-        user_metadata: {
-          ...userMeta,
-          [usageKey]: newUsage
-        }
-      });
-    }
   } catch (e) {
     console.warn(`[QUOTA] Falha ao incrementar ${feature} para ${userId}:`, e);
   }
