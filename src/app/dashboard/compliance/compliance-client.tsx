@@ -2,14 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import {
+  ShieldCheck,
   FileCheck2,
-  Check,
+  Lock,
+  UserCheck,
+  AlertTriangle,
+  FileText,
   Send,
   Loader2,
   CheckCircle2,
   X,
   Phone,
-  Building
+  Building,
+  Check,
+  Sparkles
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +29,7 @@ export function ComplianceClient() {
   // Form State
   const [empresa, setEmpresa] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [servico, setServico] = useState("Adequação LGPD Completa & Implementação");
+  const [servico, setServico] = useState("Adequação LGPD Completa & Inventário (ROPA)");
   const [descricao, setDescricao] = useState("");
 
   // Logged User Info
@@ -64,7 +70,7 @@ export function ComplianceClient() {
     setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleOpenModal = (servicoName?: string) => {
+  const handleOpenModalWithService = (servicoName?: string) => {
     if (servicoName) {
       setServico(servicoName);
     }
@@ -116,56 +122,245 @@ export function ComplianceClient() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* ── CHECKLIST DE ADEQUAÇÃO REGULATÓRIA ── */}
-      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-6">
+      {/* ── GRID DE SERVIÇOS DE COMPLIANCE & LGPD ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        {/* 1. Adequação LGPD Completa */}
+        <Card
+          onClick={() => handleOpenModalWithService("Adequação LGPD Completa & Inventário (ROPA)")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <ShieldCheck className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                Adequação LGPD & Inventário (ROPA)
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Mapeamento minucioso dos fluxos de dados pessoais (Data Mapping), enquadramento nas bases legais do Art. 7º da Lei 13.709/2018 e Relatório de Impacto à Proteção de Dados (RIPD).
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">Lei 13.709/18 • ANPD</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+
+        {/* 2. DPO as a Service */}
+        <Card
+          onClick={() => handleOpenModalWithService("DPO as a Service (Encarregado de Dados Nomeado)")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <UserCheck className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                DPO as a Service (Encarregado de Dados)
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Nomeação de Encarregado de Proteção de Dados externo habilitado perante a ANPD e canal direto de atendimento às requisições de titulares (Art. 41).
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">Encarregado • Art. 41</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+
+        {/* 3. Políticas de Privacidade & Termos de Uso */}
+        <Card
+          onClick={() => handleOpenModalWithService("Políticas de Privacidade & Termos de Uso")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <FileText className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                Políticas de Privacidade & Termos SaaS
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Redação e blindagem de Políticas de Privacidade, avisos de cookies granulares e Termos de Uso para plataformas web, e-commerces e aplicativos móveis.
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">Termos & Cookies</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+
+        {/* 4. Aditivos Contratuais & DPA para Terceiros */}
+        <Card
+          onClick={() => handleOpenModalWithService("Aditivos de Proteção de Dados (DPA) com Operadores")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <Lock className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                Aditivos DPA & Contratos com Operadores
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Elaboração de Data Processing Agreements (DPA), cláusulas de sigilo e aditivos contratuais de conformidade com fornecedores, agências e operadores terceirizados.
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">Segurança Jurídica B2B</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+
+        {/* 5. Auditoria & Gestão de Incidentes ANPD */}
+        <Card
+          onClick={() => handleOpenModalWithService("Auditoria de Risco Regulatório & Gestão de Incidentes")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <AlertTriangle className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                Auditoria de Risco & Incidentes ANPD
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Plano de resposta a vazamentos de dados, protocolos de comunicação obrigatória à Autoridade Nacional de Proteção de Dados (ANPD) e defesas em sanções administrativas.
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">Gestão de Crise & Defesa</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+
+        {/* 6. Governança e Compliance de IA */}
+        <Card
+          onClick={() => handleOpenModalWithService("Governança & Compliance de Inteligência Artificial")}
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <Sparkles className="size-4" />
+              </div>
+              <h3 className="text-xs font-bold text-foreground leading-tight">
+                Governança & Compliance para IA
+              </h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Avaliação de impacto algorítmico, conformidade regulatória para integração de LLMs e mitigação de responsabilidade civil no uso empresarial de Inteligência Artificial.
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+            <span className="text-[10px] font-mono text-muted-foreground">AI Act • Ética Algorítmica</span>
+            <Button
+              type="button"
+              size="sm"
+              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
+            >
+              Solicitar
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      {/* ── CHECKLIST INTERATIVO DE CONFORMIDADE (LGPD & ANPD) ── */}
+      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5 sm:p-6 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-4">
           <div>
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <FileCheck2 className="size-4 text-primary" />
-              <span>Checklist de Conformidade Contínua (LGPD & ANPD)</span>
+              <span>Diagnóstico de Maturidade Regulatória (Checklist Contínuo)</span>
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Acompanhe o nível de maturidade dos processos de governança de dados da sua empresa.
+              Monitore os 6 pilares fundamentais exigidos em fiscalizações da Autoridade Nacional de Proteção de Dados (ANPD).
             </p>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-[11px] font-mono font-bold text-muted-foreground">Progresso:</span>
+            <span className="text-[11px] font-mono font-bold text-muted-foreground">Conformidade:</span>
             <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border ${
               progressPercent >= 70 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-amber-500/10 text-amber-500 border-amber-500/20"
             }`}>
-              {totalCompleted} de 6 Concluídos ({progressPercent}%)
+              {totalCompleted} de 6 Requisitos ({progressPercent}%)
             </span>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[
-            { id: "item_1", title: "Mapeamento do Inventário de Dados Pessoais (Data Mapping / ROPA)", desc: "Identificação de todos os fluxos de entrada, armazenamento e descarte de dados nos termos do Art. 37 da LGPD." },
-            { id: "item_2", title: "Aviso de Privacidade e Termos de Consentimento Granular", desc: "Cláusulas claras e transparentes de acordo com o Art. 9º da LGPD em todos os formulários e pontos de contato." },
-            { id: "item_3", title: "Canal Formal de Atendimento aos Titulares de Dados (DSR Portal)", desc: "Procedimento operacional e canal público para responder solicitações de titulares em até 15 dias corridos (Art. 18)." },
-            { id: "item_4", title: "Aditivo de Proteção de Dados (DPA) com Fornecedores e Operadores", desc: "Cláusulas de responsabilidade solidária e obrigações estritas de segurança para prestadores de serviços e SaaS." },
-            { id: "item_5", title: "Plano de Resposta a Incidentes de Segurança e Vazamentos", desc: "Protocolo formal de contenção e comunicação tempestiva à ANPD e aos titulares afetados em caso de incidente." },
-            { id: "item_6", title: "Controle de Acesso Lógico e Criptografia em Bancos de Dados", desc: "Autenticação em dois fatores (2FA), política de senhas fortes e isolamento de privilégios administrativos." },
+            { id: "item_1", title: "Mapeamento do Inventário de Dados (ROPA)", desc: "Identificação de todos os fluxos de entrada, armazenamento e descarte de dados nos termos do Art. 37 da LGPD." },
+            { id: "item_2", title: "Aviso de Privacidade e Termos de Consentimento", desc: "Cláusulas claras e transparentes de acordo com o Art. 9º da LGPD em todos os formulários e pontos de contato." },
+            { id: "item_3", title: "Canal Formal de Atendimento aos Titulares (DSR)", desc: "Procedimento operacional e canal para responder solicitações de titulares em até 15 dias corridos (Art. 18)." },
+            { id: "item_4", title: "Aditivo de Proteção de Dados (DPA) com Terceiros", desc: "Cláusulas de responsabilidade solidária e obrigações estritas de segurança para operadores e plataformas SaaS." },
+            { id: "item_5", title: "Plano de Resposta a Incidentes & Vazamentos", desc: "Protocolo formal de contenção e comunicação tempestiva à ANPD e aos titulares afetados em caso de incidente." },
+            { id: "item_6", title: "Controle de Acesso Lógico & Criptografia", desc: "Autenticação em dois fatores (2FA), política de senhas fortes e isolamento de privilégios administrativos." },
           ].map((item) => (
             <div
               key={item.id}
               onClick={() => toggleCheck(item.id)}
-              className={`p-4 rounded-xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+              className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
                 checkedItems[item.id]
                   ? "bg-primary/5 border-primary/30"
-                  : "bg-muted/20 border-border/60 hover:border-border"
+                  : "bg-background/40 border-border/60 hover:border-border"
               }`}
             >
-              <div className={`size-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+              <div className={`size-4.5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
                 checkedItems[item.id] ? "bg-primary border-primary text-primary-foreground" : "border-border bg-card"
               }`}>
-                {checkedItems[item.id] && <Check className="size-3.5" />}
+                {checkedItems[item.id] && <Check className="size-3" />}
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 min-w-0">
                 <h4 className={`text-xs font-bold ${checkedItems[item.id] ? "text-foreground" : "text-muted-foreground"}`}>
                   {item.title}
                 </h4>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -178,18 +373,18 @@ export function ComplianceClient() {
       <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1">
-            <h4 className="text-xs font-bold text-foreground">Deseja uma Adequação LGPD Completa & Implementação?</h4>
-            <p className="text-[11px] text-muted-foreground">
-              Nossos advogados especialistas em Direito Digital, Compliance e DPOs certificados elaboram o inventário formal (ROPA), aditivos contratuais e políticas personalizadas para sua empresa.
+            <h4 className="text-xs font-bold text-foreground">Precisa de Adequação LGPD Completa ou DPO Dedicado?</h4>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Nossa equipe de advogados especialistas em Direito Digital e Compliance elabora o inventário formal (ROPA), aditivos contratuais e defesas perante a ANPD para sua empresa.
             </p>
           </div>
           <Button
             type="button"
-            onClick={() => handleOpenModal()}
-            className="inline-flex items-center gap-2 text-xs font-medium px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm shrink-0 h-10"
+            onClick={() => handleOpenModalWithService("Adequação LGPD Completa & Inventário (ROPA)")}
+            className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm shrink-0 h-10 cursor-pointer"
           >
             <Send className="size-3.5" />
-            <span>Solicitar Adequação LGPD</span>
+            <span>Falar com Especialista</span>
           </Button>
         </div>
       </Card>
@@ -201,7 +396,7 @@ export function ComplianceClient() {
             {/* Fechar */}
             <button
               onClick={() => setModalOpen(false)}
-              className="absolute right-4 top-4 text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-muted transition-colors"
+              className="absolute right-4 top-4 text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
             >
               <X className="size-4" />
             </button>
@@ -215,10 +410,10 @@ export function ComplianceClient() {
                     </span>
                   </div>
                   <h3 className="text-base font-bold text-foreground">
-                    Solicitar Adequação LGPD
+                    Solicitar Assessoria Regulatória
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    Informe os dados abaixo para direcionarmos ao sócio especialista em Direito Digital.
+                    Informe os dados abaixo para direcionarmos ao sócio especialista em Direito Digital e Privacidade.
                   </p>
                 </div>
 
@@ -268,11 +463,11 @@ export function ComplianceClient() {
                       className="w-full h-9 rounded-md border border-input bg-background/80 px-3 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                     >
                       <option value="Adequação LGPD Completa & Inventário (ROPA)">Adequação LGPD Completa & Inventário (ROPA)</option>
-                      <option value="DPO as a Service (Encarregado de Dados)">DPO as a Service (Encarregado de Dados)</option>
-                      <option value="Auditoria de Risco Regulatório & ANPD">Auditoria de Risco Regulatório & ANPD</option>
-                      <option value="Revisão de Políticas de Privacidade e Cookies">Revisão de Políticas de Privacidade e Cookies</option>
-                      <option value="Aditivo de Proteção de Dados (DPA) com Terceiros">Aditivo de Proteção de Dados (DPA) com Terceiros</option>
-                      <option value="Gestão de Incidentes & Resposta a Vazamentos">Gestão de Incidentes & Resposta a Vazamentos</option>
+                      <option value="DPO as a Service (Encarregado de Dados Nomeado)">DPO as a Service (Encarregado de Dados Nomeado)</option>
+                      <option value="Políticas de Privacidade & Termos SaaS">Políticas de Privacidade & Termos SaaS</option>
+                      <option value="Aditivos de Proteção de Dados (DPA) com Operadores">Aditivos de Proteção de Dados (DPA) com Operadores</option>
+                      <option value="Auditoria de Risco & Incidentes ANPD">Auditoria de Risco & Incidentes ANPD</option>
+                      <option value="Governança & Compliance para IA">Governança & Compliance para IA</option>
                       <option value="Outro / Compliance Digital">Outro / Compliance Digital</option>
                     </select>
                   </div>
@@ -309,7 +504,7 @@ export function ComplianceClient() {
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="text-xs font-bold h-9 px-5 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+                      className="text-xs font-bold h-9 px-5 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
                     >
                       {submitting ? (
                         <>
@@ -337,7 +532,7 @@ export function ComplianceClient() {
                     Solicitação Enviada com Sucesso!
                   </h3>
                   <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
-                    Nossa equipe já recebeu os dados da sua empresa <strong>{empresa}</strong> sobre <strong>{servico}</strong> e nosso especialista em LGPD entrará em contato em breve pelo WhatsApp.
+                    Nossa equipe já recebeu os dados da sua empresa <strong>{empresa}</strong> sobre <strong>{servico}</strong> e nosso especialista entrará em contato em breve pelo WhatsApp.
                   </p>
                 </div>
 
