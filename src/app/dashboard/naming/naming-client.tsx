@@ -921,42 +921,14 @@ Gerado pelo MarcaShield Naming AI.`;
                           </p>
                         </div>
 
-                        {/* Análise Jurídica LPI & Paleta Recomendada */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                          {/* Análise Jurídica LPI */}
-                          <div className="p-3 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 space-y-1">
-                            <span className="text-[10px] font-mono text-emerald-500 uppercase font-bold flex items-center gap-1">
-                              <Scale className="size-3" /> Parecer LPI (Art. 124):
-                            </span>
-                            <p className="text-[11px] text-muted-foreground leading-snug">
-                              {sug.analiseJuridicaLPI || "Nome com forte distintividade intrínseca e baixo risco de indeferimento."}
-                            </p>
-                          </div>
-
-                          {/* Paleta & Símbolo Recomendados */}
-                          <div className="p-3 rounded-xl bg-background/40 border border-border/40 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-mono text-muted-foreground uppercase font-bold flex items-center gap-1">
-                                <Palette className="size-3 text-amber-500" /> Paleta Sugerida:
-                              </span>
-                              <span className="text-[10px] font-medium text-foreground/80">
-                                {sug.paletaRecomendada?.nome || "Dark Luxury"}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {sug.paletaRecomendada?.cores?.map((hex, cIdx) => (
-                                <div
-                                  key={cIdx}
-                                  className="size-5 rounded-full border border-white/20 shadow-sm flex items-center justify-center text-[8px] font-mono font-bold"
-                                  style={{ backgroundColor: hex }}
-                                  title={hex}
-                                />
-                              ))}
-                              <span className="text-[10px] text-muted-foreground font-mono truncate pl-1">
-                                {sug.simboloSugerido || "Escudo de autoridade geométrica"}
-                              </span>
-                            </div>
-                          </div>
+                        {/* Análise Jurídica LPI */}
+                        <div className="p-3 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 space-y-1">
+                          <span className="text-[10px] font-mono text-emerald-500 uppercase font-bold flex items-center gap-1">
+                            <Scale className="size-3" /> Parecer LPI (Art. 124):
+                          </span>
+                          <p className="text-[11px] text-muted-foreground leading-snug">
+                            {sug.analiseJuridicaLPI || "Nome com forte distintividade intrínseca e baixo risco de indeferimento."}
+                          </p>
                         </div>
 
                         {/* Sugestões de Domínios Oficiais */}
