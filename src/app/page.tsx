@@ -411,41 +411,7 @@ export default function LandingPage() {
               {/* 4 Mapeamentos Jurídicos */}
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
-                {/* 1. Oposição Sofrida */}
-                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">
-                      Oposição Sofrida
-                    </span>
-                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Art. 158 LPI</span>
-                  </div>
-                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
-                    <ArrowRight className="size-3.5 text-primary shrink-0" />
-                    <span>Manifestação Técnica Especializada</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Elaboração de peça fundamentada comprovando distintividade, anterioridade ou coexistência para reverter o ataque do concorrente.
-                  </p>
-                </div>
-
-                {/* 2. Marca Colidente Publicada */}
-                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
-                      Marca Colidente Publicada
-                    </span>
-                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Vigilância Ativa</span>
-                  </div>
-                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
-                    <ArrowRight className="size-3.5 text-primary shrink-0" />
-                    <span>Oposição Ativa no INPI</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Protocolo tempestivo de oposição para impugnar marcas parecidas e barrar a concessão indevida a terceiros.
-                  </p>
-                </div>
-
-                {/* 3. Despacho Formal */}
+                {/* 1. Top-Left: Despacho Formal */}
                 <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[11px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
@@ -462,7 +428,24 @@ export default function LandingPage() {
                   </p>
                 </div>
 
-                {/* 4. Indeferimento Publicado */}
+                {/* 2. Top-Right: Oposição Sofrida */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">
+                      Oposição Sofrida
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Art. 158 LPI</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Manifestação Técnica Especializada</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Elaboração de peça fundamentada comprovando distintividade, anterioridade ou coexistência para reverter o ataque do concorrente.
+                  </p>
+                </div>
+
+                {/* 3. Bottom-Left: Indeferimento Publicado */}
                 <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[11px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20">
@@ -476,6 +459,23 @@ export default function LandingPage() {
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     Recurso técnico administrativo perante a 2ª Instância do INPI com doutrina, jurisprudência e teses de distintividade.
+                  </p>
+                </div>
+
+                {/* 4. Bottom-Right: Marca Colidente Publicada */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                      Marca Colidente Publicada
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Vigilância Ativa</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Oposição Ativa no INPI</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Protocolo tempestivo de oposição para impugnar marcas parecidas e barrar a concessão indevida a terceiros.
                   </p>
                 </div>
 
