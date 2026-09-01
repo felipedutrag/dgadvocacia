@@ -340,8 +340,8 @@ export default function LandingPage() {
           </div>
 
           {/* ── PAINEL DE TELEMETRIA & GRÁFICOS ANALÍTICOS (SHADCN UI) ── */}
-          <div className="rounded-2xl border border-border/70 bg-card/60 p-6 sm:p-8 backdrop-blur-md space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
+          <div className="rounded-2xl border border-border/70 bg-card/60 p-4 sm:p-8 backdrop-blur-md space-y-4 sm:space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-3 sm:pb-4 border-b border-border/50">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -362,19 +362,19 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               
               {/* Gráfico 1: Curva de Monitoramento e Varredura Semanal (SVG Chart) */}
-              <div className="lg:col-span-7 space-y-4 rounded-xl border border-border/60 bg-background/50 p-5">
+              <div className="lg:col-span-7 space-y-3 sm:space-y-4 rounded-xl border border-border/60 bg-background/50 p-3.5 sm:p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-medium text-muted-foreground">Volume de Publicações Analisadas</span>
-                    <div className="text-2xl font-extrabold text-foreground tracking-tight">14.890 <span className="text-xs font-normal text-emerald-500 font-mono">+18.4%</span></div>
+                    <span className="text-[11px] sm:text-xs font-medium text-muted-foreground">Volume de Publicações Analisadas</span>
+                    <div className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">14.890 <span className="text-xs font-normal text-emerald-500 font-mono">+18.4%</span></div>
                   </div>
-                  <div className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                  <div className="flex items-center gap-1 text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
                     Últimas 6 RPIs
                   </div>
                 </div>
 
                 {/* SVG Line / Area Sparkline Chart com Animação de Desenho e Preenchimento */}
-                <div className="h-36 w-full relative pt-4 overflow-hidden rounded-lg">
+                <div className="h-28 sm:h-36 w-full relative pt-2 sm:pt-4 overflow-hidden rounded-lg">
                   <svg className="w-full h-full overflow-visible" viewBox="0 0 400 100" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
@@ -413,7 +413,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* Eixo X das RPIs */}
-                <div className="flex justify-between text-[10px] font-mono text-muted-foreground border-t border-border/40 pt-2">
+                <div className="flex justify-between text-[9px] sm:text-[10px] font-mono text-muted-foreground border-t border-border/40 pt-2">
                   <span>RPI 2820</span>
                   <span>RPI 2821</span>
                   <span>RPI 2822</span>
@@ -424,7 +424,7 @@ export default function LandingPage() {
               </div>
 
               {/* Gráfico 2: Barra de Status da Carteira & Saúde Jurídica */}
-              <div className="lg:col-span-5 space-y-4 rounded-xl border border-border/60 bg-background/50 p-5 flex flex-col justify-between">
+              <div className="lg:col-span-5 space-y-3 sm:space-y-4 rounded-xl border border-border/60 bg-background/50 p-3.5 sm:p-5 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between pb-2">
                     <span className="text-xs font-bold text-foreground">Score de Blindagem da Carteira</span>
@@ -552,29 +552,29 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          <div className="p-6 sm:p-8 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-border/40">
+          <div className="p-4 sm:p-8 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md space-y-3.5 sm:space-y-4">
+            <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-border/40">
               <span className="text-xs font-bold text-foreground">Fluxo de Protocolo & Radar</span>
               <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-md font-bold">
                 Acompanhamento Técnico
               </span>
             </div>
-            <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
+            <div className="space-y-2.5 sm:space-y-3">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
                 <div className="font-bold text-foreground flex items-center justify-between">
                   <span>Protocolo Nº 934812345</span>
                   <span className="text-emerald-500 font-mono text-[10px]">Ativo</span>
                 </div>
                 <div className="text-muted-foreground text-[11px]">Sincronização RPI automática &bull; Monitoramento 24/7</div>
               </div>
-              <div className="p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
                 <div className="font-bold text-foreground flex items-center justify-between">
                   <span>Peça Técnica: Oposição (Art. 158 LPI)</span>
                   <span className="text-amber-500 font-mono text-[10px]">Em Elaboração</span>
                 </div>
                 <div className="text-muted-foreground text-[11px]">Petição técnica de oposição na Classe 35</div>
               </div>
-              <div className="p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
                 <div className="font-bold text-foreground flex items-center justify-between">
                   <span>Parecer Técnico: Concessão Decenal</span>
                   <span className="text-primary font-mono text-[10px]">Certificado Emitido</span>
