@@ -518,17 +518,19 @@ export default function LandingPage() {
       {/* ── SEÇÃO 4: BACKEND JURÍDICO & DEFESAS ── */}
       <section id="servicos" className="relative z-10 flex w-full flex-col items-center px-4 py-20">
         <div className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div className="space-y-5">
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
-              <Scale className="size-3.5" />
-              Expertise Técnica
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
+                <Scale className="size-3.5" />
+                Expertise Técnica
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground leading-tight">
+                Propriedade Industrial
+              </h2>
+              <p className="text-sm text-muted-foreground font-normal leading-relaxed">
+                Atuação técnica nas diversas fases do trâmite administrativo marcário, com peças fundamentadas nas diretrizes de exame do INPI e na legislação marcária.
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground leading-tight">
-              Propriedade Industrial
-            </h2>
-            <p className="text-sm text-muted-foreground font-normal leading-relaxed">
-              Atuação técnica nas diversas fases do trâmite administrativo marcário, com peças fundamentadas nas diretrizes de exame do INPI e na legislação marcária.
-            </p>
             <ul className="space-y-3 pt-1 text-xs sm:text-sm text-foreground/90 font-normal">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
