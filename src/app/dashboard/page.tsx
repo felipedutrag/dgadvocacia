@@ -560,12 +560,12 @@ export default function DashboardPage() {
             onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === "plans"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                ? "bg-amber-500 text-black font-bold shadow-xs"
+                : "text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20"
             }`}
             title="Serviços & Planos"
           >
-            <Crown className="size-4 shrink-0" />
+            <Crown className="size-4 shrink-0 text-amber-500" />
             {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
           </button>
 
