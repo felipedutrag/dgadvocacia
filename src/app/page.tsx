@@ -843,7 +843,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-foreground">Dr. Felipe Dutra Gonçalves</div>
-                  <div className="text-[11px] font-mono text-primary font-medium">OAB/MG nº 45.925</div>
+                  <div className="text-[11px] font-mono text-primary font-medium">OAB/SP nº 45.925</div>
                 </div>
               </div>
             </div>

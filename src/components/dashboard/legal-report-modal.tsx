@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -102,7 +102,7 @@ export function LegalReportModal({
                 Parecer Técnico de Registrabilidade
               </h2>
               <p className="text-xs text-zinc-400 print:text-zinc-600">
-                Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925
+                Dr. Felipe Dutra Gonçalves — OAB/SP nº 45.925
               </p>
             </div>
 
@@ -200,7 +200,7 @@ export function LegalReportModal({
             </div>
             <div className="text-center">
               <div className="text-xs font-bold text-zinc-200 print:text-black">Dr. Felipe Dutra Gonçalves</div>
-              <div className="text-[10px] text-primary font-mono font-bold">OAB/MG nº 45.925</div>
+              <div className="text-[10px] text-primary font-mono font-bold">OAB/SP nº 45.925</div>
             </div>
           </div>
 

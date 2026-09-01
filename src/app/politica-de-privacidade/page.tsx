@@ -51,7 +51,7 @@ export default function PoliticaDePrivacidadePage() {
               Compromisso com a Privacidade, LGPD e Sigilo Institucional
             </h2>
             <p>
-              A <strong>DG Advocacia</strong> (acessível através do endereço <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>), sob responsabilidade técnica do <strong>Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925</strong>, preza pelo mais absoluto rigor no tratamento de dados pessoais e no sigilo das informações empresariais de seus parceiros comerciais e clientes.
+              A <strong>DG Advocacia</strong> (acessível através do endereço <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>), sob responsabilidade técnica do <strong>Dr. Felipe Dutra Gonçalves — OAB/SP nº 45.925</strong>, preza pelo mais absoluto rigor no tratamento de dados pessoais e no sigilo das informações empresariais de seus parceiros comerciais e clientes.
             </p>
             <p>
               Esta Política de Privacidade estabelece as diretrizes de coleta, custódia, processamento e proteção de dados durante o acesso ao painel do parceiro, uso das ferramentas de IA e contratação de serviços técnicos no INPI.

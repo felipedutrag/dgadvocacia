@@ -51,7 +51,7 @@ export default function TermosDeUsoPage() {
               Objeto e Natureza da Parceria B2B
             </h2>
             <p>
-              Estes Termos e Condições de Uso regulam o acesso, a utilização e a cooperação técnico-institucional fornecida pela <strong>DG Advocacia</strong> (patronada pelo <strong>Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925</strong>, disponível no endereço eletrônico <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>) para empresas parceiras, agências de branding, contabilidades e escritórios que gerenciam carteiras de registro de marcas perante o Instituto Nacional da Propriedade Industrial (INPI).
+              Estes Termos e Condições de Uso regulam o acesso, a utilização e a cooperação técnico-institucional fornecida pela <strong>DG Advocacia</strong> (patronada pelo <strong>Dr. Felipe Dutra Gonçalves — OAB/SP nº 45.925</strong>, disponível no endereço eletrônico <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>) para empresas parceiras, agências de branding, contabilidades e escritórios que gerenciam carteiras de registro de marcas perante o Instituto Nacional da Propriedade Industrial (INPI).
             </p>
             <p>
               A plataforma disponibiliza infraestrutura tecnológica de apoio e suporte jurídico especializado, compreendendo:

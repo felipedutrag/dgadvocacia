@@ -540,7 +540,7 @@ export default function AuthPage() {
               </div>
               <div>
                 <div className="text-xs font-bold text-foreground">DG Advocacia</div>
-                <div className="text-[11px] font-mono text-muted-foreground">Dr. Felipe Dutra Gonçalves • OAB/MG 45.925</div>
+                <div className="text-[11px] font-mono text-muted-foreground">Dr. Felipe Dutra Gonçalves • OAB/SP 45.925</div>
               </div>
             </div>
           </div>
