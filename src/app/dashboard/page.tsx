@@ -1276,32 +1276,32 @@ export default function DashboardPage() {
               {/* ── CALCULADORA DINÂMICA DE CARTEIRA (RADAR RPI) ── */}
               <div className="rounded-2xl border-2 border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl shadow-primary/5 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/60">
-                  <div className="space-y-1">
+                  <div className="space-y-1.5 max-w-3xl">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
-                        Assessoria Integral & Radar RPI
+                      <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
+                        Assessoria Jurídica Integral & Radar RPI
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-foreground">
-                      Proteção Total de Marcas INPI
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+                      Terceirize 100% da Gestão de Marcas da sua Empresa
                     </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
-                      Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número no menu{" "}
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Você só protocola o pedido no INPI e insere o número no menu{" "}
                       <button
                         type="button"
                         onClick={() => setActiveTab("marcas")}
-                        className="font-semibold text-primary hover:text-primary/80 transition-colors inline cursor-pointer"
+                        className="font-bold text-primary underline underline-offset-2 hover:text-primary/80 transition-colors inline cursor-pointer"
                       >
                         Vigilância RPI
                       </button>
-                      . A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, manifestação à oposição e defesas administrativas.
+                      . A <strong>DG Advocacia</strong> assume toda a retaguarda jurídica: vigilância semanal contra tentativas de cópia, defesas contra oposições, cumprimento de despachos e garantia da vigência decenal.
                     </p>
                   </div>
 
                   {/* Preço Calculado */}
                   <div className="flex items-baseline gap-3 bg-background/90 border-2 border-primary/30 p-4 rounded-2xl self-start md:self-auto shadow-sm">
                     <div>
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Valor do Radar</div>
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Assinatura Mensal</div>
                       <div className="text-3xl font-extrabold text-foreground tracking-tight flex items-baseline gap-1">
                         <span>R$ {calcTotalPrice.toLocaleString("pt-BR")}</span>
                         <span className="text-xs text-muted-foreground font-normal">/mês</span>
@@ -1309,7 +1309,7 @@ export default function DashboardPage() {
                     </div>
                     {calcProcessos > 3 && (
                       <div className="border-l border-border/60 pl-3">
-                        <div className="text-[10px] font-mono text-muted-foreground uppercase">Média / Marca</div>
+                        <div className="text-[10px] font-mono text-muted-foreground uppercase">Custo / Marca</div>
                         <div className="text-sm font-bold text-primary font-mono">
                           R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
                         </div>
@@ -1318,11 +1318,42 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
+                {/* 3 Pilares da Proposta Visual */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
+                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <span className="size-2 rounded-full bg-emerald-500" />
+                      <span>1. Protocolo Simples</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      Basta cadastrar o número do processo na sua dashboard.
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
+                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <span className="size-2 rounded-full bg-primary" />
+                      <span>2. Radar Semanal Ativo</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      Varredura de cada edição da RPI contra cópias colidentes.
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
+                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <span className="size-2 rounded-full bg-amber-500" />
+                      <span>3. Defesa & Atos Oficiais</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      Petições, recursos e manifestações conduzidos por advogados.
+                    </p>
+                  </div>
+                </div>
+
                 {/* Controle Interativo: Input Direto + Botões +/- + Slider */}
-                <div className="space-y-4 pt-1">
+                <div className="space-y-4 pt-2 border-t border-border/40">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <span className="text-xs font-mono text-muted-foreground font-medium">
-                      Informe ou ajuste a quantidade de marcas:
+                      Selecione a quantidade de marcas que deseja monitorar e proteger:
                     </span>
 
                     {/* Contador com Botões e Input Direto */}
@@ -1378,7 +1409,7 @@ export default function DashboardPage() {
 
                   {/* Atalhos Rápidos */}
                   <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <span className="text-[11px] font-mono text-muted-foreground">Predefinições:</span>
+                    <span className="text-[11px] font-mono text-muted-foreground">Pacotes Recomendados:</span>
                     {[3, 5, 10, 20, 50, 100].map((qty) => (
                       <Button
                         key={qty}
@@ -1388,7 +1419,7 @@ export default function DashboardPage() {
                         onClick={() => setCalcProcessos(qty)}
                         className="text-[11px] font-mono h-6 px-2.5 rounded-md"
                       >
-                        {qty === 3 ? "3 marcas (Base)" : `${qty} marcas`}
+                        {qty === 3 ? "3 marcas (Plano Base)" : `${qty} marcas`}
                       </Button>
                     ))}
                   </div>
@@ -1397,7 +1428,7 @@ export default function DashboardPage() {
                 {/* Benefícios Inclusos no Radar RPI */}
                 <div className="rounded-xl border border-border/70 bg-background/50 p-4 space-y-3">
                   <div className="text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-wider">
-                    O que está incluso no seu plano:
+                    Serviços Jurídicos e Tecnológicos Inclusos:
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs text-foreground">
                     {/* Fase 1: Concepção */}
@@ -1418,22 +1449,22 @@ export default function DashboardPage() {
                     {/* Fase 4: Proteção Ativa */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span><strong>Monitoramento de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
+                      <span><strong>Vigilância Ativa de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
                     </div>
                     {/* Fase 5: Vigilância */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Varredura Semanal de Toda a RPI</span>
+                      <span>Varredura Semanal da Revista (RPI)</span>
                     </div>
                     {/* Fase 6: Notificações */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Alertas Automáticos no App</span>
+                      <span>Alertas Instantâneos de Colidência</span>
                     </div>
                     {/* Fase 7: Governança */}
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Controle de vigência decenal e prazos</span>
+                      <span>Controle Decenal e Prazos Fatais</span>
                     </div>
                     {/* Fase 8: Defesa */}
                     <div className="flex items-center gap-2">
