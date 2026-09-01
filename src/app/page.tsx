@@ -216,7 +216,7 @@ export default function LandingPage() {
               Modelo Operacional
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Como Funciona a Parceria B2B
+              Como Funciona Nossa Parceria B2B
             </h2>
             <p className="text-sm text-muted-foreground font-normal">
               Suporte jurídico completo para sua empresa atender mais clientes e focar no atendimento.
