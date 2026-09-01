@@ -39,6 +39,7 @@ import { Card } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { SmartDocBrand } from "@/components/brand-logo";
+import { FloatingAiChat } from "@/components/dashboard/floating-ai-chat";
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -923,6 +924,9 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* ── CHAT FLUTUANTE IA NO MODO VENDAS & CONSULTORIA (DRA. SOFIA) ── */}
+      <FloatingAiChat mode="sales" />
     </main>
   );
 }

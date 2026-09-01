@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -108,14 +108,22 @@ function FormattedMessageView({ content }: { content: string }) {
   );
 }
 
-export function FloatingAiChat() {
+interface FloatingAiChatProps {
+  mode?: "dashboard" | "sales";
+}
+
+export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const isSales = mode === "sales";
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       role: "assistant",
-      content: "Olá! Sou a Dra. Sofia, consultora de IA da DG Advocacia. Posso pesquisar marcas no INPI em tempo real, analisar processos pelo número e calcular riscos de colidência. Como posso ajudar?",
+      content: isSales
+        ? "Olá! Sou a **Dra. Sofia**, especialista em Propriedade Intelectual da **DG Advocacia**.\n\nPosso pesquisar a viabilidade da sua marca no **INPI em tempo real**, explicar como funciona o **Radar RPI por R$ 47/mês** e demonstrar todas as ferramentas do nosso ecossistema. Qual marca você quer proteger hoje?"
+        : "Olá! Sou a **Dra. Sofia**, consultora de IA da DG Advocacia. Posso pesquisar marcas no INPI em tempo real, analisar processos pelo número e calcular riscos de colidência. Como posso ajudar?",
       time: "Agora"
     }
   ]);
@@ -158,7 +166,7 @@ export function FloatingAiChat() {
       const res = await fetch("/api/inpi/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history })
+        body: JSON.stringify({ messages: history, mode })
       });
 
       const data = await res.json();
@@ -305,19 +313,44 @@ export function FloatingAiChat() {
 
           {/* Sugestões Rápidas de Prompt */}
           {messages.length <= 2 && (
-            <div className="px-3 py-1 flex items-center gap-1.5 overflow-x-auto border-t border-border/40 bg-muted/20">
-              <button
-                onClick={() => setInput("Pesquise a marca 'NEXUS' na classe 35")}
-                className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
-              >
-                Pesquisar marca NEXUS
-              </button>
-              <button
-                onClick={() => setInput("Como funciona o prazo de 60 dias de oposição?")}
-                className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
-              >
-                Prazo de 60 dias
-              </button>
+            <div className="px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto border-t border-border/40 bg-muted/20">
+              {isSales ? (
+                <>
+                  <button
+                    onClick={() => setInput("Quais são todos os recursos que a plataforma oferece?")}
+                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  >
+                    O que a plataforma faz?
+                  </button>
+                  <button
+                    onClick={() => setInput("Como funciona o Radar RPI de R$ 47/mês?")}
+                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  >
+                    Radar RPI R$ 47/mês
+                  </button>
+                  <button
+                    onClick={() => setInput("Pesquise se a marca 'NEXUS' está livre no INPI")}
+                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  >
+                    Testar pesquisa de marca
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setInput("Pesquise a marca 'NEXUS' na classe 35")}
+                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
+                  >
+                    Pesquisar marca NEXUS
+                  </button>
+                  <button
+                    onClick={() => setInput("Como funciona o prazo de 60 dias de oposição?")}
+                    className="text-[10px] font-mono whitespace-nowrap bg-background border border-border px-2 py-1 rounded-md text-muted-foreground hover:text-foreground"
+                  >
+                    Prazo de 60 dias
+                  </button>
+                </>
+              )}
             </div>
           )}
 
