@@ -616,12 +616,12 @@ export default function DashboardPage() {
                   ? "bg-primary text-primary-foreground font-bold shadow-xs"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
               }`}
-              title="Vigilância de Marcas (RPI)"
+              title="Acompanhar Processo"
             >
               <Shield className="size-3.5 shrink-0 opacity-90" />
               {(sidebarOpen || isDrawer) && (
                 <div className="flex items-center justify-between flex-1">
-                  <span>Vigilância RPI</span>
+                  <span>Acompanhar Processo</span>
                   <span className="size-1.5 rounded-full bg-emerald-400"></span>
                 </div>
               )}
@@ -1003,7 +1003,7 @@ export default function DashboardPage() {
 
                     <DropdownMenuItem onClick={() => setActiveTab("marcas")}>
                       <Shield className="size-3.5 text-emerald-400" />
-                      <span>Vigilância RPI</span>
+                      <span>Acompanhar Processo</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("consultas-nome")}>
                       <Search className="size-3.5" />
@@ -1292,7 +1292,7 @@ export default function DashboardPage() {
                         onClick={() => setActiveTab("marcas")}
                         className="font-bold text-primary underline underline-offset-2 hover:text-primary/80 transition-colors inline cursor-pointer"
                       >
-                        Vigilância RPI
+                        Acompanhar Processo
                       </button>
                       . A <strong>DG Advocacia</strong> assume toda a retaguarda jurídica: vigilância semanal contra tentativas de cópia, defesas contra oposições, cumprimento de despachos e garantia da vigência decenal.
                     </p>
