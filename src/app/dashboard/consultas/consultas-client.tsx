@@ -110,6 +110,7 @@ export function ConsultasClient({
   const [activeSubTab, setActiveSubTab] = useState<"marca" | "processo" | "figura" | "meus_pedidos">(
     initialSubTab || (initialProcesso ? "processo" : "marca")
   );
+  const [resultsActiveType, setResultsActiveType] = useState<"marca" | "processo" | "figura" | "meus_pedidos" | null>(null);
 
   React.useEffect(() => {
     if (initialSubTab) {
@@ -262,6 +263,7 @@ export function ConsultasClient({
 
       const procs = data.processos || [];
       setResultsList(procs);
+      setResultsActiveType("marca");
 
       // Salva no histórico de pesquisas
       addSearchToHistory({
@@ -329,6 +331,7 @@ export function ConsultasClient({
       }
 
       setSelectedProcesso(data);
+      setResultsActiveType("processo");
 
       addSearchToHistory({
         termo: targetNum.trim(),
@@ -370,6 +373,7 @@ export function ConsultasClient({
 
       const procs = data.processos || [];
       setResultsList(procs);
+      setResultsActiveType("figura");
 
       addSearchToHistory({
         termo: targetViena.trim(),
@@ -405,6 +409,7 @@ export function ConsultasClient({
       }
 
       setResultsList(data.processos || []);
+      setResultsActiveType("meus_pedidos");
       if ((data.processos || []).length === 0) {
         setErrorMsg("Você ainda não possui processos marcados na lista 'Meus Pedidos' da sua conta oficial do INPI.");
       }
@@ -727,15 +732,15 @@ export function ConsultasClient({
         </Card>
       )}
 
-      {/* ── AI VIABILITY & RISK SCORE CARD ── */}
-      {loadingAi && (
+      {/* ── AI VIABILITY & RISK SCORE CARD (Apenas na pesquisa de Marca) ── */}
+      {activeSubTab === "marca" && loadingAi && (
         <div className="p-5 rounded-2xl border border-primary/30 bg-primary/5 flex items-center justify-center gap-3 text-xs text-primary font-semibold animate-pulse">
           <Sparkles className="size-4 animate-spin" />
           <span>MarcaShield AI está calculando o Score de Viabilidade e cruzando a LPI...</span>
         </div>
       )}
 
-      {aiReport && !loadingAi && (
+      {activeSubTab === "marca" && aiReport && !loadingAi && (
         <div className="rounded-2xl border-2 border-primary/40 bg-card/90 backdrop-blur-xl p-6 shadow-2xl relative overflow-hidden animate-slide-up space-y-6">
           <div className="absolute top-0 right-0 p-8 pointer-events-none opacity-5">
             <Shield className="size-64 text-primary" />
@@ -859,7 +864,7 @@ export function ConsultasClient({
       />
 
       {/* ── MODAL / DETALHE DO PROCESSO SELECIONADO (RAIO-X) ── */}
-      {selectedProcesso && (
+      {activeSubTab === "processo" && selectedProcesso && (
         <div className="rounded-2xl border-2 border-primary/40 bg-card p-6 shadow-xl space-y-6 relative animate-slide-up">
           <div className="flex items-start justify-between border-b border-border/60 pb-4 gap-4">
             <div>
@@ -1069,8 +1074,8 @@ export function ConsultasClient({
         </div>
       )}
 
-      {/* ── TABELA DE RESULTADOS DA BUSCA ── */}
-      {resultsList.length > 0 && (
+      {/* ── TABELA DE RESULTADOS DA BUSCA (Isolada para marca, figura ou meus pedidos) ── */}
+      {activeSubTab !== "processo" && (resultsActiveType === activeSubTab || (activeSubTab === "meus_pedidos" && resultsActiveType === "meus_pedidos")) && resultsList.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
@@ -1118,7 +1123,10 @@ export function ConsultasClient({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleSearchProcesso(null as any, proc.numero)}
+                    onClick={() => {
+                      setNumeroProcesso(proc.numero);
+                      handleSearchProcesso(null as any, proc.numero);
+                    }}
                     disabled={loadingDetail}
                     className="text-xs font-semibold h-7 px-2.5 text-primary hover:text-primary hover:bg-primary/10 gap-1"
                   >
