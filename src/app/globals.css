@@ -101,11 +101,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  font-size: 14.5px;
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 html,
 body {
   overflow-x: clip;
   max-width: 100vw;
   width: 100%;
+  min-height: 100vh;
 }
 
 /* Forçar cursor ponteiro (mãozinha) em todos os botões, links e menus interativos */
