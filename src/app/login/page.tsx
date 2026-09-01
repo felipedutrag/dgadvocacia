@@ -514,7 +514,7 @@ export default function AuthPage() {
               </div>
 
               <h2 className="text-base sm:text-lg font-medium tracking-normal text-foreground/90 leading-relaxed">
-                &ldquo;Cadastramos os protocolos dos nossos clientes e temos acompanhamento em tempo real da RPI, com suporte jurídico técnico em oposições e defesas.&rdquo;
+                &ldquo;Nossa infraestrutura B2B foi criada para sua empresa monetizar a proteção de marcas com tecnologia em tempo real, alta margem e retaguarda técnica completa.&rdquo;
               </h2>
               
               <ul className="mt-6 space-y-2.5 text-xs text-muted-foreground">
@@ -528,7 +528,7 @@ export default function AuthPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-primary shrink-0" />
-                  <span>Consultoria jurídica sob demanda para a sua carteira</span>
+                  <span>Suporte jurídico completo para seu negócio</span>
                 </li>
               </ul>
             </div>
@@ -536,11 +536,11 @@ export default function AuthPage() {
             {/* Credential Card */}
             <div className="mt-8 flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3 shadow-xs">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/20 font-bold text-primary text-xs">
-                DG
+                FD
               </div>
               <div>
-                <div className="text-xs font-bold text-foreground">DG Advocacia</div>
-                <div className="text-[11px] font-mono text-muted-foreground">Felipe Dutra Gonçalves • OAB/SP 459.254</div>
+                <div className="text-xs font-bold text-foreground">Felipe D. Gonçalves</div>
+                <div className="text-[11px] text-muted-foreground font-medium">Advogado | Fundador</div>
               </div>
             </div>
           </div>
