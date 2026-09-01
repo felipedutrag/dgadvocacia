@@ -1262,7 +1262,7 @@ export default function DashboardPage() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                   <div className="space-y-2 max-w-2xl">
                     <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
-                      Terceirize 100% da Gestão Marcária da sua Empresa
+                      Centralize 100% da Gestão Marcária da sua Empresa
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Você foca no seu negócio. A <strong>DG Advocacia</strong> cuida de toda a retaguarda jurídica no INPI — desde a vigilância semanal contra cópias, defesas em oposições, cumprimento de exigências formais, até a garantia da vigência decenal das suas marcas.
