@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server';
 import { inpiConsultarProcesso } from '../inpi-service';
+import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 export async function GET(req: Request) {
   try {
+    // Checagem de Quota: 1 uso grátis para não-pagantes
+    const quotaCheck = await checkFeatureQuota("processo");
+    if (!quotaCheck.allowed) {
+      return NextResponse.json(
+        { error: quotaCheck.error, limitReached: true, upgradeRequired: true },
+        { status: 403 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const numero = searchParams.get('numero') || searchParams.get('processo') || searchParams.get('codPedido');
 
@@ -18,6 +28,10 @@ export async function GET(req: Request) {
     if (!result.success) {
       const isNotFound = result.error?.includes('não encontrado');
       return NextResponse.json({ error: result.error }, { status: isNotFound ? 404 : 503 });
+    }
+
+    if (!quotaCheck.isPaid && quotaCheck.userId) {
+      await incrementFeatureQuota("processo", quotaCheck.userId);
     }
 
     return NextResponse.json(result.data);

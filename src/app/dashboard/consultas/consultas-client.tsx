@@ -25,7 +25,8 @@ import {
   AlertTriangle,
   Award,
   Zap,
-  TrendingUp
+  TrendingUp,
+  ArrowRight
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -568,14 +569,30 @@ export function ConsultasClient({
     <div className="space-y-6">
       {/* ── Feedback Alerts ── */}
       {errorMsg && (
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="size-4 shrink-0" />
-            <span>{errorMsg}</span>
+        <div className="p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs space-y-2">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start gap-2">
+              <ShieldAlert className="size-4 shrink-0 mt-0.5" />
+              <span>{errorMsg}</span>
+            </div>
+            <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded shrink-0">
+              <X className="size-3" />
+            </Button>
           </div>
-          <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded">
-            <X className="size-3" />
-          </Button>
+          {errorMsg.toLowerCase().includes("limite") && (
+            <div className="pt-1">
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => window.location.href = "/dashboard?tab=plans"}
+                className="w-full text-xs font-bold bg-primary text-primary-foreground h-8 gap-1.5 shadow-sm cursor-pointer"
+              >
+                <Sparkles className="size-3.5" />
+                <span>Ver Planos & Desbloquear Consultas Ilimitadas</span>
+                <ArrowRight className="size-3.5" />
+              </Button>
+            </div>
+          )}
         </div>
       )}
 

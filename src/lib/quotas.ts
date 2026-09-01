@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export type QuotaFeature = "naming" | "nice" | "domain";
+export type QuotaFeature = "naming" | "nice" | "domain" | "search" | "processo" | "figura";
 
 export interface QuotaCheckResult {
   allowed: boolean;
@@ -10,6 +10,15 @@ export interface QuotaCheckResult {
   userId?: string;
   error?: string;
 }
+
+const FEATURE_LABELS: Record<QuotaFeature, string> = {
+  naming: "Gerador de Marcas com IA",
+  nice: "Enquadrador de Classes Nice",
+  domain: "Consulta de Domínios",
+  search: "Pesquisa de Anterioridade de Marcas no INPI",
+  processo: "Raio-X de Processos do INPI",
+  figura: "Pesquisa Figurativa de Viena (CFE)",
+};
 
 export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaCheckResult> {
   try {
@@ -31,7 +40,7 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
     // Busca dados atualizados da tabela profiles diretamente via admin
     const { data: profile } = await supabaseAdmin
       .from("profiles")
-      .select("plan, plan_status, is_admin, usage_naming, usage_nice, usage_domain")
+      .select("plan, plan_status, is_admin, usage_naming, usage_nice, usage_domain, usage_search, usage_processo, usage_figura")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -55,23 +64,18 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
     }
 
     // Usuário gratuito: limite de 1 uso persistido na tabela profiles e user_metadata
-    const usageKey = `usage_${feature}` as "usage_naming" | "usage_nice" | "usage_domain";
+    const usageKey = `usage_${feature}` as keyof typeof profile;
     const profileUsage = profile ? Number(profile[usageKey] || 0) : 0;
-    const metaUsage = Number(userMeta[usageKey] || 0);
+    const metaUsage = Number(userMeta[`usage_${feature}`] || 0);
     const usedCount = Math.max(profileUsage, metaUsage);
 
     if (usedCount >= 1) {
-      const featureNames: Record<QuotaFeature, string> = {
-        naming: "Gerador de Marcas com IA",
-        nice: "Enquadrador de Classes Nice",
-        domain: "Consulta de Domínios"
-      };
       return {
         allowed: false,
         isPaid: false,
         usedCount,
         userId: user.id,
-        error: `Você atingiu o limite gratuito de 1 uso do ${featureNames[feature]}. Assine um dos nossos planos para desbloquear o uso ilimitado.`
+        error: `Você atingiu o limite gratuito de 1 uso de ${FEATURE_LABELS[feature]}. Assine um de nossos planos para desbloquear o uso ilimitado.`
       };
     }
 
@@ -96,7 +100,7 @@ export async function incrementFeatureQuota(feature: QuotaFeature, userId?: stri
     // 1. Atualiza na tabela profiles
     const { data: profile } = await supabaseAdmin
       .from("profiles")
-      .select("usage_naming, usage_nice, usage_domain")
+      .select("usage_naming, usage_nice, usage_domain, usage_search, usage_processo, usage_figura")
       .eq("id", userId)
       .maybeSingle();
 
