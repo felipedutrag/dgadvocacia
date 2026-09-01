@@ -193,7 +193,7 @@ export default function LandingPage() {
               href="/register"
               className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-semibold bg-primary text-primary-foreground rounded-xl gap-2")}
             >
-              <span>Seja um Parceiro Homologado</span>
+              <span>Criar Conta de Parceiro</span>
               <ArrowRight className="size-4" />
             </Link>
             <a

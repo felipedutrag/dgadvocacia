@@ -3,13 +3,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendWelcomeEmail } from "@/lib/email";
 
 const VALID_INVITE_CODES = [
-  "VIP-DG2026",
+  "DG2026",
   "DG-PARTNER",
   "FOUNDER-B2B",
   "DG-EXCLUSIVO",
-  "DG-VIP",
-  "BLINDAGEM2026",
-  "CONVITE-VIP"
+  "DG-CONVITE",
+  "VIP-DG2026"
 ];
 
 export async function POST(request: Request) {
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
     const cleanCode = (inviteCode || "").trim().toUpperCase();
     if (!cleanCode || !VALID_INVITE_CODES.includes(cleanCode)) {
       return NextResponse.json(
-        { error: "Código de Convite VIP inválido. O cadastro é restrito a parceiros homologados." },
+        { error: "Código de Convite inválido ou expirado. O cadastro é restrito a empresas convidadas." },
         { status: 403 }
       );
     }
@@ -38,7 +37,7 @@ export async function POST(request: Request) {
       user_metadata: {
         name: name?.trim() || "Parceiro B2B",
         invite_code: cleanCode,
-        partner_tier: "VIP_HOMOLOGATED"
+        partner_tier: "CONVIDADO"
       },
     });
 

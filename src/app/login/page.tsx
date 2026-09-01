@@ -182,7 +182,7 @@ export default function AuthPage() {
         return;
       }
       if (!inviteCode.trim()) {
-        setErrorMessage("Por favor, informe o Código de Convite VIP para concluir o cadastro.");
+        setErrorMessage("Por favor, informe o Código de Convite para concluir o cadastro.");
         return;
       }
       if (!agreeTerms) {
@@ -386,13 +386,13 @@ export default function AuthPage() {
               </div>
             )}
 
-            {/* REGISTER: Código de Convite VIP (Exclusivo B2B) */}
+            {/* REGISTER: Código de Convite */}
             {mode === "register" && (
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="inviteCode">Código de Convite VIP *</Label>
+                  <Label htmlFor="inviteCode">Código de Convite *</Label>
                   <span className="text-[10px] font-mono text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-bold">
-                    Acesso Exclusivo
+                    Acesso Restrito
                   </span>
                 </div>
                 <div className="relative flex items-center">
@@ -402,13 +402,13 @@ export default function AuthPage() {
                     type="text"
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                    placeholder="Ex: VIP-DG2026"
+                    placeholder="Ex: DG-PARTNER"
                     required={mode === "register"}
                     className="pl-9 font-mono uppercase tracking-wider border-primary/30 focus-visible:ring-primary/20"
                   />
                 </div>
                 <p className="text-[11px] text-muted-foreground">
-                  Adesão restrita a parceiros convidados e homologados.
+                  Adesão restrita a parceiros com convite ativo.
                 </p>
               </div>
             )}
