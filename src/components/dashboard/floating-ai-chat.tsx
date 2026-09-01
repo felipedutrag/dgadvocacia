@@ -122,8 +122,8 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
       id: "1",
       role: "assistant",
       content: isSales
-        ? "Olá! Sou a **Dra. Sofia**, especialista em Propriedade Intelectual da **DG Advocacia**.\n\nPosso pesquisar a viabilidade da sua marca no **INPI em tempo real**, explicar como funciona o **Radar RPI por R$ 47/mês** e demonstrar todas as ferramentas do nosso ecossistema. Qual marca você quer proteger hoje?"
-        : "Olá! Sou a **Dra. Sofia**, consultora de IA da DG Advocacia. Posso pesquisar marcas no INPI em tempo real, analisar processos pelo número e calcular riscos de colidência. Como posso ajudar?",
+        ? "Olá! Sou **Sofia**, assistente virtual de inteligência marcária da **DG Advocacia**.\n\nPosso pesquisar a viabilidade da sua marca no **INPI em tempo real**, explicar como funciona o **Radar RPI por R$ 47/mês** e demonstrar todas as ferramentas do nosso ecossistema. Qual marca você quer proteger hoje?"
+        : "Olá! Sou **Sofia**, assistente de IA da DG Advocacia. Posso pesquisar marcas no INPI em tempo real, analisar processos pelo número e calcular riscos de colidência. Como posso ajudar?",
       time: "Agora"
     }
   ]);
@@ -225,7 +225,7 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
               </div>
               <div>
                 <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                  <span>Dra. Sofia &bull; IA INPI</span>
+                  <span>Sofia &bull; IA INPI</span>
                   <span className="size-2 rounded-full bg-emerald-500 inline-block"></span>
                 </div>
                 <div className="text-[10px] font-mono text-muted-foreground">DG Advocacia &bull; LPI 9.279/96</div>
