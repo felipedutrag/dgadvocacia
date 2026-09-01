@@ -135,10 +135,25 @@ export function MarcasClient() {
       if (isManual) {
         setIsSyncing(true);
       }
+
+      // 1. Tenta buscar via endpoint seguro da API
+      const res = await fetch("/api/marcas");
+      if (res.ok) {
+        const json = await res.json();
+        if (json.marcas) {
+          const list = json.marcas as MarcaItem[];
+          setMarcas(list);
+          setStoredCache(list);
+          if (json.quota) {
+            setQuota(json.quota);
+          }
+          return;
+        }
+      }
+
+      // 2. Fallback direto no Supabase Client caso a API não responda
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        setLoading(false);
-        setIsSyncing(false);
         return;
       }
 
@@ -155,7 +170,10 @@ export function MarcasClient() {
           .maybeSingle(),
       ]);
 
-      if (error) throw error;
+      if (error) {
+        console.warn("Aviso ao buscar marcas no Supabase:", error);
+      }
+
       if (data) {
         const list = data as MarcaItem[];
         setMarcas(list);
@@ -171,7 +189,7 @@ export function MarcasClient() {
         });
       }
     } catch (err: any) {
-      console.error("Erro ao buscar marcas:", err);
+      console.warn("Aviso de sincronização de marcas:", err?.message || err);
     } finally {
       setLoading(false);
       setIsSyncing(false);
