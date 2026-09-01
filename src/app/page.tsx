@@ -862,8 +862,7 @@ export default function LandingPage() {
                   </span>
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Criação & Branding</span>
                 </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                   Criação & Naming
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -885,8 +884,7 @@ export default function LandingPage() {
                   </span>
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Análise Preditiva</span>
                 </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Search className="size-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                   Consultas & Raio-X
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -908,8 +906,7 @@ export default function LandingPage() {
                   </span>
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Vigilância 24/7</span>
                 </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Eye className="size-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                   Radar RPI & Prazos
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -931,8 +928,7 @@ export default function LandingPage() {
                   </span>
                   <span className="text-[10px] font-mono text-primary uppercase tracking-wider font-bold">Retaguarda Técnica</span>
                 </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <FileText className="size-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                   Relatórios & Peças
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
