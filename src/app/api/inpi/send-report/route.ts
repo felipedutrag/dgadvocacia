@@ -154,7 +154,7 @@ export async function POST(request: Request) {
 
           <div style="margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
             <p><strong>Deseja assegurar sua marca agora ou tirar dúvidas?</strong></p>
-            <p>Dr. Felipe Dutra Gonçalves e equipe jurídica estão à disposição para formalizar seu processo e dar segurança ao seu negócio.</p>
+            <p>Nossa equipe jurídica está à disposição para formalizar seu processo e dar total segurança ao seu negócio.</p>
             <div style="text-align: center; margin: 25px 0;">
               <a href="https://wa.me/5511972667778?text=Olá,+recebi+meu+relatório+da+marca+${encodeURIComponent(marca)}+e+gostaria+de+prosseguir+com+a+análise." 
                  style="background-color: #c29d53; color: #0b0f19; font-weight: bold; text-decoration: none; padding: 12px 30px; border-radius: 30px; display: inline-block; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
@@ -164,7 +164,7 @@ export async function POST(request: Request) {
           </div>
         </div>
         <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; font-family: sans-serif; border-top: 1px solid #e5e7eb;">
-          <p style="margin: 0;">DG Advocacia - Dr. Felipe Dutra Gonçalves - OAB/SP 459.254</p>
+          <p style="margin: 0;">DG Advocacia • Felipe Dutra Gonçalves - OAB/SP nº 459.254</p>
         </div>
       </div>
     `;
