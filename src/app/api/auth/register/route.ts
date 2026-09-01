@@ -2,19 +2,25 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendWelcomeEmail } from "@/lib/email";
 
-const VALID_INVITE_CODES = [
+const VALID_NORMALIZED_CODES = [
+  "PARCEIROINPI",
   "PARCEIRO",
   "PARCERIA",
   "CONVITE",
   "MARCAS",
   "DG2026",
   "PARCEIRO2026",
-  "DG-PARTNER",
-  "FOUNDER-B2B",
-  "DG-EXCLUSIVO",
-  "DG-CONVITE",
-  "VIP-DG2026"
+  "DGPARTNER",
+  "FOUNDERB2B",
+  "DGEXCLUSIVO",
+  "DGCONVITE",
+  "VIPDG2026",
+  "DG23423"
 ];
+
+function normalizeInviteCode(code: string): string {
+  return (code || "").trim().toUpperCase().replace(/[\s\-_.]/g, "");
+}
 
 export async function POST(request: Request) {
   try {
@@ -24,8 +30,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "E-mail e senha são obrigatórios." }, { status: 400 });
     }
 
-    const cleanCode = (inviteCode || "").trim().toUpperCase();
-    if (!cleanCode || !VALID_INVITE_CODES.includes(cleanCode)) {
+    const rawCode = (inviteCode || "").trim().toUpperCase();
+    const normalized = normalizeInviteCode(rawCode);
+
+    if (!normalized || !VALID_NORMALIZED_CODES.includes(normalized)) {
       return NextResponse.json(
         { error: "Código de Convite inválido ou expirado. O cadastro é restrito a empresas convidadas." },
         { status: 403 }
@@ -41,7 +49,7 @@ export async function POST(request: Request) {
       email_confirm: true,
       user_metadata: {
         name: name?.trim() || "Parceiro B2B",
-        invite_code: cleanCode,
+        invite_code: rawCode,
         partner_tier: "CONVIDADO"
       },
     });

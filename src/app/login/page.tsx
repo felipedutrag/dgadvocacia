@@ -402,7 +402,7 @@ export default function AuthPage() {
                     type="text"
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                    placeholder="Ex: PARCEIRO"
+                    placeholder="Ex: DG23423"
                     required={mode === "register"}
                     className="pl-9 font-mono uppercase tracking-wider border-primary/30 focus-visible:ring-primary/20"
                   />
