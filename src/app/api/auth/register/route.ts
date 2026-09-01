@@ -14,8 +14,7 @@ const VALID_NORMALIZED_CODES = [
   "FOUNDERB2B",
   "DGEXCLUSIVO",
   "DGCONVITE",
-  "VIPDG2026",
-  "DG23423"
+  "VIPDG2026"
 ];
 
 function normalizeInviteCode(code: string): string {
