@@ -569,29 +569,25 @@ export function ConsultasClient({
     <div className="space-y-6">
       {/* ── Feedback Alerts ── */}
       {errorMsg && (
-        <div className="p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs space-y-2">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex items-start gap-2">
-              <ShieldAlert className="size-4 shrink-0 mt-0.5" />
-              <span>{errorMsg}</span>
-            </div>
-            <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded shrink-0">
-              <X className="size-3" />
-            </Button>
+        <div className="p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs flex items-start justify-between gap-3">
+          <div className="flex items-start gap-2 leading-relaxed">
+            <ShieldAlert className="size-4 shrink-0 mt-0.5" />
+            <span>
+              {errorMsg}{" "}
+              {errorMsg.toLowerCase().includes("limite") && (
+                <button
+                  type="button"
+                  onClick={() => window.location.href = "/dashboard?tab=plans"}
+                  className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
+                >
+                  clique aqui para conhecer nossos planos
+                </button>
+              )}
+            </span>
           </div>
-          {errorMsg.toLowerCase().includes("limite") && (
-            <div className="pt-1.5">
-              <button
-                type="button"
-                onClick={() => window.location.href = "/dashboard?tab=plans"}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500/20 via-primary/20 to-amber-500/20 hover:from-amber-500/30 hover:to-primary/30 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 transition-all shadow-md shadow-amber-500/5 group cursor-pointer"
-              >
-                <Sparkles className="size-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                <span>Ver Planos & Desbloquear Acesso Ilimitado</span>
-                <ArrowRight className="size-3.5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-            </div>
-          )}
+          <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded shrink-0">
+            <X className="size-3" />
+          </Button>
         </div>
       )}
 

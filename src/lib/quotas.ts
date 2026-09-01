@@ -73,7 +73,7 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
         isPaid: false,
         usedCount,
         userId: user.id,
-        error: `Você atingiu o limite gratuito de 1 uso de ${FEATURE_LABELS[feature]}. Assine um de nossos planos para desbloquear o uso ilimitado.`
+        error: `Você atingiu o limite gratuito de 1 uso de ${FEATURE_LABELS[feature]}. Para continuar utilizando de forma ilimitada,`
       };
     }
 

@@ -1031,24 +1031,20 @@ Gerado pelo MarcaShield Naming AI.`;
 
                 <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
                   {namingError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
-                      <div className="flex items-start gap-2 font-medium">
-                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                        <span>{namingError}</span>
-                      </div>
-                      {namingError.toLowerCase().includes("limite") && (
-                        <div className="pt-1.5">
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
+                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                      <span>
+                        {namingError}{" "}
+                        {namingError.toLowerCase().includes("limite") && (
                           <button
                             type="button"
                             onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500/20 via-primary/20 to-amber-500/20 hover:from-amber-500/30 hover:to-primary/30 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 transition-all shadow-md shadow-amber-500/5 group cursor-pointer"
+                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
                           >
-                            <Sparkles className="size-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                            <span>Ver Planos & Desbloquear Acesso Ilimitado</span>
-                            <ArrowRight className="size-3.5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                            clique aqui para conhecer nossos planos
                           </button>
-                        </div>
-                      )}
+                        )}
+                      </span>
                     </div>
                   )}
 
@@ -2130,24 +2126,20 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleClassifyNice} className="space-y-3.5">
                   {niceError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
-                      <div className="flex items-start gap-2 font-medium">
-                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                        <span>{niceError}</span>
-                      </div>
-                      {niceError.toLowerCase().includes("limite") && (
-                        <div className="pt-1.5">
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
+                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                      <span>
+                        {niceError}{" "}
+                        {niceError.toLowerCase().includes("limite") && (
                           <button
                             type="button"
                             onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500/20 via-primary/20 to-amber-500/20 hover:from-amber-500/30 hover:to-primary/30 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 transition-all shadow-md shadow-amber-500/5 group cursor-pointer"
+                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
                           >
-                            <Sparkles className="size-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                            <span>Ver Planos & Desbloquear Acesso Ilimitado</span>
-                            <ArrowRight className="size-3.5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                            clique aqui para conhecer nossos planos
                           </button>
-                        </div>
-                      )}
+                        )}
+                      </span>
                     </div>
                   )}
                   <div className="space-y-1.5">
@@ -2248,24 +2240,20 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleCheckDomains} className="space-y-3.5">
                   {domainError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
-                      <div className="flex items-start gap-2 font-medium">
-                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                        <span>{domainError}</span>
-                      </div>
-                      {domainError.toLowerCase().includes("limite") && (
-                        <div className="pt-1.5">
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
+                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                      <span>
+                        {domainError}{" "}
+                        {domainError.toLowerCase().includes("limite") && (
                           <button
                             type="button"
                             onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500/20 via-primary/20 to-amber-500/20 hover:from-amber-500/30 hover:to-primary/30 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 transition-all shadow-md shadow-amber-500/5 group cursor-pointer"
+                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
                           >
-                            <Sparkles className="size-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                            <span>Ver Planos & Desbloquear Acesso Ilimitado</span>
-                            <ArrowRight className="size-3.5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                            clique aqui para conhecer nossos planos
                           </button>
-                        </div>
-                      )}
+                        )}
+                      </span>
                     </div>
                   )}
                   <div className="space-y-1.5">
