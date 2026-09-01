@@ -397,7 +397,7 @@ export default function LandingPage() {
                       Camada 3 • Retaguarda Jurídica
                     </span>
                     <h3 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
-                      Seu Backend Jurídico (Sob Demanda)
+                      Seu Backend Jurídico
                     </h3>
                   </div>
                 </div>
@@ -502,71 +502,117 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 2: A DASHBOARD DO PARCEIRO ── */}
+      {/* ── SEÇÃO 2: ESTEIRA DE GOVERNANÇA & DASHBOARD DO PARCEIRO ── */}
       <section id="dashboard" className="relative z-10 flex w-full flex-col items-center px-4 py-20">
         <div className="w-full max-w-5xl mx-auto space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
-              <Cpu className="size-3.5" />
-              Tecnologia Integrada
+              <Sparkles className="size-3.5" />
+              Esteira de Governança
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Dashboard de Gestão e Acompanhamento
+              Ciclo Completo de Proteção Marcária
             </h2>
             <p className="text-sm text-muted-foreground font-normal">
-              Controle centralizado dos pedidos e processos da sua carteira em uma única interface inteligente.
+              Acompanhe a evolução de cada ativo desde a análise fonética preliminar até a blindagem decenal definitiva.
             </p>
           </div>
 
-          {/* Grid de Recursos da Dashboard */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl border border-border/70 bg-card/60 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
-                  <CalendarCheck className="size-5" />
+          {/* Stepper / Timeline Visual de 4 Estágios */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* Passo 1: Triagem & Raio-X */}
+            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
+                    01
+                  </span>
+                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Fase Prévia</span>
                 </div>
-                <h3 className="text-base font-bold text-foreground">Cadastro e Gestão por Protocolo</h3>
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  <Search className="size-4 text-primary" />
+                  Triagem & Raio-X
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Varredura de colidências na base de marcas registradas, enquadramento nas 45 classes de Nice e cálculo de probabilidade de deferimento.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                Adicione o número do protocolo do pedido e tenha acesso imediato a titulares, despachos, classes de Nice, datas de vigência e histórico detalhado direto da base do INPI.
-              </p>
+              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-emerald-500">
+                <span>Parecer Instantâneo</span>
+                <CheckCircle2 className="size-3.5" />
+              </div>
             </div>
 
-            <div className="p-6 rounded-2xl border border-border/70 bg-card/60 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
-                  <Search className="size-5" />
+            {/* Passo 2: Depósito Oficial */}
+            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
+                    02
+                  </span>
+                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Protocolo</span>
                 </div>
-                <h3 className="text-base font-bold text-foreground">Ferramentas de Consulta & Viabilidade</h3>
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  <FileText className="size-4 text-primary" />
+                  Depósito Oficial
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Peticionamento eletrônico no e-Marcas com qualificação jurídica, recolhimento de GRUs oficiais e emissão do número do protocolo.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                Acesse ferramentas avançadas de busca de anterioridades e diagnósticos de inteligência preditiva (MarcaShield) para fundamentar relatórios preliminares de viabilidade.
-              </p>
+              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-primary">
+                <span>Prioridade Unionista</span>
+                <CheckCircle2 className="size-3.5" />
+              </div>
             </div>
 
-            <div className="p-6 rounded-2xl border border-border/70 bg-card/60 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
-                  <ShieldCheck className="size-5" />
+            {/* Passo 3: Vigilância na RPI */}
+            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
+                    03
+                  </span>
+                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Vigilância</span>
                 </div>
-                <h3 className="text-base font-bold text-foreground">Radar Automático da RPI</h3>
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  <Eye className="size-4 text-primary" />
+                  Vigilância na RPI
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Monitoramento semanal contra oposições de terceiros ou exigências formais, com elaboração de manifestações no prazo estrito de 60 dias.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                Vigilância semanal em todas as edições da Revista da Propriedade Industrial (RPI) para monitorar publicações de despachos, prazos de exigência e eventuais colidências de terceiros.
-              </p>
+              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-amber-500">
+                <span>Prazo Fatal 60d</span>
+                <BellRing className="size-3.5" />
+              </div>
             </div>
 
-            <div className="p-6 rounded-2xl border border-border/70 bg-card/60 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
-                  <FileText className="size-5" />
+            {/* Passo 4: Certificado Decenal */}
+            <div className="relative group p-5 rounded-2xl border border-primary/40 bg-card/80 shadow-lg shadow-primary/5 hover:border-primary transition-all duration-300 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="size-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs font-mono">
+                    04
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-500 uppercase tracking-wider font-bold">Ativo Blindado</span>
                 </div>
-                <h3 className="text-base font-bold text-foreground">Solicitação de Peças Jurídicas</h3>
+                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  <ShieldCheck className="size-4 text-emerald-500" />
+                  Certificado Decenal
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Deferimento publicado e emissão do Certificado de Registro pelo INPI, garantindo exclusividade de uso em território nacional por 10 anos.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                Havendo necessidade de oposição, manifestação ou recurso administrativo, solicite a elaboração da peça técnica especializada com fluxo simplificado pela plataforma.
-              </p>
+              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-emerald-500 font-bold">
+                <span>Vigência 10 Anos</span>
+                <CheckCircle2 className="size-3.5 text-emerald-500" />
+              </div>
             </div>
+
           </div>
 
           {/* ── PAINEL DE TELEMETRIA & GRÁFICOS ANALÍTICOS (SHADCN UI) ── */}
@@ -833,142 +879,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 5: ESTEIRA OPERACIONAL & PIPELINE DE BLINDAGEM (VISUAL HIGH-TECH) ── */}
-      <section className="relative z-10 flex w-full flex-col items-center px-4 py-20 bg-card/40 border-y border-border/60">
-        <div className="w-full max-w-5xl mx-auto space-y-12">
-          
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
-              <Sparkles className="size-3.5" />
-              Esteira de Governança
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Ciclo Completo de Proteção Marcária
-            </h2>
-            <p className="text-sm text-muted-foreground font-normal">
-              Acompanhe a evolução de cada ativo desde a análise fonética preliminar até a blindagem decenal definitiva.
-            </p>
-          </div>
 
-          {/* Stepper / Timeline Visual de 4 Estágios */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            {/* Passo 1: Triagem & Raio-X */}
-            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
-                    01
-                  </span>
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Fase Prévia</span>
-                </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Search className="size-4 text-primary" />
-                  Triagem & Raio-X
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Varredura de colidências na base de marcas registradas, enquadramento nas 45 classes de Nice e cálculo de probabilidade de deferimento.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-emerald-500">
-                <span>Parecer Instantâneo</span>
-                <CheckCircle2 className="size-3.5" />
-              </div>
-            </div>
-
-            {/* Passo 2: Depósito & Exame Formal */}
-            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
-                    02
-                  </span>
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Protocolo</span>
-                </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <FileText className="size-4 text-primary" />
-                  Depósito Oficial
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Peticionamento eletrônico no e-Marcas com qualificação jurídica, recolhimento de GRUs oficiais e emissão do número do protocolo.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-primary">
-                <span>Prioridade Unionista</span>
-                <CheckCircle2 className="size-3.5" />
-              </div>
-            </div>
-
-            {/* Passo 3: Radar RPI & Defesa Ativa */}
-            <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">
-                    03
-                  </span>
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Vigilância</span>
-                </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Eye className="size-4 text-primary" />
-                  Vigilância na RPI
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Monitoramento semanal contra oposições de terceiros ou exigências formais, com elaboração de manifestações no prazo estrito de 60 dias.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-amber-500">
-                <span>Prazo Fatal 60d</span>
-                <BellRing className="size-3.5" />
-              </div>
-            </div>
-
-            {/* Passo 4: Concessão & Certificado Decenal */}
-            <div className="relative group p-5 rounded-2xl border border-primary/40 bg-card/80 shadow-lg shadow-primary/5 hover:border-primary transition-all duration-300 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="size-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs font-mono">
-                    04
-                  </span>
-                  <span className="text-[10px] font-mono text-emerald-500 uppercase tracking-wider font-bold">Ativo Blindado</span>
-                </div>
-                <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <ShieldCheck className="size-4 text-emerald-500" />
-                  Certificado Decenal
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Deferimento publicado e emissão do Certificado de Registro pelo INPI, garantindo exclusividade de uso em território nacional por 10 anos.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-emerald-500 font-bold">
-                <span>Vigência 10 Anos</span>
-                <CheckCircle2 className="size-3.5 text-emerald-500" />
-              </div>
-            </div>
-
-          </div>
-
-          {/* Banner Interativo B2B com CTA */}
-          <div className="rounded-2xl border border-border/70 bg-gradient-to-r from-card/80 via-card/50 to-background/80 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 backdrop-blur-md">
-            <div className="space-y-1.5 text-center sm:text-left">
-              <div className="text-xs font-mono uppercase tracking-wider text-primary font-bold">Automação com Rigor Jurídico</div>
-              <h4 className="text-base sm:text-lg font-bold text-foreground">
-                Toda a complexidade processual do INPI resolvida no seu backend.
-              </h4>
-              <p className="text-xs text-muted-foreground max-w-xl">
-                Você foca em captar e atender clientes; nossa banca cuida dos despachos, prazos e petições técnicas.
-              </p>
-            </div>
-            <Link
-              href="/register"
-              className={cn(buttonVariants({ size: "default" }), "shrink-0 text-xs font-bold bg-primary text-primary-foreground gap-1.5 h-10 px-5 rounded-xl")}
-            >
-              <span>Cadastrar Carteira</span>
-              <ArrowUpRight className="size-4" />
-            </Link>
-          </div>
-
-        </div>
-      </section>
 
       {/* ── FAQ SECTION (B2B) ── */}
       <section id="faq" className="relative z-10 flex w-full flex-col items-center px-4 py-20 bg-card/40 border-t border-border/60">
