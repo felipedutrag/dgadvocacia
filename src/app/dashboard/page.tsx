@@ -1194,9 +1194,9 @@ export default function DashboardPage() {
                       <button
                         type="button"
                         onClick={() => setActiveTab("marcas")}
-                        className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80 transition-colors inline cursor-pointer"
+                        className="font-semibold text-primary hover:text-primary/80 transition-colors inline cursor-pointer"
                       >
-                        &ldquo;Vigilância RPI&rdquo;
+                        Vigilância RPI
                       </button>
                       . A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, manifestação à oposição e defesas administrativas.
                     </p>
