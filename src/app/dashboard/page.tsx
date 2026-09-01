@@ -636,10 +636,10 @@ export default function DashboardPage() {
                   ? "bg-primary text-primary-foreground font-bold shadow-xs"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
               }`}
-              title="Pesquisar Marca no INPI"
+              title="Pesquisa de Marca no INPI"
             >
               <Search className="size-3.5 shrink-0 opacity-90" />
-              {(sidebarOpen || isDrawer) && <span>Pesquisar Marca</span>}
+              {(sidebarOpen || isDrawer) && <span>Pesquisa de Marca</span>}
             </button>
 
             <button
@@ -1007,7 +1007,7 @@ export default function DashboardPage() {
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("consultas-nome")}>
                       <Search className="size-3.5" />
-                      <span>Pesquisar Marca</span>
+                      <span>Pesquisa de Marca</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("consultas-processo")}>
                       <FileText className="size-3.5" />

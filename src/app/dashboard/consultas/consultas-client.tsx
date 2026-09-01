@@ -1292,7 +1292,22 @@ export function ConsultasClient({
                   </p>
                 </div>
 
-                <div className="flex items-center justify-end mt-4 pt-3 border-t border-border/50 text-xs">
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50 text-xs gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setNumeroProcesso(proc.numero);
+                      switchTab("processo");
+                      handleSearchProcesso(null as any, proc.numero);
+                    }}
+                    disabled={loadingDetail}
+                    className="text-xs font-semibold h-7 px-2.5 text-primary hover:text-primary hover:bg-primary/10 gap-1"
+                  >
+                    <FileText className="size-3" />
+                    <span>Consultar Processo</span>
+                  </Button>
+
                   <Button
                     variant="outline"
                     size="sm"
