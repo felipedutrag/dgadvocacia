@@ -289,13 +289,13 @@ export default function AuthPage() {
               <SmartDocBrand size="md" />
             </Link>
 
-            <h1 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            <h1 className="mt-3.5 text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               {mode === "login" && "Acesse o Painel do Parceiro"}
               {mode === "register" && "Cadastre sua Empresa"}
               {mode === "forgot" && "Recuperação de Senha"}
               {mode === "reset" && "Definir Nova Senha"}
             </h1>
-            <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
               {mode === "login" && "Gerencie sua carteira de marcas, acompanhe despachos da RPI e acesse ferramentas de consulta."}
               {mode === "register" && "Cadastre sua empresa para gerenciar protocolos, monitorar processos e solicitar suporte jurídico."}
               {mode === "forgot" && "Informe seu e-mail corporativo para receber as instruções seguras de redefinição."}
