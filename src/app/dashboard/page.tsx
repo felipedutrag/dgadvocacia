@@ -206,26 +206,6 @@ export default function DashboardPage() {
   const [pixSuccess, setPixSuccess] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
 
-  // Calculadora de Processos B2B (Radar RPI - Base R$ 97 até 3 marcas + adicional)
-  const [calcProcessos, setCalcProcessos] = useState<number>(3);
-
-  const getRadarPricing = (qty: number) => {
-    const count = Math.max(1, qty);
-    if (count <= 3) {
-      return { total: 97, unit: 97 / count, isBase: true };
-    }
-    // A partir da 4ª marca: R$ 97 base (cobre 3 marcas) + R$ 20 por marca extra (com desconto para volumes grandes)
-    const extra = count - 3;
-    let extraRate = 20;
-    if (count > 50) extraRate = 12.00;
-    else if (count > 20) extraRate = 15.00;
-    
-    const total = 97 + Math.round(extra * extraRate);
-    return { total, unit: total / count, isBase: false };
-  };
-
-  const { total: calcTotalPrice, unit: calcUnitPrice } = getRadarPricing(calcProcessos);
-
   // Toast de Pagamento
   const [paymentToast, setPaymentToast] = useState<{ show: boolean; title: string; message: string; planName?: string; time?: string } | null>(null);
 
@@ -1244,20 +1224,22 @@ export default function DashboardPage() {
                 </div>
               )}
 
-          {/* TAB 3: SERVIÇOS & PLANOS (CALCULADORA DE PROCESSOS B2B) */}
+          {/* TAB 3: ASSESSORIA & PLATAFORMA — BENEFÍCIOS + CTA VENDAS */}
           {activeTab === "plans" && (
             <div className="space-y-8 animate-fade-in">
+
+              {/* ── CABEÇALHO ── */}
               <div className="border-b border-border/60 pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                      <span>Calculadora de Carteira & Backend Jurídico</span>
+                      <span>Assessoria & Plataforma de Blindagem Marcária</span>
                       <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
-                        Tabela B2B
+                        B2B
                       </span>
                     </h1>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Monitore a carteira de marcas da sua empresa ou contrate assessoria jurídica sob demanda com honorários exclusivos para parceiros.
+                      Vigilância ativa semanal na RPI, assessoria jurídica integral e plataforma de inteligência marcária para empresas e parceiros.
                     </p>
                   </div>
                   <div className="text-xs font-mono bg-muted/60 border border-border/70 px-3 py-1.5 rounded-xl self-start sm:self-auto flex items-center gap-1.5">
@@ -1270,231 +1252,185 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* ── CALCULADORA DINÂMICA DE CARTEIRA (RADAR RPI) ── */}
-              <div className="rounded-2xl border-2 border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl shadow-primary/5 space-y-6">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/60">
-                  <div className="space-y-1.5 max-w-3xl">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
-                        Assessoria Jurídica Integral & Radar RPI
-                      </span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                      Terceirize 100% da Gestão de Marcas da sua Empresa
+              {/* ── APRESENTAÇÃO INSTITUCIONAL ── */}
+              <div className="rounded-2xl border border-border/70 bg-card/60 p-6 sm:p-8 backdrop-blur-xl space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
+                    Assessoria Jurídica Integral & Radar RPI
+                  </span>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                  <div className="space-y-2 max-w-2xl">
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
+                      Terceirize 100% da Gestão Marcária da sua Empresa
                     </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Você foca no seu negócio. A <strong>DG Advocacia</strong> cuida de toda a retaguarda jurídica no INPI — desde a vigilância semanal contra cópias, defesas em oposições, cumprimento de exigências formais, até a garantia da vigência decenal das suas marcas.
+                    </p>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Você só protocola o pedido no INPI e insere o número no menu{" "}
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab("marcas")}
-                        className="font-bold text-primary underline underline-offset-2 hover:text-primary/80 transition-colors inline cursor-pointer"
-                      >
-                        Acompanhar Processo
-                      </button>
-                      . A <strong>DG Advocacia</strong> assume toda a retaguarda jurídica: vigilância semanal contra tentativas de cópia, defesas contra oposições, cumprimento de despachos e garantia da vigência decenal.
+                      A proposta de honorários é elaborada individualmente para cada parceiro, de acordo com o porte da carteira e escopo de serviços. Fale com nossa equipe e receba uma proposta personalizada sem compromisso.
                     </p>
                   </div>
-
-                  {/* Preço Calculado */}
-                  <div className="flex items-baseline gap-3 bg-background/90 border-2 border-primary/30 p-4 rounded-2xl self-start md:self-auto shadow-sm">
-                    <div>
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Assinatura Mensal</div>
-                      <div className="text-3xl font-extrabold text-foreground tracking-tight flex items-baseline gap-1">
-                        <span>R$ {calcTotalPrice.toLocaleString("pt-BR")}</span>
-                        <span className="text-xs text-muted-foreground font-normal">/mês</span>
-                      </div>
-                    </div>
-                    <div className="border-l border-border/60 pl-3">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Custo / Marca</div>
-                      <div className="text-sm font-bold text-primary font-mono">
-                        R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3 Pilares da Proposta Visual */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
-                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-emerald-500" />
-                      <span>1. Protocolo Simples</span>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      Basta cadastrar o número do processo na sua dashboard.
+                  {/* CTA Principal */}
+                  <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
+                    <a
+                      href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20assessoria%20de%20marcas%20DG%20Advocacia."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2.5 w-full md:w-56 h-12 px-6 rounded-xl bg-primary text-primary-foreground text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <svg viewBox="0 0 24 24" className="size-5 fill-current shrink-0" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      <span>Falar com Vendas</span>
+                    </a>
+                    <p className="text-[10px] text-center text-muted-foreground font-mono">
+                      Proposta personalizada sem compromisso
                     </p>
                   </div>
-                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
-                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-primary" />
-                      <span>2. Radar Semanal Ativo</span>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      Varredura de cada edição da RPI contra cópias colidentes.
-                    </p>
-                  </div>
-                  <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 space-y-1">
-                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-amber-500" />
-                      <span>3. Defesa & Atos Oficiais</span>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      Petições, recursos e manifestações conduzidos por advogados.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Controle Interativo: Input Direto + Botões +/- + Slider */}
-                <div className="space-y-4 pt-2 border-t border-border/40">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <span className="text-xs font-mono text-muted-foreground font-medium">
-                      Selecione a quantidade de marcas que deseja monitorar e proteger:
-                    </span>
-
-                    {/* Contador com Botões e Input Direto */}
-                    <div className="flex items-center gap-2 self-start sm:self-auto">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-xs"
-                        onClick={() => setCalcProcessos((prev) => Math.max(3, prev - 1))}
-                        disabled={calcProcessos <= 3}
-                        className="size-8 rounded-lg border-border"
-                      >
-                        <Minus className="size-3.5" />
-                      </Button>
-
-                      <div className="relative">
-                        <input
-                          type="number"
-                          min="3"
-                          max="1000"
-                          value={calcProcessos}
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            setCalcProcessos(isNaN(val) ? 3 : Math.max(3, Math.min(1000, val)));
-                          }}
-                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-primary/30 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <span className="absolute right-2 top-2 text-[9px] text-muted-foreground pointer-events-none font-mono">un</span>
-                      </div>
-
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-xs"
-                        onClick={() => setCalcProcessos((prev) => Math.min(1000, prev + 1))}
-                        className="size-8 rounded-lg border-border"
-                      >
-                        <Plus className="size-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Slider Horizontal Fluido */}
-                  <input
-                    type="range"
-                    min="3"
-                    max="100"
-                    step="1"
-                    value={calcProcessos}
-                    onChange={(e) => setCalcProcessos(Math.max(3, Number(e.target.value)))}
-                    className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-                  />
-
-                  {/* Atalhos Rápidos */}
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <span className="text-[11px] font-mono text-muted-foreground">Pacotes Recomendados:</span>
-                    {[3, 5, 10, 20, 50, 100].map((qty) => (
-                      <Button
-                        key={qty}
-                        type="button"
-                        variant={calcProcessos === qty ? "default" : "outline"}
-                        size="xs"
-                        onClick={() => setCalcProcessos(qty)}
-                        className="text-[11px] font-mono h-6 px-2.5 rounded-md"
-                      >
-                        {qty === 3 ? "3 marcas (Plano Base)" : `${qty} marcas`}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Benefícios Inclusos no Radar RPI */}
-                <div className="rounded-xl border border-border/70 bg-background/50 p-4 space-y-3">
-                  <div className="text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-wider">
-                    Serviços Jurídicos e Tecnológicos Inclusos:
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs text-foreground">
-                    {/* Fase 1: Concepção */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Gerador de Marcas Ilimitado</span>
-                    </div>
-                    {/* Fase 2: Atos Oficiais */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Cumprimento de Exigências INPI</span>
-                    </div>
-                    {/* Fase 3: Viabilidade */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Consultas e Raio-X IA Ilimitados</span>
-                    </div>
-                    {/* Fase 4: Proteção Ativa */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span><strong>Vigilância Ativa de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
-                    </div>
-                    {/* Fase 5: Vigilância */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Varredura Semanal da Revista (RPI)</span>
-                    </div>
-                    {/* Fase 6: Notificações */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Alertas Instantâneos de Colidência</span>
-                    </div>
-                    {/* Fase 7: Governança */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Controle Decenal e Prazos Fatais</span>
-                    </div>
-                    {/* Fase 8: Defesa */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Manifestação à Oposição</span>
-                    </div>
-                    {/* Fase 9: 2ª Instância */}
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      <span>Recurso Administrativo</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Botão de Contratação do Plano Calculado */}
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/50">
-                  <div className="text-xs text-muted-foreground">
-                    Sem taxa de adesão ou fidelidade &bull; Liberação instantânea via Pix
-                  </div>
-
-                  <Button
-                    size="lg"
-                    onClick={() => handleOpenPixModal({
-                      id: `radar_${calcProcessos}_marcas`,
-                      name: `Radar RPI Mensal (${calcProcessos} ${calcProcessos === 1 ? "Marca" : "Marcas"})`,
-                      price: calcTotalPrice,
-                      description: `DG Advocacia - Assinatura Radar RPI para ${calcProcessos} marcas monitoradas`,
-                    })}
-                    className="group w-full sm:w-auto text-xs font-semibold h-11 px-6 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5"
-                  >
-                    <span>Contratar Radar para {calcProcessos} {calcProcessos === 1 ? "Marca" : "Marcas"}</span>
-                    <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                  </Button>
                 </div>
               </div>
+
+              {/* ── GRADE DE BENEFÍCIOS POR CATEGORIA ── */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                {/* Plataforma & Tecnologia */}
+                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <Sparkles className="size-4 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-foreground">Plataforma & Inteligência Artificial</div>
+                      <div className="text-[10px] font-mono text-muted-foreground">Ferramentas liberadas sem restrição de uso</div>
+                    </div>
+                  </div>
+                  <ul className="space-y-2.5">
+                    {[
+                      "Gerador de Marcas & Naming com IA",
+                      "Consulta de Viabilidade Marcária (INPI)",
+                      "Classificador de Classe de Nice Automático",
+                      "Verificação de Domínios .com.br / .com",
+                      "Raio-X IA: Score de Risco de Colidência",
+                      "Relatório Técnico Instantâneo em PDF",
+                    ].map((feat) => (
+                      <li key={feat} className="flex items-center gap-2.5 text-xs text-foreground/90">
+                        <CheckCircle2 className="size-3.5 text-primary shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Vigilância & Radar RPI */}
+                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                      <Radio className="size-4 text-amber-500" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-foreground">Radar RPI & Vigilância Semanal</div>
+                      <div className="text-[10px] font-mono text-muted-foreground">Monitoramento contínuo a cada nova edição</div>
+                    </div>
+                  </div>
+                  <ul className="space-y-2.5">
+                    {[
+                      "Varredura semanal completa da Revista RPI",
+                      "Alertas automáticos de colidência detectada",
+                      "Acompanhamento de despachos e notificações",
+                      "Controle de prazos fatais e vigência decenal",
+                      "Dashboard de carteira em tempo real",
+                      "Notificações por e-mail em casos críticos",
+                    ].map((feat) => (
+                      <li key={feat} className="flex items-center gap-2.5 text-xs text-foreground/90">
+                        <CheckCircle2 className="size-3.5 text-amber-500 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Assessoria Jurídica */}
+                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                      <Scale className="size-4 text-emerald-500" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-foreground">Assessoria Jurídica Técnica</div>
+                      <div className="text-[10px] font-mono text-muted-foreground">Atos processuais conduzidos por advogados especialistas</div>
+                    </div>
+                  </div>
+                  <ul className="space-y-2.5">
+                    {[
+                      "Cumprimento de Exigências Formais do INPI",
+                      "Manifestação à Oposição (Art. 158 da LPI)",
+                      "Recurso Administrativo de 2ª Instância",
+                      "Defesa em Processos de Caducidade",
+                      "Notificação Extrajudicial a Infratores",
+                      "Peças técnicas para atos de terceiros",
+                    ].map((feat) => (
+                      <li key={feat} className="flex items-center gap-2.5 text-xs text-foreground/90">
+                        <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Governança & Relatórios */}
+                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                      <FileText className="size-4 text-blue-500" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-foreground">Governança & Relatórios</div>
+                      <div className="text-[10px] font-mono text-muted-foreground">Controle executivo da carteira de propriedade industrial</div>
+                    </div>
+                  </div>
+                  <ul className="space-y-2.5">
+                    {[
+                      "Relatório de saúde da carteira em PDF",
+                      "Histórico de despachos e atos processuais",
+                      "Alerta proativo de renovação decenal",
+                      "Parecer de viabilidade para novos pedidos",
+                      "Atendimento técnico por e-mail e WhatsApp",
+                      "Suporte prioritário para parceiros ativos",
+                    ].map((feat) => (
+                      <li key={feat} className="flex items-center gap-2.5 text-xs text-foreground/90">
+                        <CheckCircle2 className="size-3.5 text-blue-500 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* ── CTA FINAL ── */}
+              <div className="rounded-2xl border border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="space-y-1.5 text-center sm:text-left">
+                  <div className="text-xs font-mono uppercase font-bold text-primary">Proposta Personalizada</div>
+                  <h4 className="text-base sm:text-lg font-bold text-foreground">
+                    Pronto para proteger sua carteira de marcas?
+                  </h4>
+                  <p className="text-xs text-muted-foreground max-w-lg">
+                    Nossa equipe elabora uma proposta de honorários sob medida para o tamanho e necessidades do seu portfólio. Sem tabela fixa, sem surpresas.
+                  </p>
+                </div>
+                <a
+                  href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20assessoria%20de%20marcas%20DG%20Advocacia."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2.5 shrink-0 w-full sm:w-auto h-12 px-8 rounded-xl bg-primary text-primary-foreground text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <svg viewBox="0 0 24 24" className="size-5 fill-current shrink-0" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  <span>Falar com Vendas</span>
+                </a>
+              </div>
+
             </div>
           )}
 

@@ -197,9 +197,15 @@ export async function POST(request: Request) {
       } else if (externalId && (externalId.includes("pack_80") || externalId.includes("office") || externalId.includes("scale"))) {
         marcasToAdd = 80;
         packName = "Radar RPI (80 Marcas)";
-      } else if (externalId && (externalId.includes("pack_200") || externalId.includes("elite") || externalId.includes("corporativo"))) {
-        marcasToAdd = 200;
-        packName = "Radar RPI (200 Marcas)";
+      } else if (paidAmount === 14700 || payload.amount === 147) {
+        marcasToAdd = 5;
+        packName = "Radar RPI (5 Marcas)";
+      } else if (paidAmount === 29700 || payload.amount === 297) {
+        marcasToAdd = 15;
+        packName = "Radar RPI (15 Marcas)";
+      } else if (paidAmount === 49700 || payload.amount === 497) {
+        marcasToAdd = 30;
+        packName = "Radar RPI (30 Marcas)";
       } else if (paidAmount === 4700 || payload.amount === 47) {
         marcasToAdd = 1;
         packName = "Radar RPI (1 Marca)";
