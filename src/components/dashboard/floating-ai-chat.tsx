@@ -11,7 +11,6 @@ import {
   Search,
   Shield,
   FileText,
-  Sparkles,
   ExternalLink,
   ChevronDown,
   Minimize2,
@@ -31,6 +30,83 @@ type Message = {
   };
   time: string;
 };
+
+// Helper para converter **negrito**, `código` e *itálico*
+function parseInlineMarkdown(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-bold text-foreground">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code key={i} className="font-mono text-[11px] bg-background/80 border border-border/70 px-1 py-0.5 rounded text-primary font-semibold">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+}
+
+// Componente para renderizar parágrafos, listas e cabeçalhos em Markdown limpo
+function FormattedMessageView({ content }: { content: string }) {
+  const lines = content.split("\n");
+
+  return (
+    <div className="space-y-1.5 leading-relaxed text-xs">
+      {lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed) return <div key={lineIdx} className="h-1" />;
+
+        // Títulos em Markdown (### ou ##)
+        if (trimmed.startsWith("### ")) {
+          return (
+            <h4 key={lineIdx} className="font-bold text-foreground text-xs pt-1">
+              {parseInlineMarkdown(trimmed.replace(/^###\s+/, ""))}
+            </h4>
+          );
+        }
+        if (trimmed.startsWith("## ")) {
+          return (
+            <h3 key={lineIdx} className="font-extrabold text-foreground text-xs pt-1.5 border-b border-border/40 pb-0.5">
+              {parseInlineMarkdown(trimmed.replace(/^##\s+/, ""))}
+            </h3>
+          );
+        }
+
+        // Listas com marcadores (* ou -)
+        if (trimmed.startsWith("* ") || trimmed.startsWith("- ")) {
+          return (
+            <div key={lineIdx} className="flex items-start gap-1.5 pl-1">
+              <span className="text-primary font-bold">•</span>
+              <span>{parseInlineMarkdown(trimmed.replace(/^[\*\-]\s+/, ""))}</span>
+            </div>
+          );
+        }
+
+        // Listas numeradas (1. 2.)
+        const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+        if (numMatch) {
+          return (
+            <div key={lineIdx} className="flex items-start gap-1.5 pl-1">
+              <span className="font-mono font-bold text-primary text-[11px]">{numMatch[1]}.</span>
+              <span>{parseInlineMarkdown(numMatch[2])}</span>
+            </div>
+          );
+        }
+
+        // Parágrafo padrão
+        return <p key={lineIdx}>{parseInlineMarkdown(line)}</p>;
+      })}
+    </div>
+  );
+}
 
 export function FloatingAiChat() {
   const [open, setOpen] = useState(false);
@@ -190,7 +266,7 @@ export function FloatingAiChat() {
                       : "bg-muted/60 border border-border/60 text-foreground rounded-tl-none space-y-2"
                   }`}
                 >
-                  <p className="whitespace-pre-line">{m.content}</p>
+                  <FormattedMessageView content={m.content} />
 
                   {/* Badge de Tool Function Acionada */}
                   {m.toolUsed && (
