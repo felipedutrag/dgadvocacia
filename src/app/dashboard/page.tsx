@@ -309,10 +309,11 @@ export default function DashboardPage() {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Realtime Pix Payment & Profile Listener
+  // Realtime Pix Payment, Webhook & Profile Listener
   useEffect(() => {
     if (!profile?.id) return;
 
+    // Escuta específica do usuário ou broadcast geral de pagamentos/webhooks
     const channel = supabase
       .channel(`user-sync-${profile.id}`)
       .on(
@@ -321,20 +322,33 @@ export default function DashboardPage() {
           event: "*",
           schema: "public",
           table: "payments",
-          filter: `user_id=eq.${profile.id}`,
         },
         (payload: any) => {
           const status = String(payload.new?.status || "").toUpperCase();
-          if (status === "PAID") {
+          const targetUserId = payload.new?.user_id;
+          
+          // Dispara se for para o usuário atual ou se for webhook de teste / admin
+          if (targetUserId === profile.id || profile.is_admin || !targetUserId) {
             setPixSuccess(true);
             setPixLoading(false);
+            const payer = payload.new?.payer_name || "Cliente / Teste";
+            const amountFormatted = payload.new?.amount_cents ? `R$ ${(payload.new.amount_cents / 100).toFixed(2)}` : "R$ 47,00";
+            
             setPaymentToast({
               show: true,
-              title: "Pagamento Confirmado!",
-              message: `O plano de proteção foi ativado com sucesso.`,
-              planName: payload.new?.plan_name || "Proteção de Marcas INPI",
-              time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+              title: "🔔 Webhook Recebido com Sucesso!",
+              message: `Transação: ${payload.new?.external_id || "Pix"} • ${payer} (${amountFormatted})`,
+              planName: payload.new?.plan_name || "Webhook / Pagamento Confirmado",
+              time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
             });
+
+            // Tocar som suave de notificação se disponível
+            try {
+              const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+              audio.volume = 0.5;
+              audio.play().catch(() => {});
+            } catch {}
+
             fetchProfile();
           }
         }
@@ -356,7 +370,7 @@ export default function DashboardPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [profile?.id, supabase, fetchProfile]);
+  }, [profile?.id, profile?.is_admin, supabase, fetchProfile]);
 
   // Polling ativo de status enquanto o modal Pix estiver aberto
   useEffect(() => {
@@ -1657,6 +1671,41 @@ export default function DashboardPage() {
 
         {/* ── CHAT FLUTUANTE COM IA & TOOL CALLING INPI ── */}
         <FloatingAiChat />
+
+        {/* ── TOAST NOTIFICAÇÃO REALTIME DE WEBHOOK / PAGAMENTO ── */}
+        {paymentToast?.show && (
+          <div className="fixed top-5 right-5 z-[9999] max-w-md w-[92vw] sm:w-[380px] animate-slide-in bg-card/95 border-2 border-emerald-500/60 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex items-start gap-3.5 select-none">
+            <div className="size-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shrink-0 mt-0.5 animate-bounce">
+              <CheckCircle2 className="size-5" />
+            </div>
+            <div className="flex-1 space-y-1 min-w-0">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-bold text-foreground truncate">{paymentToast.title}</span>
+                <span className="text-[10px] font-mono text-muted-foreground">{paymentToast.time}</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
+                {paymentToast.message}
+              </p>
+              <div className="pt-1 flex items-center justify-between text-[10px] font-mono">
+                <span className="text-primary font-bold">{paymentToast.planName}</span>
+                <button
+                  type="button"
+                  onClick={() => setPaymentToast(null)}
+                  className="text-muted-foreground hover:text-foreground font-sans font-bold underline cursor-pointer"
+                >
+                  Dispensar
+                </button>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setPaymentToast(null)}
+              className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors cursor-pointer shrink-0 -mr-1 -mt-1"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+        )}
       </div>
     );
   }
