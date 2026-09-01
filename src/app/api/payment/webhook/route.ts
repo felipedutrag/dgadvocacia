@@ -88,6 +88,9 @@ export async function POST(request: Request) {
 
     const supabase = createAdminClient();
 
+    let marcasToAdd = 3;
+    let packName = "Radar RPI (3 Marcas)";
+
     // 3. Processar Confirmação de Pagamento
     if (status === "COMPLETE" || status === "PAID" || status === "COMPLETED" || status === "payment.succeeded") {
       // 1. Verificar idempotência: se o pagamento já foi confirmado anteriormente, ignora retry
@@ -161,10 +164,6 @@ export async function POST(request: Request) {
           console.warn("Aviso ao registrar pagamento de teste:", insertErr);
         }
       }
-
-      // Determinar plano e limite de marcas adquirido
-      let marcasToAdd = 3;
-      let packName = "Radar RPI (3 Marcas)";
 
       const paidAmount = payload.amount ? Math.round(payload.amount * 100) : (paymentRecord?.amount_cents || 9700);
 
@@ -243,6 +242,8 @@ export async function POST(request: Request) {
           console.error("[WEBHOOK] Falha ao disparar e-mail de pagamento:", mailErr);
         }
       }
+    }
+
     // Emitir broadcast em tempo real para qualquer dashboard aberta
     try {
       const channel = supabase.channel("global-dashboard-events");
