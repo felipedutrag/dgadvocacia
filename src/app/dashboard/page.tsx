@@ -1036,8 +1036,8 @@ export default function DashboardPage() {
               </div>
             </header>
 
-            {/* ── Main Dashboard Content (Mais compacto e contido para escala 125%) ── */}
-            <div className="flex-1 p-4 sm:p-5 lg:p-6 max-w-4xl lg:max-w-5xl xl:max-w-[1120px] 2xl:max-w-[1180px] mx-auto w-full">
+            {/* ── Main Dashboard Content (Compacto em 125% e amplo em 100% Full HD) ── */}
+            <div className="flex-1 p-4 sm:p-6 lg:p-7 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-[1320px] mx-auto w-full">
               {/* TAB 1: CONSULTAS INPI & TELEMETRIA */}
               {(activeTab === "consultas-nome" || activeTab === "consultas-processo" || activeTab === "consultas-figura" || activeTab === "consultas") && (
                 <div className="space-y-6 animate-fade-in">
