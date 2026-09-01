@@ -3,13 +3,25 @@
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const domain = searchParams.get("domain");
+    const rawDomain = searchParams.get("domain");
 
-    if (!domain) {
+    if (!rawDomain) {
       return NextResponse.json({ error: "Domínio não informado" }, { status: 400 });
     }
 
-    const cleanName = domain.toLowerCase().trim().replace(/[^a-z0-9-]/g, "");
+    // Limpeza inteligente: remove http://, https://, www., e extensões (.com.br, .com, .net, etc.)
+    let cleanName = rawDomain
+      .toLowerCase()
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .replace(/^www\./i, "")
+      .split("/")[0] // pega só o host caso tenha caminho
+      .replace(/\.(com\.br|com|online|net|org|io|app|adv\.br|jur\.br)$/i, "") // remove extensões se o usuário digitou
+      .replace(/[^a-z0-9-]/g, ""); // remove caracteres especiais e acentos
+
+    if (!cleanName) {
+      return NextResponse.json({ error: "Nome de domínio inválido" }, { status: 400 });
+    }
 
     // 1. Checar Registro.br oficial via API pública RDAP / DNS
     let brAvailable = false;
