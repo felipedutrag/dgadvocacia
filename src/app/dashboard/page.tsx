@@ -1187,7 +1187,7 @@ export default function DashboardPage() {
                       </span>
                     </div>
                     <h3 className="text-xl font-bold text-foreground">
-                      Acompanhamento Completo
+                      Proteção Total de Marcas INPI
                     </h3>
                     <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
                       Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número na plataforma. A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, suporte a oposições e defesas administrativas.
