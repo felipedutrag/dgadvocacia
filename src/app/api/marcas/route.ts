@@ -26,7 +26,8 @@ export async function GET() {
 
     if (marcasErr) throw marcasErr;
 
-    const marcasLimit = profile?.marcas_limit ?? 1;
+    const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
+    const marcasLimit = isPaid ? (profile?.marcas_limit || 1) : 1;
 
     return NextResponse.json({
       marcas: marcas || [],
@@ -34,7 +35,7 @@ export async function GET() {
         total: marcasLimit,
         used: (marcas || []).length,
         remaining: Math.max(0, marcasLimit - (marcas || []).length),
-        plan: profile?.plan || "Gratuito (1 Marca)",
+        plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : "Gratuito (1 Marca)",
       }
     });
   } catch (error: any) {
@@ -77,22 +78,23 @@ export async function POST(request: Request) {
           .eq("user_id", user.id),
         supabase
           .from("profiles")
-          .select("marcas_limit, plan")
+          .select("marcas_limit, plan, plan_status")
           .eq("id", user.id)
           .maybeSingle(),
       ]);
 
-      const marcasLimit = profile?.marcas_limit ?? 1;
+      const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
+      const marcasLimit = isPaid ? (profile?.marcas_limit || 1) : 1;
       const currentActiveCount = count || 0;
 
       if (currentActiveCount >= marcasLimit) {
         return NextResponse.json(
           {
-            error: `Limite de marcas atingido. Seu plano atual permite acompanhar ${marcasLimit} marca(s) ativa(s). Exclua a marca atual para liberar sua vaga gratuita ou contrate o Radar RPI para monitorar mais marcas.`,
+            error: `Limite de marcas atingido. Seu plano atual permite acompanhar ${marcasLimit} marca(s) ativa(s). Exclua a marca atual para liberar sua vaga gratuita ou contrate a Proteção Total de Marcas para monitorar mais marcas.`,
             limitReached: true,
             currentLimit: marcasLimit,
             activeCount: currentActiveCount,
-            plan: profile?.plan || "Gratuito (1 Marca)",
+            plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : "Gratuito (1 Marca)",
           },
           { status: 403 }
         );

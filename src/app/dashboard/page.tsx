@@ -274,20 +274,24 @@ export default function DashboardPage() {
         console.error("Erro ao carregar perfil:", error);
       }
 
-      // Conta a quantidade real de marcas cadastradas pelo usuário
+      // Conta a quantidade real de marcas cadastradas pelo usuário na tabela 'marcas'
       const { count: marcasCount } = await supabase
-        .from("marcas_monitoradas")
+        .from("marcas")
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.id);
+
+      // Sem plano pago ativo contratado, o limite da conta é estritamente 1 marca
+      const isPaidPlan = data?.plan && data.plan !== "free" && !data.plan.toLowerCase().includes("gratuito") && data.plan_status === "active";
+      const effectiveLimit = isPaidPlan ? (data?.marcas_limit || 1) : 1;
 
       const userProfile: UserProfile = {
         id: user.id,
         name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Parceiro B2B",
         email: user.email || "",
         company_name: data?.company_name || "",
-        marcas_limit: data?.marcas_limit ?? 1,
-        marcas_used: marcasCount ?? data?.marcas_used ?? 0,
-        consultorias_creditos: data?.consultorias_creditos ?? 5,
+        marcas_limit: effectiveLimit,
+        marcas_used: marcasCount ?? 0,
+        consultorias_creditos: isPaidPlan ? (data?.consultorias_creditos ?? 5) : 1,
         is_admin: data?.is_admin ?? false,
       };
 
