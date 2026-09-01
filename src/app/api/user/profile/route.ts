@@ -24,7 +24,7 @@ export async function GET() {
           email: user.email,
           name: user.user_metadata?.name || "Parceiro B2B",
           company_name: user.user_metadata?.company_name || "",
-          marcas_limit: 10,
+          marcas_limit: 1,
           marcas_used: 0,
           consultorias_creditos: 5,
           is_admin: false,

@@ -274,13 +274,19 @@ export default function DashboardPage() {
         console.error("Erro ao carregar perfil:", error);
       }
 
+      // Conta a quantidade real de marcas cadastradas pelo usuário
+      const { count: marcasCount } = await supabase
+        .from("marcas_monitoradas")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id);
+
       const userProfile: UserProfile = {
         id: user.id,
         name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Parceiro B2B",
         email: user.email || "",
         company_name: data?.company_name || "",
-        marcas_limit: data?.marcas_limit ?? 10,
-        marcas_used: data?.marcas_used ?? 0,
+        marcas_limit: data?.marcas_limit ?? 1,
+        marcas_used: marcasCount ?? data?.marcas_used ?? 0,
         consultorias_creditos: data?.consultorias_creditos ?? 5,
         is_admin: data?.is_admin ?? false,
       };
@@ -1168,8 +1174,12 @@ export default function DashboardPage() {
                       Monitore a carteira de marcas da sua empresa ou contrate assessoria jurídica sob demanda com honorários exclusivos para parceiros.
                     </p>
                   </div>
-                  <div className="text-xs font-mono bg-muted border border-border/60 px-3 py-1.5 rounded-xl self-start sm:self-auto">
-                    Limite Atual: <span className="font-bold text-primary">{profile?.marcas_limit ?? 1}</span> {(profile?.marcas_limit ?? 1) === 1 ? "marca" : "marcas"}
+                  <div className="text-xs font-mono bg-muted/60 border border-border/70 px-3 py-1.5 rounded-xl self-start sm:self-auto flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Monitorando:</span>
+                    <span className="font-bold text-foreground">{profile?.marcas_used ?? 0}</span>
+                    <span className="text-muted-foreground">/</span>
+                    <span className="font-bold text-primary">{profile?.marcas_limit ?? 1}</span>
+                    <span className="text-muted-foreground">{(profile?.marcas_limit ?? 1) === 1 ? "marca" : "marcas"}</span>
                   </div>
                 </div>
               </div>
