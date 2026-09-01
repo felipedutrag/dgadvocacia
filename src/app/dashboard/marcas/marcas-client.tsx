@@ -436,19 +436,7 @@ export function MarcasClient() {
             Insira o número do processo para monitoramento contínuo na RPI e controle automático de prazos e despachos.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-2 space-y-3">
-          {isAtLimit && (
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2.5">
-              <ShieldAlert className="size-4 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <span className="font-bold">Limite de acompanhamento ativo atingido ({marcas.length}/{quota.total})</span>
-                <p className="text-[11px] opacity-90">
-                  Para monitorar processos adicionais simultaneamente, acesse a aba <strong>Planos</strong> e contrate mais vagas no Radar RPI.
-                </p>
-              </div>
-            </div>
-          )}
-
+        <CardContent className="pt-2">
           <form onSubmit={handleAddMarca} className="flex flex-col sm:flex-row gap-3">
             <Input
               placeholder="Ex: 934821902 ou 790330172"
