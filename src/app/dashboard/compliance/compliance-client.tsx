@@ -351,6 +351,26 @@ export function ComplianceClient() {
         </div>
       </Card>
 
+      {/* ── CARD DE AGENDAMENTO / CONSULTORIA DE COMPLIANCE & LGPD ── */}
+      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h4 className="text-xs font-bold text-foreground">Precisa de Adequação LGPD Completa, DPO Dedicado ou Auditoria ANPD?</h4>
+            <p className="text-[11px] text-muted-foreground">
+              Nossa equipe de advogados especialistas em Proteção de Dados e Governança Corporativa estrutura o programa de conformidade sob medida para sua empresa.
+            </p>
+          </div>
+          <Button
+            type="button"
+            onClick={() => handleOpenModalWithService()}
+            className="inline-flex items-center gap-2 text-xs font-medium px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm shrink-0 h-10"
+          >
+            <Send className="size-3.5" />
+            <span>Solicitar Diagnóstico de Compliance</span>
+          </Button>
+        </div>
+      </Card>
+
       {/* ── MODAL / FORMULÁRIO RÁPIDO DE LGPD (RESEND) ── */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
