@@ -970,23 +970,27 @@ export function ConsultasClient({
 
       {/* ── MODAL / DETALHE DO PROCESSO SELECIONADO (RAIO-X) ── */}
       {activeSubTab === "processo" && selectedProcesso && (
-        <div className="rounded-2xl border-2 border-primary/40 bg-card p-6 shadow-xl space-y-6 relative animate-slide-up">
-          <div className="flex items-start justify-between border-b border-border/60 pb-4 gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-xs font-extrabold bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-md">
+        <div className="rounded-3xl border border-primary/30 bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-2xl p-6 sm:p-8 shadow-2xl shadow-primary/5 space-y-6 relative animate-slide-up overflow-hidden">
+          {/* Luz de fundo sutil */}
+          <div className="pointer-events-none absolute -top-12 -right-12 size-48 rounded-full bg-primary/10 blur-3xl" />
+
+          {/* Cabeçalho do Processo */}
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between border-b border-border/60 pb-5 gap-4">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-extrabold bg-primary/10 border border-primary/25 text-primary px-3 py-1 rounded-lg tracking-wider">
                   Processo nº {selectedProcesso.numeroProcesso}
                 </span>
-                <span className={`inline-flex items-center font-mono text-[10px] px-2.5 py-0.5 rounded-full border ${getStatusBadge(selectedProcesso.situacao)}`}>
+                <span className={`inline-flex items-center font-mono text-[11px] font-bold px-3 py-0.5 rounded-full border shadow-xs ${getStatusBadge(selectedProcesso.situacao)}`}>
                   {selectedProcesso.situacao}
                 </span>
               </div>
-              <h2 className="text-xl font-extrabold text-foreground tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
                 {selectedProcesso.marca}
               </h2>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0 self-start">
               <Button
                 variant="outline"
                 size="sm"
@@ -998,7 +1002,7 @@ export function ConsultasClient({
                   classe: selectedProcesso.classes?.[0]?.classe
                 })}
                 disabled={trackingLoading === selectedProcesso.numeroProcesso}
-                className="text-xs font-bold h-8 gap-1.5 bg-primary/10 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground"
+                className="text-xs font-bold h-9 px-4 gap-1.5 bg-primary/10 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all rounded-xl cursor-pointer"
               >
                 {trackingLoading === selectedProcesso.numeroProcesso ? (
                   <Loader2 className="size-3.5 animate-spin" />
@@ -1012,7 +1016,8 @@ export function ConsultasClient({
                 variant="ghost"
                 size="icon-xs"
                 onClick={() => setSelectedProcesso(null)}
-                className="size-8 rounded-lg text-muted-foreground hover:text-foreground"
+                className="size-9 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                title="Fechar detalhes"
               >
                 <X className="size-4" />
               </Button>
@@ -1020,12 +1025,13 @@ export function ConsultasClient({
           </div>
 
           {/* ── LINHA DO TEMPO VISUAL DO TRÂMITE NO INPI ── */}
-          <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold uppercase text-muted-foreground">
-                Linha do Tempo Oficial &bull; Trâmite Administrativo INPI
+          <div className="p-5 rounded-2xl bg-card/40 border border-border/70 backdrop-blur-sm space-y-4">
+            <div className="flex items-center justify-between gap-2 border-b border-border/40 pb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Clock className="size-3.5 text-primary" />
+                Linha do Tempo Oficial • Trâmite Administrativo INPI
               </span>
-              <span className="text-[10px] font-mono text-primary font-bold">
+              <span className="text-[11px] font-mono text-primary font-bold bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-md">
                 {selectedProcesso.dataDeposito ? `Depositado em ${selectedProcesso.dataDeposito}` : "Em Processamento"}
               </span>
             </div>
@@ -1084,7 +1090,7 @@ export function ConsultasClient({
               ];
 
               return (
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-center">
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-1 text-center">
                   {steps.map((step) => {
                     const isCompleted = step.num < currentStep;
                     const isCurrent = step.num === currentStep;
@@ -1101,30 +1107,30 @@ export function ConsultasClient({
                     return (
                       <div
                         key={step.num}
-                        className={`p-2.5 rounded-xl border transition-all space-y-1 ${
+                        className={`p-3 rounded-2xl border transition-all space-y-1.5 flex flex-col justify-between ${
                           isCompleted
-                            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
+                            ? "border-emerald-500/40 bg-emerald-500/[0.04] text-emerald-500"
                             : isCurrent
-                            ? "border-primary/80 bg-primary/15 shadow-sm shadow-primary/10 ring-1 ring-primary/40"
-                            : "border-border/50 bg-background/30 opacity-60"
+                            ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/10 ring-1 ring-primary/40"
+                            : "border-border/50 bg-background/20 opacity-50"
                         }`}
                       >
                         <div
-                          className={`size-5 rounded-full text-[10px] font-bold mx-auto flex items-center justify-center ${
+                          className={`size-6 rounded-full text-xs font-bold mx-auto flex items-center justify-center ${
                             isCompleted
-                              ? "bg-emerald-500 text-black font-bold"
+                              ? "bg-emerald-500 text-black font-extrabold"
                               : isCurrent
-                              ? "bg-primary text-primary-foreground font-extrabold animate-pulse"
+                              ? "bg-primary text-primary-foreground font-extrabold shadow-sm"
                               : "bg-muted text-muted-foreground"
                           }`}
                         >
                           {isCompleted ? "✓" : step.num}
                         </div>
-                        <div className={`text-[11px] font-bold ${isCurrent ? "text-primary" : "text-foreground"}`}>
+                        <div className={`text-xs font-bold ${isCurrent ? "text-primary" : "text-foreground"}`}>
                           {step.title}
                         </div>
                         <div
-                          className={`text-[9px] font-mono font-bold ${
+                          className={`text-[10px] font-mono font-bold ${
                             isCompleted
                               ? "text-emerald-500"
                               : isCurrent
@@ -1142,57 +1148,63 @@ export function ConsultasClient({
             })()}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* Left Info Column */}
+          {/* Grid Principal de Informações */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+            {/* Dados do Processo */}
             <div className="md:col-span-8 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 rounded-xl border border-border/70 bg-card/40">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Titular</div>
-                  <div className="font-bold text-foreground">{selectedProcesso.titular || "Não informado"}</div>
+                <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm space-y-1">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">Titular</div>
+                  <div className="font-bold text-foreground text-sm leading-snug">{selectedProcesso.titular || "Não informado"}</div>
                 </div>
 
-                <div className="p-3 rounded-xl border border-border/70 bg-card/40">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Procurador / Advogado</div>
-                  <div className="font-bold text-foreground">{selectedProcesso.procurador || "Sem procurador"}</div>
+                <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm space-y-1">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">Procurador / Advogado</div>
+                  <div className="font-bold text-foreground text-sm leading-snug">{selectedProcesso.procurador || "Sem procurador constituído"}</div>
                 </div>
 
-                <div className="p-3 rounded-xl border border-border/70 bg-card/40">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Apresentação / Natureza</div>
-                  <div className="font-semibold text-foreground">
-                    {selectedProcesso.apresentacao || "Nominativa"} • {selectedProcesso.natureza || "De Produto/Serviço"}
+                <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm space-y-1">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">Apresentação / Natureza</div>
+                  <div className="font-semibold text-foreground leading-snug">
+                    {selectedProcesso.apresentacao || "Nominativa"} • {selectedProcesso.natureza || "De Produto / Serviço"}
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl border border-border/70 bg-card/40">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Prazos & Datas</div>
-                  <div className="font-mono text-[11px] text-foreground">
-                    Depósito: <strong>{selectedProcesso.dataDeposito || "N/A"}</strong>
-                    {selectedProcesso.dataVigencia && <span> • Vigência: <strong>{selectedProcesso.dataVigencia}</strong></span>}
+                <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm space-y-1">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">Prazos & Vigência</div>
+                  <div className="font-mono text-xs text-foreground">
+                    Depósito: <strong className="text-primary">{selectedProcesso.dataDeposito || "N/A"}</strong>
+                    {selectedProcesso.dataVigencia && (
+                      <span className="block text-[11px] text-muted-foreground mt-0.5">
+                        Vigência Decenal: <strong className="text-emerald-500">{selectedProcesso.dataVigencia}</strong>
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Classes & Especificações */}
               {selectedProcesso.classes && selectedProcesso.classes.length > 0 && (
-                <div className="p-3.5 rounded-xl border border-border/70 bg-card/40 space-y-2">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">
+                <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm space-y-2.5">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold flex items-center gap-1.5">
+                    <Layers className="size-3.5 text-primary" />
                     Classificação de Nice (NCL) & Produtos / Serviços
                   </div>
                   {selectedProcesso.classes.map((cls, idx) => (
-                    <div key={idx} className="text-xs">
-                      <span className="font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20 mr-2">
+                    <div key={idx} className="text-xs pt-1 flex items-start gap-2">
+                      <span className="font-mono font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/20 shrink-0">
                         Classe {cls.classe} {cls.subClasse ? `(${cls.subClasse})` : ""}
                       </span>
-                      <span className="text-muted-foreground leading-relaxed">{cls.especificacao}</span>
+                      <span className="text-muted-foreground leading-relaxed text-[11.5px]">{cls.especificacao}</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Right Logo Column */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-xl border border-border/70 bg-muted/20 text-center">
-              <div className="size-44 rounded-xl border border-border/60 bg-background flex flex-col items-center justify-center overflow-hidden p-3 shadow-inner">
+            {/* Imagem / Logo Oficial */}
+            <div className="md:col-span-4 flex flex-col items-center justify-center p-5 rounded-2xl border border-border/70 bg-card/40 backdrop-blur-sm text-center">
+              <div className="w-full aspect-square max-w-[220px] rounded-2xl border border-border/60 bg-background/80 flex flex-col items-center justify-center overflow-hidden p-4 shadow-inner">
                 {selectedProcesso.logoUrl ? (
                   <img
                     src={selectedProcesso.logoUrl}
@@ -1203,40 +1215,41 @@ export function ConsultasClient({
                     }}
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center text-center p-3">
-                    <span className="font-mono text-xs uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-md shadow-xs">
+                  <div className="flex flex-col items-center justify-center text-center p-3 space-y-2">
+                    <span className="font-mono text-xs uppercase font-extrabold text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-xl shadow-xs">
                       Processo Nominativo
                     </span>
+                    <span className="text-[10px] text-muted-foreground">Sem logotipo figurativo</span>
                   </div>
                 )}
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground mt-2">
+              <span className="font-mono text-[10px] text-muted-foreground mt-3 font-semibold">
                 {selectedProcesso.logoUrl ? "Logotipo Oficial INPI" : "Apresentação Oficial INPI"}
               </span>
             </div>
           </div>
 
           {/* Timeline de Despachos da RPI */}
-          <div className="space-y-3 pt-2 border-t border-border/60">
+          <div className="space-y-3 pt-4 border-t border-border/60">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Clock className="size-4 text-primary" />
+              <FileText className="size-4 text-primary" />
               Histórico de Despachos & Publicações na RPI ({selectedProcesso.despachos?.length || 0})
             </h3>
 
             {(!selectedProcesso.despachos || selectedProcesso.despachos.length === 0) ? (
               <p className="text-xs text-muted-foreground">Nenhum despacho publicado na RPI para este processo.</p>
             ) : (
-              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
                 {selectedProcesso.despachos.map((desp, dIdx) => (
-                  <div key={dIdx} className="flex items-start gap-3 p-3 rounded-lg border border-border/60 bg-muted/20 text-xs">
-                    <div className="font-mono text-[11px] font-bold bg-muted px-2 py-0.5 rounded border border-border/60 shrink-0">
+                  <div key={dIdx} className="flex items-start gap-3 p-3.5 rounded-xl border border-border/70 bg-card/50 hover:bg-card/80 transition-colors text-xs">
+                    <div className="font-mono text-[11px] font-extrabold bg-primary/10 border border-primary/20 text-primary px-2.5 py-1 rounded-lg shrink-0">
                       RPI {desp.rpi}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 space-y-0.5">
                       <div className="font-bold text-foreground">{desp.codigoDespacho}</div>
-                      {desp.complemento && <p className="text-muted-foreground mt-0.5">{desp.complemento}</p>}
+                      {desp.complemento && <p className="text-muted-foreground text-[11.5px] leading-relaxed">{desp.complemento}</p>}
                     </div>
-                    <div className="font-mono text-[10px] text-muted-foreground shrink-0">
+                    <div className="font-mono text-[10px] text-muted-foreground shrink-0 font-medium pt-0.5">
                       {desp.dataRpi}
                     </div>
                   </div>
