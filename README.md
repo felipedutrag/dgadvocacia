@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/Supabase_Postgres_17-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase Postgres 17" />
   <img src="https://img.shields.io/badge/Gemini_2.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
   <img src="https://img.shields.io/badge/GGPIX_API-32BCAD?style=for-the-badge&logo=pix&logoColor=white" alt="Pix Instantâneo" />
-  <img src="https://img.shields.io/badge/OAB_Compliance-Provimento_205%2F21-gold?style=for-the-badge" alt="OAB Compliance" />
+  <img src="https://img.shields.io/badge/OAB_Compliance-OAB%2FSP_459.254-gold?style=for-the-badge" alt="OAB Compliance" />
 </p>
 
 ---
@@ -28,12 +28,13 @@
 ## 📋 Sumário Executivo
 
 - [A Proposta de Valor B2B](#-a-proposta-de-valor-b2b)
+- [Arsenal Tecnológico do Ecossistema](#-arsenal-tecnológico-do-ecossistema)
+- [IA Ativa (Dra. Sofia) & Tool Calling INPI](#-ia-ativa-dra-sofia--tool-calling-inpi)
 - [Pilares da Parceria Institucional](#-pilares-da-parceria-institucional)
 - [Dashboard & Telemetria do Parceiro](#-dashboard--telemetria-do-parceiro)
 - [Esteira Operacional de Blindagem (4 Fases)](#-esteira-operacional-de-blindagem-4-fases)
 - [Arquitetura de Banco de Dados (Supabase)](#-arquitetura-de-banco-de-dados-supabase)
 - [Stack Tecnológica](#-stack-tecnológica)
-- [Rotas de API (Endpoints)](#-rotas-de-api-endpoints)
 - [Conformidade Ética & Blindagem OAB](#-conformidade-ética--blindagem-oab)
 - [Instalação e Configuração](#-instalação-e-configuração)
 
@@ -41,14 +42,37 @@
 
 ## 🏛️ A Proposta de Valor B2B
 
-A **DG Advocacia** (patronada pelo **Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925**) atua como o **braço técnico e backend jurídico institucional** de empresas que intermediam ou criam marcas comerciais no Brasil.
+A **DG Advocacia** (patronada pelo **Dr. Felipe Dutra Gonçalves — OAB/SP nº 459.254**) atua como o **braço técnico e backend jurídico institucional** de empresas que intermediam ou criam marcas comerciais no Brasil.
 
 > *"Sua empresa prospecta e atende os clientes. Nossa banca jurídica assume toda a esteira processual e estratégica no INPI com o apoio de uma dashboard inteligente em tempo real."*
 
 ### 💼 Para quem foi desenhado:
-1. **Agências de Branding & Naming:** Blindagem jurídica imediata dos nomes criados antes do lançamento.
+1. **Agências de Branding & Naming:** Blindagem jurídica imediata dos nomes criados antes do lançamento com validação no INPI e domínios.
 2. **Empresas de Registro de Marcas:** Backend sob demanda para elaboração de defesas, oposições e recursos complexos com assinatura de advogado.
-3. **Escritórios de Contabilidade & Consultorias:** Agregação de novo centro de receita com proteção de ativos dos seus clientes PJ.
+3. **Escritórios de Contabilidade & Consultorias:** Agregação de novo centro de receita recorrente com monitoramento de marcas dos clientes PJ.
+
+---
+
+## 🛠️ Arsenal Tecnológico do Ecossistema
+
+A suíte agora conta com ferramentas dedicadas e integradas diretamente à base federal:
+
+1. **💡 Gerador Estratégico de Nomes (Naming IA):** Criação de nomes comerciais foneticamente distintivos com verificação automática de conflitos no INPI com base no Art. 124 da LPI.
+2. **🎨 Criador de Logomarcas & Identidade Visual:** Geração de marcas mistas e monogramas minimalistas aptos para depósito no INPI.
+3. **📑 Enquadrador Inteligente Nice (NCL):** Mapeamento de atividades comerciais nas 45 classes de Nice com termos pré-aprovados pelo INPI.
+4. **🌐 Checador de Domínios & Redes Sociais:** Verificação em tempo real via RDAP oficial do Registro.br (`.com.br`), DNS over HTTPS (`.com`) e handles sociais.
+5. **📄 Parecer Técnico de Registrabilidade em PDF:** Emissão instantânea de laudo assinado pelo Dr. Felipe Dutra Gonçalves para impressão e apresentação ao cliente final.
+6. **🎯 Command Palette (`⌘ + K`):** Sistema de atalhos rápidos de navegação e busca de processos por número ou marca.
+
+---
+
+## 🤖 IA Ativa (Dra. Sofia) & Tool Calling INPI
+
+O ecossistema conta com a **Dra. Sofia**, agente de IA especializada em Propriedade Intelectual equipada com **Tool Calling nativo** da base de dados do INPI:
+
+- **Modo Consultivo B2B (Landing Page):** Tira dúvidas de visitantes, demonstra os recursos da suíte e incentiva a criação de conta.
+- **Modo Técnico Operacional (Dashboard):** Executa consultas em tempo real (`consultarMarcaINPI`, `obterRaioXProcesso`, `verificarDominioWeb`) e interpreta a Lei nº 9.279/1996.
+- **Renderizador de Markdown:** Tipografia sem ruídos, formatação limpa de negrito, listas com marcadores e divisores de seção.
 
 ---
 
@@ -67,9 +91,9 @@ A **DG Advocacia** (patronada pelo **Dr. Felipe Dutra Gonçalves — OAB/MG nº 
 ```
 
 1. **Gestão Descomplicada por Protocolo:** Basta lançar o número do pedido no painel do parceiro para que a esteira seja sincronizada em segundos direto da base oficial do INPI.
-2. **Inteligência Preditiva (MarcaShield AI):** Triagem e cálculo probabilístico de colidência na base de marcas registradas com base no Art. 124 da LPI.
+2. **Inteligência Preditiva:** Triagem e cálculo probabilístico de colidência na base de marcas registradas.
 3. **Radar RPI Automático:** Monitoramento semanal contínuo de publicações, prazos de exigência e tentativas de cópia por terceiros.
-4. **Backend Jurídico Completo:** Elaboração de peças técnicas personalizadas (Oposições, Manifestações, Cumprimento de Exigências, Recursos ao Presidente do INPI e Ações de Nulidade).
+4. **Backend Jurídico Completo:** Elaboração de peças técnicas personalizadas (Oposições, Manifestações, Cumprimento de Exigências e Recursos ao Presidente do INPI).
 
 ---
 
@@ -77,9 +101,10 @@ A **DG Advocacia** (patronada pelo **Dr. Felipe Dutra Gonçalves — OAB/MG nº 
 
 A plataforma oferece uma interface corporativa em padrão *Dark Luxury* com telemetria em tempo real:
 
-- **Curva Semanal de Varredura da RPI:** Acompanhamento do volume de despachos processados pela esteira de monitoramento.
-- **Score de Blindagem da Carteira:** Indicadores visuais de segurança jurídica dos ativos em trâmite (Processos limpos, Em exame formal e Concessões decenais).
-- **Controle de Prazos Fatais:** Alertas regressivos de 60 dias para oposição e manifestação conforme a Lei nº 9.279/1996.
+- **Calculadora Interativa de Carteira (Radar RPI):** Ajuste dinâmico de volume de marcas monitoradas com precificação automática.
+- **Score de Blindagem da Carteira:** Indicadores visuais de segurança jurídica dos ativos em trâmite.
+- **Linha do Tempo Visual do Trâmite INPI:** 5 etapas sincronizadas (Depósito ➔ Exame Formal ➔ Publicação RPI 60d ➔ Exame de Mérito ➔ Concessão Decenal).
+- **Controle de Prazos Fatais:** Alertas regressivos de 60 dias para oposição e manifestação.
 
 ---
 
@@ -99,8 +124,6 @@ A plataforma oferece uma interface corporativa em padrão *Dark Luxury* com tele
 
 ## 🗄️ Arquitetura de Banco de Dados (Supabase)
 
-O banco de dados foi saneado e estruturado exclusivamente em torno de 4 entidades de alta performance com **Row Level Security (RLS)** ativo:
-
 ```
 ┌─────────────────────────┐          ┌─────────────────────────┐          ┌─────────────────────────┐
 │        profiles         │          │         marcas          │ ◄─────── │   movimentacoes_inpi    │
@@ -118,7 +141,7 @@ O banco de dados foi saneado e estruturado exclusivamente em torno de 4 entidade
 - **`profiles`:** Gestão de parceiros, empresas, limites de processos na carteira (`marcas_limit`), créditos de IA e flag de administração (`is_admin`).
 - **`marcas`:** Cadastro central de protocolos do INPI, números de 9 dígitos, titulares, classes Nice e status IPAS.
 - **`movimentacoes_inpi`:** Eventos da RPI, códigos de despacho, prazos legais e status de notificação.
-- **`payments`:** Registros de liquidação instantânea via Pix para ativação de pacotes e contratação de peças técnicas avulsas.
+- **`payments`:** Registros de liquidação instantânea via Pix para ativação de planos e contratação de peças técnicas avulsas.
 
 ---
 
@@ -128,10 +151,10 @@ O banco de dados foi saneado e estruturado exclusivamente em torno de 4 entidade
 |---|---|---|
 | **Framework Web** | Next.js 16 (Turbopack + React 19) | Arquitetura Server/Client de alto desempenho |
 | **Tipagem** | TypeScript 5 | Tipagem estrita de ponta a ponta |
-| **Design System** | Tailwind CSS v4 + Shadcn UI | Interface Dark Luxury responsiva com suporte adaptativo |
+| **Design System** | Tailwind CSS v4 + Shadcn UI | Interface Dark Luxury responsiva |
 | **Banco de Dados** | Supabase (Postgres 17) | RLS, Triggers PL/pgSQL e Webhooks |
-| **Inteligência Artificial** | Google Gemini 2.5 Flash + Groq Llama 3.3 | Análise e diagnóstico de colidências |
-| **Parser INPI** | INPI Service (Cheerio + Puppeteer) | Motor autenticado de consulta e extração na base federal |
+| **Inteligência Artificial** | Google Gemini 2.5 Flash + Groq Llama 3.3 | Tool Calling INPI e diagnóstico de colidências |
+| **Parser INPI** | INPI Service (Cheerio + Puppeteer) | Motor de consulta e extração na base federal |
 | **Gateway Pix** | GGPIX API | Checkout e liquidação instantânea via Pix |
 | **E-mails Transacionais** | Resend API | Notificações de onboarding e relatórios |
 
@@ -187,7 +210,7 @@ GGPIX_BEARER_TOKEN=seu-token-bearer
 RESEND_API_KEY=sua-chave-resend
 ```
 
-### 4. Build e Execução
+### 4. Execução
 ```bash
 # Desenvolvimento
 npm run dev
@@ -201,6 +224,6 @@ npm run start
 
 <p align="center">
   <strong>DG Advocacia — Excelência Jurídica & Tecnologia em Propriedade Intelectual</strong><br/>
-  Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925<br/>
+  Dr. Felipe Dutra Gonçalves — OAB/SP nº 459.254<br/>
   © 2026 DG Advocacia. Todos os direitos reservados.
 </p>
