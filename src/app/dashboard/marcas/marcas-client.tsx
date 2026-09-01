@@ -371,36 +371,6 @@ export function MarcasClient() {
 
   return (
     <div className="space-y-6">
-      {/* ── Status de Capacidade e Vagas de Monitoramento ── */}
-      <div className="p-4 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Shield className="size-4 text-primary" />
-            <span className="text-xs font-bold text-foreground">
-              Vagas de Acompanhamento no Radar RPI
-            </span>
-            <span className="text-[10px] font-mono font-bold bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full">
-              {quota.plan}
-            </span>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Acompanhamento contínuo e vigilância semanal de publicações e despachos na Revista da Propriedade Industrial (RPI).
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
-          <div className="text-right">
-            <div className="text-[10px] font-mono uppercase text-muted-foreground">Em Uso</div>
-            <div className="text-sm font-extrabold font-mono text-foreground">
-              <span className={isAtLimit ? "text-amber-500" : "text-emerald-500"}>
-                {marcas.length}
-              </span>{" "}
-              / {quota.total} {quota.total === 1 ? "Marca" : "Marcas"}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Feedback Alerts */}
       {errorMsg && (
         <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
@@ -426,13 +396,25 @@ export function MarcasClient() {
         </div>
       )}
 
-      {/* Card de Cadastro do Protocolo do Pedido */}
+      {/* Card de Cadastro do Protocolo do Pedido com Indicador de Em Uso */}
       <Card className="bg-card/60 backdrop-blur-md border-border/70">
         <CardHeader className="pb-3 border-b border-border/60">
-          <CardTitle className="text-sm font-bold flex items-center gap-2">
-            <Plus className="size-4 text-primary" />
-            Acompanhar Processo no Radar RPI
-          </CardTitle>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <CardTitle className="text-sm font-bold flex items-center gap-2">
+              <Plus className="size-4 text-primary" />
+              <span>Acompanhar Processo no Radar RPI</span>
+            </CardTitle>
+
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono bg-muted/60 border border-border/70 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+              <span className="text-muted-foreground">Em uso:</span>
+              <span className={`font-bold ${isAtLimit ? "text-amber-500" : "text-emerald-500"}`}>
+                {marcas.length}
+              </span>
+              <span className="text-muted-foreground">/</span>
+              <span className="font-bold text-foreground">{quota.total}</span>
+              <span className="text-muted-foreground">{quota.total === 1 ? "marca" : "marcas"}</span>
+            </div>
+          </div>
           <CardDescription className="text-xs">
             Insira o número do processo para monitoramento contínuo na RPI e controle automático de prazos e despachos.
           </CardDescription>
