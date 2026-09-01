@@ -240,76 +240,23 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header com Seletor de Sub-Abas */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-border/60 pb-4">
+      {/* Header Limpo e Padronizado */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-4">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <span>Central IA de Naming, Proteção & Ativos Marcários</span>
-            <span className="font-mono text-[10px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2.5 py-0.5 rounded-full font-bold">
-              Suíte Jurídica & IA
-            </span>
+            {activeSubTab === "naming" && <span>Gerador de Nomes Marcários</span>}
+            {activeSubTab === "logos" && <span>Criador de Logomarcas & Identidade Visual</span>}
+            {activeSubTab === "nice" && <span>Enquadrador Inteligente de Classes Nice</span>}
+            {activeSubTab === "domains" && <span>Checador de Domínios & Redes Sociais</span>}
+            {activeSubTab === "cease_desist" && <span>Gerador de Notificação Extrajudicial</span>}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Crie marcas com distintividade, enquadre classes Nice, gere logomarcas, verifique domínios e redija notificações extrajudiciais.
+            {activeSubTab === "naming" && "Criação de marcas nominativas com alta distintividade perante o Art. 124 da LPI."}
+            {activeSubTab === "logos" && "Geração de conceitos de marca mista e elementos figurativos em alta definição."}
+            {activeSubTab === "nice" && "Mapeamento oficial das 45 classes de Nice e especificações pré-aprovadas no INPI."}
+            {activeSubTab === "domains" && "Verificação instantânea no Registro.br (.com.br), .com e canais sociais."}
+            {activeSubTab === "cease_desist" && "Minuta jurídica fundamentada nos Arts. 129, 189 e 209 da Lei nº 9.279/96."}
           </p>
-        </div>
-
-        {/* 5 Ferramentas B2B */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-muted rounded-xl border border-border/60">
-          <Button
-            type="button"
-            variant={activeSubTab === "naming" ? "default" : "ghost"}
-            size="xs"
-            onClick={() => setActiveSubTab("naming")}
-            className="text-xs font-bold h-8 gap-1.5"
-          >
-            <Lightbulb className="size-3.5" />
-            <span>Naming</span>
-          </Button>
-
-          <Button
-            type="button"
-            variant={activeSubTab === "logos" ? "default" : "ghost"}
-            size="xs"
-            onClick={() => setActiveSubTab("logos")}
-            className="text-xs font-bold h-8 gap-1.5"
-          >
-            <Palette className="size-3.5" />
-            <span>Logomarcas</span>
-          </Button>
-
-          <Button
-            type="button"
-            variant={activeSubTab === "nice" ? "default" : "ghost"}
-            size="xs"
-            onClick={() => setActiveSubTab("nice")}
-            className="text-xs font-bold h-8 gap-1.5"
-          >
-            <Layers className="size-3.5" />
-            <span>Enquadrador Nice</span>
-          </Button>
-
-          <Button
-            type="button"
-            variant={activeSubTab === "domains" ? "default" : "ghost"}
-            size="xs"
-            onClick={() => setActiveSubTab("domains")}
-            className="text-xs font-bold h-8 gap-1.5"
-          >
-            <Globe className="size-3.5" />
-            <span>Domínios & @</span>
-          </Button>
-
-          <Button
-            type="button"
-            variant={activeSubTab === "cease_desist" ? "default" : "ghost"}
-            size="xs"
-            onClick={() => setActiveSubTab("cease_desist")}
-            className="text-xs font-bold h-8 gap-1.5"
-          >
-            <ShieldAlert className="size-3.5" />
-            <span>Notificação Extrajudicial</span>
-          </Button>
         </div>
       </div>
 

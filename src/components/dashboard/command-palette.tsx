@@ -144,7 +144,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Lightbulb className="size-4 text-amber-500" />
+              <Lightbulb className="size-4 text-muted-foreground" />
               <span>Gerador de Nomes Marcários (LPI)</span>
             </div>
             <kbd className="font-mono text-[10px] text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
@@ -157,7 +157,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Palette className="size-4 text-amber-500" />
+              <Palette className="size-4 text-muted-foreground" />
               <span>Criador de Logomarcas & Identidade Visual</span>
             </div>
           </button>
@@ -167,7 +167,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Layers className="size-4 text-primary" />
+              <Layers className="size-4 text-muted-foreground" />
               <span>Enquadrador Inteligente de Classes Nice</span>
             </div>
           </button>
@@ -177,7 +177,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Globe className="size-4 text-primary" />
+              <Globe className="size-4 text-muted-foreground" />
               <span>Checador de Domínios (.com.br) & Redes Sociais</span>
             </div>
           </button>
@@ -187,7 +187,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <ShieldAlert className="size-4 text-rose-500" />
+              <ShieldAlert className="size-4 text-muted-foreground" />
               <span>Gerador de Notificação Extrajudicial</span>
             </div>
           </button>
@@ -197,7 +197,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Shield className="size-4 text-primary" />
+              <Shield className="size-4 text-muted-foreground" />
               <span>Radar RPI & Monitoramento de Carteira</span>
             </div>
             <kbd className="font-mono text-[10px] text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
@@ -210,7 +210,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Crown className="size-4 text-amber-500" />
+              <Crown className="size-4 text-muted-foreground" />
               <span>Calculadora de Carteira & Serviços B2B</span>
             </div>
             <kbd className="font-mono text-[10px] text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
