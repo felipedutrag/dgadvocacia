@@ -1710,9 +1710,6 @@ export default function DashboardPage() {
           open={commandPaletteOpen}
           onOpenChange={setCommandPaletteOpen}
           onNavigateTab={(tab) => {
-            if (isToolsDisabled && (tab === "naming" || tab === "nice" || tab === "domains")) {
-              return;
-            }
             setActiveTab(tab);
           }}
           onSearchProcesso={(num) => {

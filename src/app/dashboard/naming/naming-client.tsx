@@ -46,43 +46,43 @@ import { NamingSuggestion } from "@/app/api/inpi/naming/route";
 const NICHO_PRESETS = [
   {
     label: "SaaS & IA B2B",
+    nomePretendido: "Synthetix",
     segmento: "Software SaaS e Inteligência Artificial B2B",
-    descricao: "Automação inteligente de processos operacionais e análise preditiva",
     publico: "Diretores de Tecnologia, Gestores e Startups",
     tom: "Inovador & Tecnológico",
   },
   {
     label: "Advocacia & Tributário",
+    nomePretendido: "Vértice",
     segmento: "Sociedade de Advogados e Direito Tributário",
-    descricao: "Assessoria jurídica de alto valor, planejamento tributário e blindagem",
     publico: "Empresários, C-Levels e Grandes Corporações",
     tom: "Autoritário & Nobre",
   },
   {
     label: "FinTech & Crédito",
+    nomePretendido: "Veltis",
     segmento: "FinTech de Meios de Pagamento e Crédito Digital",
-    descricao: "Soluções de liquidez instantânea, split de pagamentos e banking ágil",
     publico: "PMEs, Lojistas e Empresas Digitais",
     tom: "Inovador & Tecnológico",
   },
   {
     label: "Estética & Saúde Premium",
+    nomePretendido: "Lumina",
     segmento: "Clínica de Dermatologia e Estética Avançada",
-    descricao: "Tratamentos de alta performance, laser moderno e rejuvenescimento",
     publico: "Público Exigente e Mercado de Luxo",
     tom: "Luxo & Sofisticação",
   },
   {
     label: "Café & Gastronomia",
+    nomePretendido: "Origem",
     segmento: "Torrefação e Cafeteria de Cafés Especiais",
-    descricao: "Grãos selecionados de alta pontuação com torra artesanal sob demanda",
     publico: "Apreciadores de Gastronomia e Cafés Especiais",
     tom: "Acolhedor & Experiencial",
   },
   {
     label: "Moda & Streetwear",
+    nomePretendido: "Actos",
     segmento: "Marca de Roupas e Vestuário Urbano Autoral",
-    descricao: "Estilo autêntico, peças oversized e coleções com tiragem limitada",
     publico: "Jovens e Geração Z",
     tom: "Audacioso & Disruptivo",
   },
@@ -118,8 +118,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
   }, [initialTab]);
 
   // Naming Form State
+  const [nomePretendido, setNomePretendido] = useState("");
   const [segmento, setSegmento] = useState("");
-  const [descricao, setDescricao] = useState("");
   const [publicoAlvo, setPublicoAlvo] = useState("B2B & Corporativo");
   const [tomVoz, setTomVoz] = useState("Autoritário & Nobre");
   const [estilo, setEstilo] = useState("Equilibrado (Mix Estratégico)");
@@ -133,10 +133,6 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
   const [namingError, setNamingError] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedPitchIndex, setCopiedPitchIndex] = useState<number | null>(null);
-
-  // Mockup Modal State
-  const [selectedMockupBrand, setSelectedMockupBrand] = useState<NamingSuggestion | null>(null);
-  const [mockupTab, setMockupTab] = useState<"facade" | "card" | "app" | "stationery">("facade");
 
   // Logo Creator State
   const [logoMarca, setLogoMarca] = useState("");
@@ -262,8 +258,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
       const savedNaming = localStorage.getItem("marcashield_naming_state");
       if (savedNaming) {
         const parsed = JSON.parse(savedNaming);
+        if (parsed.nomePretendido) setNomePretendido(parsed.nomePretendido);
         if (parsed.segmento) setSegmento(parsed.segmento);
-        if (parsed.descricao) setDescricao(parsed.descricao);
         if (parsed.publicoAlvo) setPublicoAlvo(parsed.publicoAlvo);
         if (parsed.tomVoz) setTomVoz(parsed.tomVoz);
         if (parsed.estilo) setEstilo(parsed.estilo);
@@ -309,8 +305,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
       localStorage.setItem(
         "marcashield_naming_state",
         JSON.stringify({
+          nomePretendido,
           segmento,
-          descricao,
           publicoAlvo,
           tomVoz,
           estilo,
@@ -320,7 +316,7 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
         })
       );
     } catch (e) {}
-  }, [segmento, descricao, publicoAlvo, tomVoz, estilo, idiomaOrigem, sugestoes, favoritos]);
+  }, [nomePretendido, segmento, publicoAlvo, tomVoz, estilo, idiomaOrigem, sugestoes, favoritos]);
 
   // Salvar automaticamente alterações do Estúdio de Logos
   React.useEffect(() => {
@@ -357,8 +353,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
   // Limpar projeto atual
   const handleResetProject = () => {
     if (window.confirm("Deseja limpar todos os dados do briefing e nomes gerados para iniciar um novo projeto?")) {
+      setNomePretendido("");
       setSegmento("");
-      setDescricao("");
       setSugestoes([]);
       setFavoritos([]);
       localStorage.removeItem("marcashield_naming_state");
@@ -368,8 +364,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
   // Geração de Nomes com IA e Suporte a Variações Específicas
   const handleGenerateNames = async (e?: React.FormEvent, customVariacaoDe?: string) => {
     if (e) e.preventDefault();
-    if (!customVariacaoDe && !segmento.trim() && !descricao.trim()) {
-      setNamingError("Preencha ao menos o segmento ou a proposta de valor do negócio.");
+    if (!customVariacaoDe && !segmento.trim() && !nomePretendido.trim()) {
+      setNamingError("Preencha ao menos o segmento ou o nome pretendido.");
       return;
     }
 
@@ -385,8 +381,8 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToP
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          segmento,
-          descricao,
+          nomePretendido: nomePretendido.trim(),
+          segmento: segmento.trim(),
           publicoAlvo,
           tomVoz,
           estilo,
@@ -807,7 +803,7 @@ Gerado pelo MarcaShield Naming AI.`;
                   </div>
                 </div>
                 <CardDescription className="text-xs text-muted-foreground">
-                  A IA constrói nomes com alta conexão semântica e distintividade jurídica para concessão no INPI.
+                  A marca desejada não está disponível? Utilize nosso gerador para encontrar novas opções.
                 </CardDescription>
               </CardHeader>
 
@@ -828,8 +824,8 @@ Gerado pelo MarcaShield Naming AI.`;
                         key={idx}
                         type="button"
                         onClick={() => {
+                          setNomePretendido(preset.nomePretendido || "");
                           setSegmento(preset.segmento);
-                          setDescricao(preset.descricao);
                           setPublicoAlvo(preset.publico);
                           setTomVoz(preset.tom);
                         }}
@@ -850,23 +846,23 @@ Gerado pelo MarcaShield Naming AI.`;
                   )}
 
                   <div className="space-y-1.5">
-                    <Label className="text-xs">Segmento / Nicho de Atuação *</Label>
+                    <Label className="text-xs">Nome Pretendido</Label>
                     <Input
-                      placeholder="Ex: Sociedade de Advogados, Clínica Médica, Software B2B..."
-                      value={segmento}
-                      onChange={(e) => setSegmento(e.target.value)}
+                      placeholder="Ex: Veltis, Aurora, Nexus, Primus ou deixe em branco para criar do zero..."
+                      value={nomePretendido}
+                      onChange={(e) => setNomePretendido(e.target.value)}
                       className="text-xs h-9 bg-card/80"
-                      required
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label className="text-xs">Proposta de Valor / O que o negócio faz</Label>
-                    <textarea
-                      placeholder="Ex: Assessoria jurídica corporativa de alto padrão focada em planejamento tributário estratégico e governança..."
-                      value={descricao}
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescricao(e.target.value)}
-                      className="w-full rounded-md border border-input bg-card/80 p-2.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[60px] resize-none"
+                    <Label className="text-xs">Segmento / Nicho de Atuação *</Label>
+                    <Input
+                      placeholder="Ex: Sociedade de Advogados, Clínica Médica, Software B2B, Engenharia..."
+                      value={segmento}
+                      onChange={(e) => setSegmento(e.target.value)}
+                      className="text-xs h-9 bg-card/80"
+                      required
                     />
                   </div>
 
@@ -1108,18 +1104,6 @@ Gerado pelo MarcaShield Naming AI.`;
                               )}
                             </Button>
 
-                            {/* Botão Simulador de Aplicação / Mockup */}
-                            <Button
-                              type="button"
-                              size="xs"
-                              variant="outline"
-                              onClick={() => setSelectedMockupBrand(sug)}
-                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
-                            >
-                              <Eye className="size-3 opacity-80" />
-                              <span>Simular Mockup</span>
-                            </Button>
-
                             {/* Botão Copiar Pitch */}
                             <Button
                               type="button"
@@ -1168,198 +1152,6 @@ Gerado pelo MarcaShield Naming AI.`;
             )}
           </div>
 
-        </div>
-      )}
-
-      {/* ── MODAL INTERATIVO DE SIMULADOR DE MOCKUPS ── */}
-      {selectedMockupBrand && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-zinc-950 border border-border/80 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-            {/* Header do Modal */}
-            <div className="p-4 px-6 border-b border-border/40 flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Eye className="size-4 text-cyan-400" />
-                  <h3 className="text-sm font-extrabold text-foreground tracking-tight">
-                    Simulador de Aplicação de Marca: {selectedMockupBrand.nome}
-                  </h3>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Visualização em ambientes corporativos e digitais de alto luxo.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedMockupBrand(null)}
-                className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            {/* Abas de Tipos de Mockup */}
-            <div className="flex items-center gap-2 p-3 px-6 bg-zinc-900/60 border-b border-border/40">
-              <button
-                type="button"
-                onClick={() => setMockupTab("facade")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                  mockupTab === "facade" ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                🏢 Letreiro 3D / Fachada
-              </button>
-              <button
-                type="button"
-                onClick={() => setMockupTab("card")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                  mockupTab === "card" ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                💳 Cartão Executivo Gold
-              </button>
-              <button
-                type="button"
-                onClick={() => setMockupTab("app")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                  mockupTab === "app" ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                📱 App Icon & Favicon
-              </button>
-              <button
-                type="button"
-                onClick={() => setMockupTab("stationery")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                  mockupTab === "stationery" ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                📄 Papelaria & Assinatura
-              </button>
-            </div>
-
-            {/* Conteúdo do Mockup Renderizado em CSS Ultra-Refinado */}
-            <div className="p-8 flex-1 overflow-y-auto flex items-center justify-center bg-zinc-950/80">
-              {/* 1. FACHADA / LETREIRO 3D LUXURY */}
-              {mockupTab === "facade" && (
-                <div className="w-full max-w-md aspect-[16/10] rounded-2xl bg-gradient-to-b from-zinc-900 via-black to-zinc-950 border border-zinc-800 p-8 flex flex-col items-center justify-center shadow-2xl relative overflow-hidden text-center">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
-                  <div className="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_4px_16px_rgba(212,175,55,0.4)] uppercase">
-                    {selectedMockupBrand.nome}
-                  </div>
-                  {selectedMockupBrand.slogan && (
-                    <div className="text-[11px] font-mono tracking-widest text-zinc-400 uppercase mt-2 font-bold">
-                      {selectedMockupBrand.slogan}
-                    </div>
-                  )}
-                  <div className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest mt-4">
-                    &bull; SEDE CORPORATIVA &bull;
-                  </div>
-                </div>
-              )}
-
-              {/* 2. CARTÃO DE VISITA EXECUTIVO BLACK & GOLD */}
-              {mockupTab === "card" && (
-                <div className="w-full max-w-md aspect-[1.75/1] rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-amber-500/30 p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500 uppercase tracking-wider">
-                        {selectedMockupBrand.nome}
-                      </div>
-                      <div className="text-[10px] text-zinc-400 italic">
-                        "{selectedMockupBrand.slogan || 'Autoridade & Exclusividade'}"
-                      </div>
-                    </div>
-                    <div className="size-7 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-bold text-amber-500 text-xs">
-                      {selectedMockupBrand.nome.charAt(0)}
-                    </div>
-                  </div>
-
-                  <div className="border-t border-zinc-800 pt-3 flex justify-between items-end text-[10px] font-mono text-zinc-400">
-                    <div>
-                      <div className="font-bold text-zinc-200">DR. FELIPE DUTRA GOMES</div>
-                      <div>Diretoria Executiva</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-amber-500/90">{selectedMockupBrand.nome.toLowerCase().replace(/\s+/g, '')}.com.br</div>
-                      <div>contato@{selectedMockupBrand.nome.toLowerCase().replace(/\s+/g, '')}.com.br</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 3. APP ICON & FAVICON */}
-              {mockupTab === "app" && (
-                <div className="flex items-center justify-center gap-8">
-                  {/* App Icon iOS */}
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="size-24 rounded-3xl bg-gradient-to-tr from-zinc-950 via-zinc-900 to-zinc-800 border border-amber-500/40 shadow-2xl flex flex-col items-center justify-center p-3 relative group">
-                      <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-300 via-amber-500 to-amber-600">
-                        {selectedMockupBrand.nome.slice(0, 2).toUpperCase()}
-                      </div>
-                      <div className="text-[8px] font-mono text-amber-500/80 font-bold tracking-tighter uppercase mt-0.5">
-                        APP
-                      </div>
-                    </div>
-                    <span className="text-[11px] font-bold text-foreground font-mono">{selectedMockupBrand.nome}</span>
-                  </div>
-
-                  {/* Favicon Browser Tab Preview */}
-                  <div className="w-48 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 space-y-1.5 shadow-lg">
-                    <div className="flex items-center gap-2 bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-800">
-                      <div className="size-4 rounded-md bg-amber-500/20 text-amber-400 flex items-center justify-center text-[9px] font-black">
-                        {selectedMockupBrand.nome.charAt(0)}
-                      </div>
-                      <span className="text-[10px] text-zinc-300 font-bold truncate">
-                        {selectedMockupBrand.nome} &bull; Portal
-                      </span>
-                    </div>
-                    <div className="text-[9px] font-mono text-zinc-500 truncate px-1">
-                      https://{selectedMockupBrand.nome.toLowerCase().replace(/\s+/g, '')}.com.br
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 4. PAPELARIA & ASSINATURA */}
-              {mockupTab === "stationery" && (
-                <div className="w-full max-w-md bg-zinc-900/90 border border-zinc-800 rounded-2xl p-6 shadow-2xl space-y-4 text-xs font-mono">
-                  <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
-                    <div className="font-extrabold text-sm text-foreground uppercase tracking-wider">
-                      {selectedMockupBrand.nome}
-                    </div>
-                    <span className="text-[10px] text-amber-500 font-bold">NCL {selectedMockupBrand.classeSugerida}</span>
-                  </div>
-                  <div className="space-y-1 text-zinc-400 text-[11px]">
-                    <p>Prezado cliente,</p>
-                    <p className="leading-relaxed">
-                      Apresentamos o relatório estratégico de concessão e governança marcária referente à marca <strong className="text-zinc-200">{selectedMockupBrand.nome}</strong>.
-                    </p>
-                  </div>
-                  <div className="pt-3 border-t border-zinc-800 text-[10px] text-zinc-500 flex justify-between">
-                    <span>Protocolo INPI: Em conformidade</span>
-                    <span>MarcaShield Naming AI</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Footer do Modal com Ações */}
-            <div className="p-4 px-6 border-t border-border/40 flex items-center justify-between bg-zinc-900/40">
-              <span className="text-xs font-mono text-muted-foreground">
-                Score LPI: <strong className="text-emerald-500">{selectedMockupBrand.distintividadeScore}%</strong>
-              </span>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  size="xs"
-                  onClick={() => setSelectedMockupBrand(null)}
-                  className="text-xs font-bold bg-primary text-primary-foreground"
-                >
-                  Concluído
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 

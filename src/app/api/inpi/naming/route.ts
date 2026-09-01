@@ -21,6 +21,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const {
+      nomePretendido,
       segmento,
       descricao,
       publicoAlvo,
@@ -30,9 +31,12 @@ export async function POST(req: Request) {
       variacaoDe,
     } = body;
 
-    if (!segmento && !descricao && !variacaoDe) {
+    const seedName = (variacaoDe || nomePretendido || "").trim();
+    const segmentName = (segmento || descricao || "").trim();
+
+    if (!seedName && !segmentName) {
       return NextResponse.json(
-        { error: "Informe o segmento, a proposta de valor ou a marca base para variações." },
+        { error: "Informe o Nome Pretendido ou o Segmento/Nicho de Atuação." },
         { status: 400 }
       );
     }
@@ -40,9 +44,14 @@ export async function POST(req: Request) {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-    const variationClause = variacaoDe
-      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário selecionou a marca base "${variacaoDe}". Crie 3 variações sofisticadas mantendo a raiz, sonoridade ou essência de "${variacaoDe}", aplicando prefixos modernos, sufixos corporativos ou fusões sonoras elegantes.`
-      : `MISSÃO: Criar exatamente 3 opções de nomes comerciais de padrão internacional, com sonoridade impecável, forte conexão com o nicho de mercado e altíssimo valor percebido.`;
+    let variationClause = "";
+    if (variacaoDe) {
+      variationClause = `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário selecionou a marca base "${variacaoDe}". Crie 3 variações sofisticadas mantendo a raiz, sonoridade ou essência de "${variacaoDe}", aplicando prefixos modernos, sufixos corporativos ou fusões sonoras elegantes.`;
+    } else if (seedName) {
+      variationClause = `CONTEXTO DO CLIENTE: O usuário tem como ideia inicial/nome pretendido "${seedName}". Sua missão é criar 3 marcas de alto escalão para o segmento "${segmentName || 'Geral'}", que evoluam, refinem ou desdobrem essa ideia com máxima sofisticação, sonoridade fluida e total distintividade para registro no INPI.`;
+    } else {
+      variationClause = `MISSÃO: Criar exatamente 3 opções de nomes comerciais do zero de padrão internacional para o segmento "${segmentName}", com sonoridade impecável, forte conexão com o nicho de mercado e altíssimo valor percebido.`;
+    }
 
     const prompt = `Você é um Diretor de Branding e Naming Corporativo de padrão global (com a expertise de agências como Pentagram, Landor e Lexicon Branding) e especialista em Propriedade Industrial (Lei 9.279/96 - LPI).
 
@@ -70,8 +79,8 @@ CRITÉRIOS INEGOCIÁVEIS DE QUALIDADE (LEIA COM EXTREMA ATENÇÃO):
    - **Opção 3:** *Curto, Punchy & Premium* (nome conciso de 4 a 7 letras, de altíssimo impacto e fácil memorização).
 
 BRIEFING DO CLIENTE:
-- **Segmento / Nicho:** "${segmento || 'Não especificado'}"
-- **Proposta de Valor / Atividade:** "${descricao || 'Não especificado'}"
+- **Nome Pretendido / Ideia Base:** "${seedName || 'Criar do zero'}"
+- **Segmento / Nicho de Atuação:** "${segmentName || 'Geral'}"
 
 Retorne APENAS um JSON válido no formato abaixo, sem markdown adicional fora do json:
 {
