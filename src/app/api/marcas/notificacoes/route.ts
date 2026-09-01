@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET() {
@@ -19,7 +19,7 @@ export async function GET() {
         codigo_despacho, 
         descricao_despacho, 
         created_at,
-        marcas!inner(id, numero_inpi, nome_marca, user_id, status_inpi)
+        marcas!inner(id, numero_inpi, nome_marca, user_id, status_ipas)
       `)
       .eq("marcas.user_id", user.id)
       .order("created_at", { ascending: false })
@@ -28,7 +28,7 @@ export async function GET() {
     // 2. Buscar marcas cadastradas para telemetria de status e prazos
     const { data: userMarcas } = await supabase
       .from("marcas")
-      .select("id, numero_inpi, nome_marca, status_inpi, updated_at, created_at")
+      .select("id, numero_inpi, nome_marca, status_ipas, updated_at, created_at")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(10);
