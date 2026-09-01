@@ -1245,17 +1245,6 @@ Gerado pelo MarcaShield Naming AI.`;
                       <span>Favoritas ({favoritos.length})</span>
                     </button>
                   </div>
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="xs"
-                    onClick={handleExportDossier}
-                    className="text-xs h-8 gap-1.5 font-bold border-border/70 hover:bg-primary/10 hover:text-primary"
-                  >
-                    <Printer className="size-3.5" />
-                    <span>Exportar Dossier (PDF)</span>
-                  </Button>
                 </div>
 
                 {/* Lista de Cards de Nomes Gerados */}
