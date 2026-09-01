@@ -197,7 +197,7 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
     }
   };
 
-  const whatsappUrl = "https://wa.me/5513988658518?text=" + encodeURIComponent("Olá! Gostaria de falar com um especialista sobre registro de marcas e a plataforma DG Advocacia.");
+  const whatsappUrl = "https://wa.me/5511972667778?text=" + encodeURIComponent("Olá! Gostaria de falar com um especialista sobre registro de marcas e a plataforma DG Advocacia.");
 
   return (
     <a

@@ -446,7 +446,7 @@ export function ComplianceClient() {
 
                 <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
-                    href={`https://wa.me/5513988658518?text=Olá,%20acabei%20de%20enviar%20uma%20solicitação%20no%20painel%20sobre%20${encodeURIComponent(servico)}.%20Empresa:%20${encodeURIComponent(empresa)}.`}
+                    href={`https://wa.me/5511972667778?text=Olá,%20acabei%20de%20enviar%20uma%20solicitação%20no%20painel%20sobre%20${encodeURIComponent(servico)}.%20Empresa:%20${encodeURIComponent(empresa)}.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm w-full sm:w-auto justify-center"

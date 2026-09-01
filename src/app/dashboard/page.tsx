@@ -1272,7 +1272,7 @@ export default function DashboardPage() {
                   {/* CTA Principal */}
                   <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
                     <a
-                      href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20assessoria%20de%20marcas%20DG%20Advocacia."
+                      href="https://wa.me/5511972667778?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20assessoria%20de%20marcas%20DG%20Advocacia."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2.5 w-full md:w-56 h-12 px-6 rounded-xl bg-primary text-primary-foreground text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
