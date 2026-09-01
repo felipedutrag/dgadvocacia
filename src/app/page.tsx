@@ -339,7 +339,7 @@ export default function LandingPage() {
           </div>
 
           {/* ── PAINEL DE TELEMETRIA & GRÁFICOS ANALÍTICOS (SHADCN UI) ── */}
-          <div className="rounded-2xl border border-border/80 bg-card/70 p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+          <div className="rounded-2xl border border-border/70 bg-card/60 p-6 sm:p-8 backdrop-blur-md space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
               <div>
                 <div className="flex items-center gap-2">
