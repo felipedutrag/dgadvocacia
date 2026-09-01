@@ -1246,7 +1246,7 @@ export default function DashboardPage() {
                     <h3 className="text-xl font-bold text-foreground">
                       Proteção Total de Marcas INPI
                     </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed max-w-5xl">
+                    <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
                       Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número no menu{" "}
                       <button
                         type="button"
