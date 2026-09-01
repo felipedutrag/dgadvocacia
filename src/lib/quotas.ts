@@ -26,20 +26,26 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
       };
     }
 
-    const { data: profile } = await supabase
+    const supabaseAdmin = createAdminClient();
+
+    // Busca dados atualizados da tabela profiles diretamente via admin
+    const { data: profile } = await supabaseAdmin
       .from("profiles")
-      .select("plan, plan_status, marcas_limit")
+      .select("plan, plan_status, is_admin, usage_naming, usage_nice, usage_domain")
       .eq("id", user.id)
       .maybeSingle();
 
     const userMeta = user.user_metadata || {};
+
+    // Usuário admin ou com plano ativo tem acesso irrestrito
+    const isAdmin = Boolean(profile?.is_admin || userMeta.is_admin);
     const isPaid = Boolean(
+      isAdmin ||
       (profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active") ||
       userMeta.plan_status === "active"
     );
 
-    // Usuário pago tem acesso ilimitado
-    if (isPaid) {
+    if (isPaid || isAdmin) {
       return {
         allowed: true,
         isPaid: true,
@@ -48,9 +54,11 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
       };
     }
 
-    // Usuário gratuito: limite de 1 uso
-    const usageKey = `usage_${feature}`;
-    const usedCount = Number(userMeta[usageKey] || 0);
+    // Usuário gratuito: limite de 1 uso persistido na tabela profiles e user_metadata
+    const usageKey = `usage_${feature}` as "usage_naming" | "usage_nice" | "usage_domain";
+    const profileUsage = profile ? Number(profile[usageKey] || 0) : 0;
+    const metaUsage = Number(userMeta[usageKey] || 0);
+    const usedCount = Math.max(profileUsage, metaUsage);
 
     if (usedCount >= 1) {
       const featureNames: Record<QuotaFeature, string> = {
@@ -83,19 +91,34 @@ export async function incrementFeatureQuota(feature: QuotaFeature, userId?: stri
   if (!userId) return;
   try {
     const supabaseAdmin = createAdminClient();
-    const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
-    if (!user) return;
-
-    const userMeta = user.user_metadata || {};
     const usageKey = `usage_${feature}`;
-    const currentUsage = Number(userMeta[usageKey] || 0);
 
-    await supabaseAdmin.auth.admin.updateUserById(userId, {
-      user_metadata: {
-        ...userMeta,
-        [usageKey]: currentUsage + 1
-      }
-    });
+    // 1. Atualiza na tabela profiles
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("usage_naming, usage_nice, usage_domain")
+      .eq("id", userId)
+      .maybeSingle();
+
+    const currentTableUsage = profile ? Number(profile[usageKey as keyof typeof profile] || 0) : 0;
+    const newUsage = currentTableUsage + 1;
+
+    await supabaseAdmin
+      .from("profiles")
+      .update({ [usageKey]: newUsage })
+      .eq("id", userId);
+
+    // 2. Atualiza no user_metadata para dupla garantia
+    const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+    if (user) {
+      const userMeta = user.user_metadata || {};
+      await supabaseAdmin.auth.admin.updateUserById(userId, {
+        user_metadata: {
+          ...userMeta,
+          [usageKey]: newUsage
+        }
+      });
+    }
   } catch (e) {
     console.warn(`[QUOTA] Falha ao incrementar ${feature} para ${userId}:`, e);
   }
