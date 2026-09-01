@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   X,
   Phone,
-  Building
+  Building,
+  ArrowRight
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -289,8 +290,8 @@ export function InovacaoClient() {
             onClick={() => handleOpenModalWithService()}
             className="inline-flex items-center gap-2 text-xs font-medium px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm shrink-0 h-10"
           >
-            <Send className="size-3.5" />
             <span>Consultar Especialista em Inovação</span>
+            <ArrowRight className="size-3.5" />
           </Button>
         </div>
       </Card>
