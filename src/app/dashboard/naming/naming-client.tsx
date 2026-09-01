@@ -42,54 +42,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { NamingSuggestion } from "@/app/api/inpi/naming/route";
 
-// Presets Rápidos de Nicho para 1-clique
-const NICHO_PRESETS = [
-  {
-    label: "SaaS & IA B2B",
-    nomePretendido: "Synthetix",
-    segmento: "Software SaaS e Inteligência Artificial B2B",
-    publico: "Diretores de Tecnologia, Gestores e Startups",
-    tom: "Inovador & Tecnológico",
-  },
-  {
-    label: "Advocacia & Tributário",
-    nomePretendido: "Vértice",
-    segmento: "Sociedade de Advogados e Direito Tributário",
-    publico: "Empresários, C-Levels e Grandes Corporações",
-    tom: "Autoritário & Nobre",
-  },
-  {
-    label: "FinTech & Crédito",
-    nomePretendido: "Veltis",
-    segmento: "FinTech de Meios de Pagamento e Crédito Digital",
-    publico: "PMEs, Lojistas e Empresas Digitais",
-    tom: "Inovador & Tecnológico",
-  },
-  {
-    label: "Estética & Saúde Premium",
-    nomePretendido: "Lumina",
-    segmento: "Clínica de Dermatologia e Estética Avançada",
-    publico: "Público Exigente e Mercado de Luxo",
-    tom: "Luxo & Sofisticação",
-  },
-  {
-    label: "Café & Gastronomia",
-    nomePretendido: "Origem",
-    segmento: "Torrefação e Cafeteria de Cafés Especiais",
-    publico: "Apreciadores de Gastronomia e Cafés Especiais",
-    tom: "Acolhedor & Experiencial",
-  },
-  {
-    label: "Moda & Streetwear",
-    nomePretendido: "Actos",
-    segmento: "Marca de Roupas e Vestuário Urbano Autoral",
-    publico: "Jovens e Geração Z",
-    tom: "Audacioso & Disruptivo",
-  },
-];
-
-
-
 // Presets de Símbolos Marcários
 const SYMBOL_PRESETS = [
   { id: "shield", label: "Escudo de Autoridade", icon: "🛡️", desc: "Escudo geométrico com monograma e linhas de proteção" },
@@ -803,40 +755,11 @@ Gerado pelo MarcaShield Naming AI.`;
                   </div>
                 </div>
                 <CardDescription className="text-xs text-muted-foreground">
-                  A marca desejada não está disponível? Utilize nosso gerador para encontrar novas opções.
+                  A marca pretendida está indisponível? Gere novas opções para registro no INPI.
                 </CardDescription>
               </CardHeader>
 
               <CardContent className="pt-2 space-y-4">
-                {/* Presets Rápidos de Nicho */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-[11px] font-mono text-muted-foreground uppercase font-bold">
-                      Preenchimento Rápido (Nichos)
-                    </Label>
-                    <span className="text-[10px] text-primary flex items-center gap-1 font-semibold">
-                      <Sparkles className="size-3" /> 1-Clique
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {NICHO_PRESETS.map((preset, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          setNomePretendido(preset.nomePretendido || "");
-                          setSegmento(preset.segmento);
-                          setPublicoAlvo(preset.publico);
-                          setTomVoz(preset.tom);
-                        }}
-                        className="text-[10px] px-2.5 py-1 rounded-lg border border-border/60 bg-muted/30 hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all text-muted-foreground font-medium"
-                      >
-                        {preset.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
                   {namingError && (
                     <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center gap-2">
