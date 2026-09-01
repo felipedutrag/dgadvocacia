@@ -493,6 +493,9 @@ export function MarcasClient() {
                 <span className={`inline-flex items-center font-mono text-[10px] px-2.5 py-0.5 rounded-full border ${getStatusColor(selectedProcesso.situacao)}`}>
                   {selectedProcesso.situacao}
                 </span>
+                <span className="text-[10px] font-mono text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
+                  Sincronizado no Radar
+                </span>
               </div>
               <h2 className="text-xl font-extrabold text-foreground tracking-tight">
                 {selectedProcesso.marca}
@@ -509,9 +512,133 @@ export function MarcasClient() {
             </Button>
           </div>
 
+          {/* ── LINHA DO TEMPO VISUAL DO TRÂMITE NO INPI ── */}
+          <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-mono font-bold uppercase text-muted-foreground">
+                Linha do Tempo Oficial &bull; Trâmite Administrativo INPI
+              </span>
+              <span className="text-[10px] font-mono text-primary font-bold">
+                {selectedProcesso.dataDeposito ? `Depositado em ${selectedProcesso.dataDeposito}` : "Em Processamento"}
+              </span>
+            </div>
+
+            {(() => {
+              const sit = (selectedProcesso.situacao || "").toLowerCase();
+              const despachosText = (selectedProcesso.despachos || [])
+                .map(d => `${d.descricaoDespacho || ''} ${d.complemento || ''} ${d.codigoDespacho || ''}`)
+                .join(' ')
+                .toLowerCase();
+
+              // Determina o estágio atual (1 a 5)
+              let currentStep = 1;
+              if (
+                sit.includes("conced") || 
+                sit.includes("registro de marca em vigor") || 
+                sit.includes("prorrog") ||
+                sit.includes("decenal") ||
+                despachosText.includes("concessão")
+              ) {
+                currentStep = 5;
+              } else if (
+                sit.includes("deferi") || 
+                sit.includes("indeferi") || 
+                sit.includes("exame de mérito") || 
+                sit.includes("mérito") ||
+                despachosText.includes("deferimento") ||
+                despachosText.includes("indeferimento") ||
+                despachosText.includes("exigência de mérito")
+              ) {
+                currentStep = 4;
+              } else if (
+                sit.includes("oposição") || 
+                sit.includes("publica") || 
+                sit.includes("aguardando prazo") || 
+                despachosText.includes("publicação de pedido") ||
+                despachosText.includes("oposição")
+              ) {
+                currentStep = 3;
+              } else if (
+                sit.includes("exame formal") || 
+                sit.includes("exigência formal") ||
+                despachosText.includes("exame formal")
+              ) {
+                currentStep = 2;
+              } else {
+                currentStep = 1;
+              }
+
+              const steps = [
+                { num: 1, title: "Depósito", sub: "Concluído", desc: "Protocolo inicial no INPI" },
+                { num: 2, title: "Exame Formal", sub: "Superado", desc: "Análise de taxas e documentos" },
+                { num: 3, title: "RPI 60 Dias", sub: "Prazo Legal", desc: "Prazo para manifestação de terceiros" },
+                { num: 4, title: "Exame Mérito", sub: "Art. 124 LPI", desc: "Análise de registrabilidade" },
+                { num: 5, title: "Decenal", sub: "10 Anos", desc: "Concessão e vigência decenal" },
+              ];
+
+              return (
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-center">
+                  {steps.map((step) => {
+                    const isCompleted = step.num < currentStep;
+                    const isCurrent = step.num === currentStep;
+
+                    let statusLabel = step.sub;
+                    if (isCompleted) {
+                      statusLabel = step.num === 1 ? "Concluído" : step.num === 2 ? "Superado" : "Concluído";
+                    } else if (isCurrent) {
+                      statusLabel = currentStep === 5 ? "Vigente (Ativo)" : "Em Andamento";
+                    } else {
+                      statusLabel = "Aguardando";
+                    }
+
+                    return (
+                      <div
+                        key={step.num}
+                        className={`p-2.5 rounded-xl border transition-all space-y-1 ${
+                          isCompleted
+                            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
+                            : isCurrent
+                            ? "border-primary/80 bg-primary/15 shadow-sm shadow-primary/10 ring-1 ring-primary/40"
+                            : "border-border/50 bg-background/30 opacity-60"
+                        }`}
+                      >
+                        <div
+                          className={`size-5 rounded-full text-[10px] font-bold mx-auto flex items-center justify-center ${
+                            isCompleted
+                              ? "bg-emerald-500 text-black font-bold"
+                              : isCurrent
+                              ? "bg-primary text-primary-foreground font-extrabold animate-pulse"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {isCompleted ? "✓" : step.num}
+                        </div>
+                        <div className={`text-[11px] font-bold ${isCurrent ? "text-primary" : "text-foreground"}`}>
+                          {step.title}
+                        </div>
+                        <div
+                          className={`text-[9px] font-mono font-bold ${
+                            isCompleted
+                              ? "text-emerald-500"
+                              : isCurrent
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {statusLabel}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-span-8 space-y-3 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Left Info Column */}
+            <div className="md:col-span-8 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="p-3 rounded-xl border border-border/70 bg-card/40">
                   <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Titular</div>
                   <div className="font-bold text-foreground">{selectedProcesso.titular || "Não informado"}</div>
@@ -530,17 +657,35 @@ export function MarcasClient() {
                 </div>
 
                 <div className="p-3 rounded-xl border border-border/70 bg-card/40">
-                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Datas & Prazos</div>
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">Prazos & Datas</div>
                   <div className="font-mono text-[11px] text-foreground">
                     Depósito: <strong>{selectedProcesso.dataDeposito || "N/A"}</strong>
                     {selectedProcesso.dataVigencia && <span> • Vigência: <strong>{selectedProcesso.dataVigencia}</strong></span>}
                   </div>
                 </div>
               </div>
+
+              {/* Classes & Especificações */}
+              {selectedProcesso.classes && selectedProcesso.classes.length > 0 && (
+                <div className="p-3.5 rounded-xl border border-border/70 bg-card/40 space-y-2">
+                  <div className="font-mono text-[10px] uppercase text-muted-foreground font-bold">
+                    Classificação de Nice (NCL) & Produtos / Serviços
+                  </div>
+                  {selectedProcesso.classes.map((cls, idx) => (
+                    <div key={idx} className="text-xs">
+                      <span className="font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20 mr-2">
+                        Classe {cls.classe} {cls.subClasse ? `(${cls.subClasse})` : ""}
+                      </span>
+                      <span className="text-muted-foreground leading-relaxed">{cls.especificacao}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-3 rounded-xl border border-border/70 bg-muted/20 text-center">
-              <div className="size-36 rounded-xl border border-border/60 bg-background flex items-center justify-center overflow-hidden p-2 shadow-inner">
+            {/* Right Logo Column */}
+            <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-xl border border-border/70 bg-muted/20 text-center">
+              <div className="size-44 rounded-xl border border-border/60 bg-background flex flex-col items-center justify-center overflow-hidden p-3 shadow-inner">
                 {selectedProcesso.logoUrl ? (
                   <img
                     src={selectedProcesso.logoUrl}
@@ -551,32 +696,46 @@ export function MarcasClient() {
                     }}
                   />
                 ) : (
-                  <ImageIcon className="size-10 text-muted-foreground/40" />
+                  <div className="flex flex-col items-center justify-center text-center p-3">
+                    <span className="font-mono text-xs uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-md shadow-xs">
+                      Processo Nominativo
+                    </span>
+                  </div>
                 )}
               </div>
-              <span className="font-mono text-[9px] text-muted-foreground mt-1.5">Logotipo Oficial INPI</span>
+              <span className="font-mono text-[10px] text-muted-foreground mt-2">
+                {selectedProcesso.logoUrl ? "Logotipo Oficial INPI" : "Apresentação Oficial INPI"}
+              </span>
             </div>
           </div>
 
-          {/* Despachos RPI */}
-          <div className="space-y-2 pt-2 border-t border-border/60">
-            <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
-              <Clock className="size-3.5 text-primary" />
-              Histórico de Despachos na RPI ({selectedProcesso.despachos?.length || 0})
+          {/* Timeline de Despachos da RPI */}
+          <div className="space-y-3 pt-2 border-t border-border/60">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <Clock className="size-4 text-primary" />
+              Histórico de Despachos & Publicações na RPI ({selectedProcesso.despachos?.length || 0})
             </h3>
-            <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-              {selectedProcesso.despachos?.map((desp, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 p-2 rounded-lg border border-border/60 bg-muted/20 text-[11px]">
-                  <span className="font-mono font-bold bg-muted px-1.5 py-0.2 rounded border border-border/60 shrink-0">
-                    RPI {desp.rpi}
-                  </span>
-                  <div className="flex-1">
-                    <span className="font-bold text-foreground">{desp.codigoDespacho}</span>
+
+            {(!selectedProcesso.despachos || selectedProcesso.despachos.length === 0) ? (
+              <p className="text-xs text-muted-foreground">Nenhum despacho publicado na RPI para este processo.</p>
+            ) : (
+              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                {selectedProcesso.despachos.map((desp, dIdx) => (
+                  <div key={dIdx} className="flex items-start gap-3 p-3 rounded-lg border border-border/60 bg-muted/20 text-xs">
+                    <div className="font-mono text-[11px] font-bold bg-muted px-2 py-0.5 rounded border border-border/60 shrink-0">
+                      RPI {desp.rpi}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-foreground">{desp.codigoDespacho}</div>
+                      {desp.complemento && <p className="text-muted-foreground mt-0.5">{desp.complemento}</p>}
+                    </div>
+                    <div className="font-mono text-[10px] text-muted-foreground shrink-0">
+                      {desp.dataRpi}
+                    </div>
                   </div>
-                  <span className="font-mono text-[10px] text-muted-foreground shrink-0">{desp.dataRpi}</span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
