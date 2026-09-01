@@ -569,15 +569,21 @@ export default function LandingPage() {
               </div>
               <div className="p-2.5 sm:p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
                 <div className="font-bold text-foreground flex items-center justify-between">
-                  <span>Peça Técnica: Oposição (Art. 158 LPI)</span>
-                  <span className="text-amber-500 font-mono text-[10px]">Em Elaboração</span>
+                  <span>
+                    Peça Técnica: Oposição <br className="sm:hidden" />
+                    <span className="text-muted-foreground sm:text-foreground font-normal sm:font-bold">(Art. 158 LPI)</span>
+                  </span>
+                  <span className="text-amber-500 font-mono text-[10px] shrink-0 self-start sm:self-auto">Em Elaboração</span>
                 </div>
                 <div className="text-muted-foreground text-[11px]">Petição técnica de oposição na Classe 35</div>
               </div>
               <div className="p-2.5 sm:p-3 rounded-xl bg-background/50 border border-border/60 text-xs space-y-1">
                 <div className="font-bold text-foreground flex items-center justify-between">
-                  <span>Parecer Técnico: Concessão Decenal</span>
-                  <span className="text-primary font-mono text-[10px]">Certificado Emitido</span>
+                  <span>
+                    Parecer Técnico: <br className="sm:hidden" />
+                    <span>Concessão Decenal</span>
+                  </span>
+                  <span className="text-primary font-mono text-[10px] shrink-0 self-start sm:self-auto">Certificado Emitido</span>
                 </div>
                 <div className="text-muted-foreground text-[11px]">Vigência de 10 anos deferida • Felipe Dutra Gonçalves (OAB/SP)</div>
               </div>
