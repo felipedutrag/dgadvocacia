@@ -733,34 +733,32 @@ Gerado pelo MarcaShield Naming AI.`;
           {/* Formulário de Briefing Estratégico */}
           <div className="lg:col-span-5 space-y-4">
             <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-              <CardHeader className="pb-3.5 border-b border-border/40 space-y-2">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2 shrink-0">
-                    <Bot className="size-4 text-primary shrink-0" />
+              <CardHeader className="pb-3 border-b border-border/60">
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="text-sm font-bold flex items-center gap-2">
+                    <Bot className="size-4 text-primary" />
                     <span>Briefing de Naming & Branding</span>
                   </CardTitle>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    {(segmento || sugestoes.length > 0) && (
-                      <button
-                        type="button"
-                        onClick={handleResetProject}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-destructive px-2.5 py-1 rounded-lg border border-border/70 hover:border-destructive/40 hover:bg-destructive/10 transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
-                        title="Limpar campos e começar novo projeto"
-                      >
-                        <RefreshCw className="size-3 shrink-0" />
-                        <span>Novo Briefing</span>
-                      </button>
-                    )}
-                  </div>
+                  {(segmento || sugestoes.length > 0) && (
+                    <button
+                      type="button"
+                      onClick={handleResetProject}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-destructive px-2.5 py-1 rounded-lg border border-border/70 hover:border-destructive/40 hover:bg-destructive/10 transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
+                      title="Limpar campos e começar novo projeto"
+                    >
+                      <RefreshCw className="size-3 shrink-0" />
+                      <span>Novo Briefing</span>
+                    </button>
+                  )}
                 </div>
-                <CardDescription className="text-xs text-muted-foreground">
+                <CardDescription className="text-xs">
                   A marca pretendida está indisponível? Gere novas opções para registro no INPI.
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="pt-2 space-y-4">
-                <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
+              <CardContent className="pt-2">
+                <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5">
                   {namingError && (
                     <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center gap-2">
                       <AlertTriangle className="size-4 shrink-0" />
@@ -792,7 +790,7 @@ Gerado pelo MarcaShield Naming AI.`;
                   <Button
                     type="submit"
                     disabled={namingLoading}
-                    className="w-full text-xs font-bold h-10 gap-2 mt-2 bg-primary text-primary-foreground shadow-lg shadow-primary/10"
+                    className="w-full text-xs font-bold h-10 gap-2 bg-primary text-primary-foreground"
                   >
                     {namingLoading ? (
                       <>
