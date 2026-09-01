@@ -1267,9 +1267,7 @@ export default function DashboardPage() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Você foca no seu negócio. A <strong>DG Advocacia</strong> cuida de toda a retaguarda jurídica no INPI — desde a vigilância semanal contra cópias, defesas em oposições, cumprimento de exigências formais, até a garantia da vigência decenal das suas marcas.
                     </p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      A proposta de honorários é elaborada individualmente para cada parceiro, de acordo com o porte da carteira e escopo de serviços. Fale com nossa equipe e receba uma proposta personalizada sem compromisso.
-                    </p>
+
                   </div>
                   {/* CTA Principal */}
                   <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
@@ -1292,35 +1290,7 @@ export default function DashboardPage() {
               </div>
 
               {/* ── GRADE DE BENEFÍCIOS POR CATEGORIA ── */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-
-                {/* Plataforma & Tecnologia */}
-                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
-                  <div className="flex items-center gap-2.5">
-                    <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-                      <Bot className="size-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-foreground">Plataforma & Inteligência Artificial</div>
-                      <div className="text-[10px] font-mono text-muted-foreground">Ferramentas liberadas sem restrição de uso</div>
-                    </div>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {[
-                      "Gerador de Marcas & Naming com IA",
-                      "Consulta de Viabilidade Marcária (INPI)",
-                      "Classificador de Classe de Nice Automático",
-                      "Verificação de Domínios .com.br / .com",
-                      "Raio-X IA: Score de Risco de Colidência",
-                      "Relatório Técnico Instantâneo em PDF",
-                    ].map((feat) => (
-                      <li key={feat} className="flex items-center gap-2.5 text-xs text-foreground/90">
-                        <CheckCircle2 className="size-3.5 text-primary shrink-0" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
                 {/* Vigilância & Radar RPI */}
                 <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md p-6 space-y-4">
