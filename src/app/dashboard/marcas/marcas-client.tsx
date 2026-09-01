@@ -723,10 +723,10 @@ export function MarcasClient() {
         </div>
       )}
 
-      {/* Grid de Marcas Monitoradas */}
+      {/* Grid de Marcas Monitoradas (1/3 de largura - 3 colunas) */}
       {loading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {[1, 2, 3, 4].map(n => <div key={n} className="h-32 animate-pulse bg-card/40 rounded-xl border border-border/70" />)}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map(n => <div key={n} className="h-32 animate-pulse bg-card/40 rounded-xl border border-border/70" />)}
         </div>
       ) : filteredMarcas.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-border/80 rounded-2xl bg-card/30">
@@ -735,7 +735,7 @@ export function MarcasClient() {
           <p className="text-xs text-muted-foreground mt-1">Adicione o número de um processo acima ou pesquise na aba Consultas INPI.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredMarcas.map(marca => (
             <div key={marca.id} className="relative flex flex-col justify-between rounded-xl border border-border/70 bg-card/60 p-4 backdrop-blur-md transition-all hover:border-primary/50 hover:shadow-md group">
               <div>
