@@ -252,36 +252,6 @@ export default function DashboardPage() {
       setIsDark(false);
       document.documentElement.classList.remove("dark");
     }
-
-    // Leitura inteligente de parâmetros de URL (?tab=plans, ?tab=planos, #plans, #planos)
-    const checkUrlTab = () => {
-      try {
-        const searchParams = new URLSearchParams(window.location.search);
-        const tabParam = searchParams.get("tab") || searchParams.get("aba");
-        const hash = window.location.hash.replace("#", "");
-
-        const target = (tabParam || hash || "").toLowerCase();
-        if (target === "plans" || target === "planos" || target === "plano") {
-          setActiveTab("plans");
-        } else if (target === "marcas" || target === "radar") {
-          setActiveTab("marcas");
-        } else if (target === "naming") {
-          setActiveTab("naming");
-        } else if (target === "nice") {
-          setActiveTab("nice");
-        } else if (target === "domains" || target === "dominios") {
-          setActiveTab("domains");
-        } else if (target === "consultas" || target === "busca") {
-          setActiveTab("consultas");
-        }
-      } catch (e) {
-        console.warn("Erro ao ler tab da URL:", e);
-      }
-    };
-
-    checkUrlTab();
-    window.addEventListener("popstate", checkUrlTab);
-    return () => window.removeEventListener("popstate", checkUrlTab);
   }, []);
 
   // Fetch Profile

@@ -1,17 +1,7 @@
 import { NextResponse } from "next/server";
-import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 export async function POST(req: Request) {
   try {
-    // Checagem de Quota: 1 uso grátis para não-pagantes
-    const quotaCheck = await checkFeatureQuota("nice");
-    if (!quotaCheck.allowed) {
-      return NextResponse.json(
-        { error: quotaCheck.error, limitReached: true, upgradeRequired: true },
-        { status: 403 }
-      );
-    }
-
     const body = await req.json();
     const { atividade } = body;
 
@@ -68,12 +58,7 @@ Retorne APENAS um JSON válido, sem markdown:
         if (geminiRes.ok) {
           const data = await geminiRes.json();
           const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (raw) {
-            if (!quotaCheck.isPaid && quotaCheck.userId) {
-              await incrementFeatureQuota("nice", quotaCheck.userId);
-            }
-            return NextResponse.json(JSON.parse(raw));
-          }
+          if (raw) return NextResponse.json(JSON.parse(raw));
         }
       } catch (err) {
         console.warn("Gemini Nice fallback:", err);
@@ -97,12 +82,7 @@ Retorne APENAS um JSON válido, sem markdown:
       if (groqRes.ok) {
         const data = await groqRes.json();
         const raw = data.choices?.[0]?.message?.content;
-        if (raw) {
-          if (!quotaCheck.isPaid && quotaCheck.userId) {
-            await incrementFeatureQuota("nice", quotaCheck.userId);
-          }
-          return NextResponse.json(JSON.parse(raw));
-        }
+        if (raw) return NextResponse.json(JSON.parse(raw));
       }
     }
 

@@ -25,8 +25,7 @@ import {
   AlertTriangle,
   Award,
   Zap,
-  TrendingUp,
-  ArrowRight
+  TrendingUp
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -569,27 +568,12 @@ export function ConsultasClient({
     <div className="space-y-6">
       {/* ── Feedback Alerts ── */}
       {errorMsg && (
-        <div className="p-3 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
           <div className="flex items-center gap-2">
             <ShieldAlert className="size-4 shrink-0" />
-            <span>
-              {errorMsg}{" "}
-              {errorMsg.toLowerCase().includes("limite") && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const searchParams = new URLSearchParams(window.location.search);
-                    searchParams.set("tab", "plans");
-                    window.location.search = searchParams.toString();
-                  }}
-                  className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
-                >
-                  Clique aqui para assinar um plano.
-                </button>
-              )}
-            </span>
+            <span>{errorMsg}</span>
           </div>
-          <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded shrink-0">
+          <Button variant="ghost" size="icon-xs" onClick={() => setErrorMsg(null)} className="size-5 text-destructive hover:bg-destructive/20 rounded">
             <X className="size-3" />
           </Button>
         </div>

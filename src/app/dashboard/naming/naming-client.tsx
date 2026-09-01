@@ -1031,26 +1031,9 @@ Gerado pelo MarcaShield Naming AI.`;
 
                 <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
                   {namingError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="size-4 shrink-0" />
-                        <span>
-                          {namingError}{" "}
-                          {namingError.toLowerCase().includes("limite") && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const searchParams = new URLSearchParams(window.location.search);
-                                searchParams.set("tab", "plans");
-                                window.location.search = searchParams.toString();
-                              }}
-                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
-                            >
-                              Clique aqui para assinar um plano.
-                            </button>
-                          )}
-                        </span>
-                      </div>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center gap-2">
+                      <AlertTriangle className="size-4 shrink-0" />
+                      <span>{namingError}</span>
                     </div>
                   )}
 
@@ -1186,7 +1169,7 @@ Gerado pelo MarcaShield Naming AI.`;
                     ) : (
                       <>
                         <Lightbulb className="size-4" />
-                        <span>Gerar Nomes Estratégicos com IA</span>
+                        <span>Gerar 6 Sugestões de Nomes com IA</span>
                       </>
                     )}
                   </Button>
@@ -1246,6 +1229,17 @@ Gerado pelo MarcaShield Naming AI.`;
                       <span>Favoritas ({favoritos.length})</span>
                     </button>
                   </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="xs"
+                    onClick={handleExportDossier}
+                    className="text-xs h-8 gap-1.5 font-bold border-border/70 hover:bg-primary/10 hover:text-primary"
+                  >
+                    <Printer className="size-3.5" />
+                    <span>Exportar Dossier (PDF)</span>
+                  </Button>
                 </div>
 
                 {/* Lista de Cards de Nomes Gerados */}
@@ -2132,26 +2126,8 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleClassifyNice} className="space-y-3.5">
                   {niceError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="size-4 shrink-0" />
-                        <span>
-                          {niceError}{" "}
-                          {niceError.toLowerCase().includes("limite") && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const searchParams = new URLSearchParams(window.location.search);
-                                searchParams.set("tab", "plans");
-                                window.location.search = searchParams.toString();
-                              }}
-                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
-                            >
-                              Clique aqui para assinar um plano.
-                            </button>
-                          )}
-                        </span>
-                      </div>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+                      {niceError}
                     </div>
                   )}
                   <div className="space-y-1.5">
@@ -2252,26 +2228,8 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleCheckDomains} className="space-y-3.5">
                   {domainError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="size-4 shrink-0" />
-                        <span>
-                          {domainError}{" "}
-                          {domainError.toLowerCase().includes("limite") && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const searchParams = new URLSearchParams(window.location.search);
-                                searchParams.set("tab", "plans");
-                                window.location.search = searchParams.toString();
-                              }}
-                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
-                            >
-                              Clique aqui para assinar um plano.
-                            </button>
-                          )}
-                        </span>
-                      </div>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+                      {domainError}
                     </div>
                   )}
                   <div className="space-y-1.5">

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import inpiConsulta from "@/app/api/inpi/inpi-service";
 import { saveLeadToNotion } from "@/lib/notion";
-import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 type RequestBody = {
   trademark?: string;
@@ -13,15 +12,6 @@ type RequestBody = {
 
 export async function GET(request: Request) {
   try {
-    // Checagem de Quota: 1 uso grátis para não-pagantes
-    const quotaCheck = await checkFeatureQuota("search");
-    if (!quotaCheck.allowed) {
-      return NextResponse.json(
-        { success: false, error: quotaCheck.error, limitReached: true, upgradeRequired: true },
-        { status: 403 }
-      );
-    }
-
     const { searchParams } = new URL(request.url);
     const trademark = searchParams.get("marca") || searchParams.get("trademark");
     const classe = searchParams.get("classe") || "";
@@ -39,10 +29,6 @@ export async function GET(request: Request) {
       buscaExata: exata === "sim" ? "sim" : "nao",
       classeInter: classe.trim() || undefined,
     });
-
-    if (inpiRes.success && !quotaCheck.isPaid && quotaCheck.userId) {
-      await incrementFeatureQuota("search", quotaCheck.userId);
-    }
 
     return NextResponse.json(inpiRes);
   } catch (error: any) {

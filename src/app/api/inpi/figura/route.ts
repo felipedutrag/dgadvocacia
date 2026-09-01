@@ -1,18 +1,8 @@
 import { NextResponse } from 'next/server';
 import { inpiConsultaFigura } from '../inpi-service';
-import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 export async function GET(req: Request) {
   try {
-    // Checagem de Quota: 1 uso grátis para não-pagantes
-    const quotaCheck = await checkFeatureQuota("figura");
-    if (!quotaCheck.allowed) {
-      return NextResponse.json(
-        { error: quotaCheck.error, limitReached: true, upgradeRequired: true },
-        { status: 403 }
-      );
-    }
-
     const { searchParams } = new URL(req.url);
     const viena1 = searchParams.get('viena') || searchParams.get('viena1') || searchParams.get('codigo');
     const viena2 = searchParams.get('viena2') || '';
@@ -37,10 +27,6 @@ export async function GET(req: Request) {
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });
-    }
-
-    if (!quotaCheck.isPaid && quotaCheck.userId) {
-      await incrementFeatureQuota("figura", quotaCheck.userId);
     }
 
     return NextResponse.json({
