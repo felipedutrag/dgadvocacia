@@ -846,7 +846,7 @@ export default function LandingPage() {
               Suíte Completa de Inteligência Marcária
             </h2>
             <p className="text-sm text-muted-foreground font-normal">
-              Acompanhe e gerencie cada ativo desde a criação do naming e análise fonética preliminar até a blindagem decenal definitiva.
+              Do naming à blindagem no INPI: controle total da sua carteira em uma única plataforma.
             </p>
           </div>
 
