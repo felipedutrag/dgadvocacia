@@ -53,26 +53,26 @@ export async function POST(req: Request) {
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
     const variationClause = variacaoDe
-      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário gostou do nome "${variacaoDe}". Crie 6 novas variações e desdobramentos inteligentes mantendo a raiz semântica, fonética ou o conceito central de "${variacaoDe}", mas explorando sufixos nobres, prefixos dinâmicos, fusões morfológicas ou sinônimos refinados.`
-      : `MISSÃO: Criar 6 nomes de marcas comerciais de altíssimo nível, altamente memoráveis, foneticamente elegantes e com CONEXÃO DIRETA e PROFUNDA com o segmento e proposta de valor do cliente.`;
+      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário gostou do nome "${variacaoDe}". Crie 3 novas variações e desdobramentos inteligentes mantendo a raiz semântica, fonética ou o conceito central de "${variacaoDe}", explorando sufixos nobres, prefixos dinâmicos, fusões morfológicas ou sinônimos refinados de alto valor.`
+      : `MISSÃO: Criar exatamente 3 nomes comerciais de altíssimo nível, altamente contextuais, memoráveis, foneticamente elegantes e com CONEXÃO DIRETA e PROFUNDA com o nicho e a proposta de valor informada.`;
 
-    const prompt = `Você é o MarcaShield Naming & Brand Strategy AI, autoridade máxima em Naming Corporativo, Semiótica, Linguística Aplicada e Direito da Propriedade Industrial (Lei 9.279/96 - LPI).
+    const prompt = `Você é o Diretor Criativo e Estrategista Sênior de Naming do MarcaShield AI, autoridade máxima em Naming Corporativo, Semiótica de Marca, Linguística Aplicada e Direito da Propriedade Industrial (Lei nº 9.279/96 - LPI).
 
 ${variationClause}
 
-DIRETRIZES CRÍTICAS DE CONEXÃO E RELEVÂNCIA (LEIA COM EXTREMA ATENÇÃO):
-1. **PROIBIDO GERAR NOMES ALEATÓRIOS OU DESCONECTADOS**: Cada nome DEVE nascer de raízes etimológicas, metáforas do nicho, analogias reais de valor ou fusões morfológicas (portmanteau) que façam total sentido para o cliente final.
-2. **DISTINTIVIDADE LEGAL (Art. 124, VI e XIX da Lei 9.279/96)**:
-   - Evite termos genéricos puros ou meramente descritivos (ex: não usar "Café Bom" para café ou "Advocacia Rápida" para direito).
-   - Crie nomes **Evocativos/Sugestivos de Alto Impacto**, **Neologismos/Fusões Inteligentes** ou **Fantasiosos com Raízes Léxicas Setoriais** que garantam registro e exclusividade no INPI com risco quase nulo de colidência.
-3. **SONORIDADE E FONÉTICA COMERCIAL**: Nomes fáceis de pronunciar, sem encontros consonantais desagradáveis, com excelente ritmo verbal, sem duplo sentido cômico ou pejorativo.
-4. **DIVERSIDADE ESTRATÉGICA DAS 6 SUGESTÕES**:
-   - Sugestão 1: **Neologismo / Fusão Inteligente (Portmanteau)** (ex: estilo Netflix, Nubank, Spotify, Omie).
-   - Sugestão 2: **Evocativo & Metafórico** (remete à sensação, poder, transformação ou resultado gerado).
-   - Sugestão 3: **Fantasioso Premium com Raiz Setorial** (palavra exclusiva mas que soa natural e respeitada no nicho).
-   - Sugestão 4: **Curto & Punchy (4 a 6 letras)** (impacto rápido, fácil de digitar e viralizar).
-   - Sugestão 5: **Moderno & Autoridade Composta** (posicionamento de liderança de mercado).
-   - Sugestão 6: **Global / Internacional Fluido** (soa impecável tanto em português quanto internacionalmente).
+DIRETRIZES DE EXCELÊNCIA CONTEXTUAL & JURÍDICA:
+1. **CONEXÃO CONTEXTUAL PROFUNDA (SEM NOMES GENÉRICOS OU ALEATÓRIOS)**:
+   - Cada nome deve ser construído a partir de metáforas vivas do segmento, raízes etimológicas latinas/gregas/anglo pertinentes, ou fusões semânticas precisas que transmitam autoridade, confiança e transformação.
+   - O nome DEVE refletir o público-alvo, a proposta de valor e a atmosfera do negócio informado.
+
+2. **BLINDAGEM JURÍDICA & DISTINTIVIDADE NO INPI (Art. 124 da LPI)**:
+   - Proibido termos meramente descritivos ou de uso comum que possam sofrer exigência ou indeferimento por falta de distintividade (Art. 124, VI e XIX).
+   - Foque em nomes com alta registrabilidade, probabilidade de deferimento sem oposição e facilidade de registro de domínios (.com.br e .com).
+
+3. **ESTRUTURA DAS 3 SUGESTÕES ESTRATÉGICAS**:
+   - **Sugestão 1: Neologismo Inteligente / Fusão Morfológica (Portmanteau)**: União de dois conceitos centrais do nicho em uma palavra única, fluida e marcante (ex: estilo Nubank, Spotify, Omie).
+   - **Sugestão 2: Evocativo & Semiótico de Alto Impacto**: Nome que evoca a transformação, liderança, precisão ou o resultado que o negócio entrega.
+   - **Sugestão 3: Fantasioso Nobre / Conceitual Premium**: Nome curto, punchy e sofisticado com raiz fonética setorial, transmitindo status e escala.
 
 BRIEFING DETALHADO DO PROJETO:
 - **Segmento / Nicho de Atuação:** "${segmento || 'Não especificado'}"
@@ -84,21 +84,21 @@ BRIEFING DETALHADO DO PROJETO:
 - **Idioma / Raiz Fonética:** "${idiomaOrigem || 'Português e Raiz Latina / Universal'}"
 - **Classe Nice Pretendida:** "${classe || 'Identificar automaticamente a classe ideal'}"
 
-Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
+Retorne APENAS um JSON válido e estritamente formatado com exatamente 3 sugestões conforme este schema:
 {
   "sugestoes": [
     {
       "nome": "NomeDaMarca",
-      "slogan": "Tagline ou slogan potente de posicionamento",
-      "racional": "Explicação profunda e clara de como este nome foi construído: suas raízes de palavras, significado semiótico e por que ele expressa com precisão o negócio do cliente.",
+      "slogan": "Tagline ou slogan potente e contextual de posicionamento",
+      "racional": "Explicação profunda e contextual de como este nome foi construído: raízes lexicais, significado semiótico e por que ele expressa com precisão cirúrgica a proposta do negócio.",
       "estilo": "Neologismo Inteligente",
       "classeSugerida": "Classe Nice 35 (Serviços de Negócios e Gestão)",
-      "distintividadeScore": 95,
-      "analiseJuridicaLPI": "Alta registrabilidade perante o Art. 124 da LPI. Não possui caráter genérico direto e ostenta distintividade intrínseca favorável ao deferimento no INPI.",
+      "distintividadeScore": 96,
+      "analiseJuridicaLPI": "Excelente distintividade intrínseca perante o Art. 124 da LPI. Alta probabilidade de concessão decenal sem colidência com marcas registradas.",
       "pontosFortes": [
-        "Conexão imediata com a proposta de valor do nicho",
-        "Fonética fluida de fácil memorização",
-        "Alta probabilidade de domínio e handles disponíveis"
+        "Conexão contextual imediata com a proposta de valor do nicho",
+        "Fonética agradável e memorização instantânea",
+        "Elevada probabilidade de domínios e redes sociais livres"
       ],
       "sugestoesDominio": [
         "nomedamarca.com.br",
@@ -109,17 +109,18 @@ Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
         "nome": "Dark Luxury & Ouro",
         "cores": ["#D4AF37", "#09090B", "#F4F4F5"]
       },
-      "simboloSugerido": "Escudo geométrico minimalista com traços ascendentes que simbolizam crescimento e segurança"
+      "simboloSugerido": "Símbolo geométrico minimalista e moderno que reforça o conceito central da marca"
     }
   ]
 }`;
 
-    // 1. Tentar Gemini (Flash Models - Primário 3.1 Flash Lite)
+    // 1. Tentar Gemini (Primário: gemini-3.1-pro-preview)
     if (GEMINI_API_KEY) {
       const models = [
+        "gemini-3.1-pro-preview",
+        "gemini-2.5-pro",
         "gemini-3.1-flash-lite",
-        "gemini-2.5-flash",
-        "gemini-1.5-flash"
+        "gemini-2.5-flash"
       ];
 
       for (const model of models) {

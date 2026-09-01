@@ -1185,7 +1185,7 @@ Gerado pelo MarcaShield Naming AI.`;
                     ) : (
                       <>
                         <Lightbulb className="size-4" />
-                        <span>Gerar 6 Sugestões de Nomes com IA</span>
+                        <span>Gerar Nomes Estratégicos com IA</span>
                       </>
                     )}
                   </Button>
