@@ -343,10 +343,6 @@ export function ConsultasClient({
 
       // Dispara automaticamente a análise de viabilidade por IA
       triggerAiAnalysis(targetName.trim(), targetClass.trim(), procs);
-
-      if (procs.length === 0) {
-        setSuccessMsg(`Nenhuma anterioridade idêntica encontrada para "${targetName.trim()}". Caminho livre!`);
-      }
     } catch (err: any) {
       setErrorMsg(err.message);
     } finally {
