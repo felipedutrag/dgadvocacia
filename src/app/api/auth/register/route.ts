@@ -3,7 +3,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendWelcomeEmail } from "@/lib/email";
 
 const VALID_INVITE_CODES = [
+  "PARCEIRO",
+  "PARCERIA",
+  "CONVITE",
+  "MARCAS",
   "DG2026",
+  "PARCEIRO2026",
   "DG-PARTNER",
   "FOUNDER-B2B",
   "DG-EXCLUSIVO",
