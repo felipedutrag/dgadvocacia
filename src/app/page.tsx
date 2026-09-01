@@ -765,15 +765,11 @@ export default function LandingPage() {
             <ul className="space-y-3 pt-1 text-xs sm:text-sm text-foreground/90 font-normal">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong>Depósito e Protocolo:</strong> Enquadramento adequado nas Classes e Especificações de Nice.</span>
+                <span><strong>Cumprimento de Exigências:</strong> Atendimento a despachos formais e exigências de mérito do INPI.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
                 <span><strong>Oposições e Manifestações:</strong> Fundamentação jurídica em casos de colidência com marcas de terceiros.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong>Cumprimento de Exigências:</strong> Atendimento a despachos formais e exigências de mérito do INPI.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
