@@ -8,6 +8,7 @@ import { ConsultasClient } from "./consultas/consultas-client";
 import { NamingClient } from "./naming/naming-client";
 import { CommandPalette } from "@/components/dashboard/command-palette";
 import { NotificationsPopover } from "@/components/dashboard/notifications-popover";
+import { FloatingAiChat } from "@/components/dashboard/floating-ai-chat";
 import {
   Search,
   Clock,
@@ -1385,6 +1386,9 @@ export default function DashboardPage() {
             setActiveTab("consultas");
           }}
         />
+
+        {/* ── CHAT FLUTUANTE COM IA & TOOL CALLING INPI ── */}
+        <FloatingAiChat />
       </div>
     );
   }
