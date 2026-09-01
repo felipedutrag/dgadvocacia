@@ -49,6 +49,31 @@ export async function GET(request: Request) {
                 paid_at: new Date().toISOString(),
               })
               .eq("external_id", externalId);
+
+            // Se temos o registro do pagamento e o usuário associado, atualiza o plano no profile
+            const targetUserId = paymentRecord?.user_id;
+            if (targetUserId) {
+              let marcasToAdd = 3;
+              let packName = "Radar RPI (3 Marcas)";
+              const dynamicMatch = externalId.match(/radar_(\d+)_marcas/i);
+              if (dynamicMatch && dynamicMatch[1]) {
+                const qty = parseInt(dynamicMatch[1], 10);
+                if (!isNaN(qty) && qty > 0) {
+                  marcasToAdd = qty;
+                  packName = `Radar RPI (${qty} ${qty === 1 ? "Marca" : "Marcas"})`;
+                }
+              }
+
+              await supabase
+                .from("profiles")
+                .update({
+                  marcas_limit: marcasToAdd,
+                  plan: packName,
+                  plan_status: "active",
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("id", targetUserId);
+            }
           }
 
           return NextResponse.json({ status: "COMPLETE", paid: true });

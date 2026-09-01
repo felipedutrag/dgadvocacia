@@ -309,33 +309,46 @@ export default function DashboardPage() {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Realtime Pix Payment Listener
+  // Realtime Pix Payment & Profile Listener
   useEffect(() => {
     if (!profile?.id) return;
 
     const channel = supabase
-      .channel(`user-payments-${profile.id}`)
+      .channel(`user-sync-${profile.id}`)
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "payments",
           filter: `user_id=eq.${profile.id}`,
         },
         (payload: any) => {
-          if (payload.new && payload.new.status === "paid") {
+          const status = String(payload.new?.status || "").toUpperCase();
+          if (status === "PAID") {
             setPixSuccess(true);
             setPixLoading(false);
             setPaymentToast({
               show: true,
               title: "Pagamento Confirmado!",
-              message: `O serviço ${payload.new.plan_name || "adquirido"} foi ativado com sucesso.`,
-              planName: payload.new.plan_name,
+              message: `O plano de proteção foi ativado com sucesso.`,
+              planName: payload.new?.plan_name || "Proteção de Marcas INPI",
               time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
             });
             fetchProfile();
           }
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "profiles",
+          filter: `id=eq.${profile.id}`,
+        },
+        () => {
+          fetchProfile();
         }
       )
       .subscribe();
@@ -344,6 +357,34 @@ export default function DashboardPage() {
       supabase.removeChannel(channel);
     };
   }, [profile?.id, supabase, fetchProfile]);
+
+  // Polling ativo de status enquanto o modal Pix estiver aberto
+  useEffect(() => {
+    if (!isPixModalOpen || !pixData?.externalId || pixSuccess) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          externalId: pixData.externalId,
+          ...(pixData.id ? { id: String(pixData.id) } : {}),
+        });
+
+        const res = await fetch(`/api/payment/status?${queryParams.toString()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.paid || data.status === "COMPLETE") {
+            setPixSuccess(true);
+            setPixLoading(false);
+            fetchProfile();
+          }
+        }
+      } catch (err) {
+        console.error("Erro no polling de pagamento:", err);
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [isPixModalOpen, pixData, pixSuccess, fetchProfile]);
 
   // Save Profile
   const handleSaveProfile = async (e: React.FormEvent) => {

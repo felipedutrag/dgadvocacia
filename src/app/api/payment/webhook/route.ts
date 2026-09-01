@@ -194,15 +194,7 @@ export async function POST(request: Request) {
 
         // 2. Atualizar limite de marcas e plano na tabela profiles
         try {
-          const { data: currentProfile } = await supabase
-            .from("profiles")
-            .select("marcas_limit")
-            .eq("id", targetUserId)
-            .maybeSingle();
-
-          const currentLimit = currentProfile?.marcas_limit ?? 1;
-          // Se for compra de plano da calculadora, define a nova capacidade (ou soma se for cumulativo)
-          const newLimit = Math.max(currentLimit, marcasToAdd);
+          const newLimit = marcasToAdd;
 
           await supabase
             .from("profiles")
