@@ -2,7 +2,7 @@ import React from "react";
 
 export function SmartDocLogo({ className = "size-4", ...props }: { className?: string } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <span className={`font-serif font-bold text-primary tracking-wider ${className}`} {...(props as any)}>
+    <span className={`font-serif font-bold text-black dark:text-white tracking-wider ${className}`} {...(props as any)}>
       DG
     </span>
   );
@@ -59,19 +59,19 @@ export function SmartDocBrand({ size = "md", badge, className = "", showIcon = f
   return (
     <div className={`inline-flex items-center gap-2 shrink-0 select-none ${className}`}>
       <div className="flex items-center gap-2 leading-none">
-        {/* "DG" na cor primária do tema com proporção elegante */}
+        {/* "DG": Preto no tema Light e Branco no tema Dark */}
         <span
-          className={`font-serif font-bold ${dgTextSize} tracking-normal text-primary drop-shadow-xs`}
+          className={`font-serif font-bold ${dgTextSize} tracking-normal text-black dark:text-white drop-shadow-xs`}
           style={{ fontFamily: "Georgia, 'Times New Roman', Times, serif" }}
         >
           DG
         </span>
 
         {/* Divisor vertical refinado */}
-        <div className={`w-[1px] ${dividerHeight} bg-primary/40 dark:bg-primary/30`} />
+        <div className={`w-[1px] ${dividerHeight} bg-black/30 dark:bg-white/30`} />
 
         {/* "ADVOCACIA" com espaçamento largo moderno */}
-        <span className={`font-sans font-medium ${advocaciaTextSize} tracking-[0.24em] text-foreground/80 dark:text-[#94a3b8] uppercase`}>
+        <span className={`font-sans font-medium ${advocaciaTextSize} tracking-[0.24em] text-black/70 dark:text-zinc-400 uppercase`}>
           ADVOCACIA
         </span>
       </div>
