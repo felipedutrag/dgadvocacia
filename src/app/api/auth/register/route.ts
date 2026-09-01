@@ -2,12 +2,30 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendWelcomeEmail } from "@/lib/email";
 
+const VALID_INVITE_CODES = [
+  "VIP-DG2026",
+  "DG-PARTNER",
+  "FOUNDER-B2B",
+  "DG-EXCLUSIVO",
+  "DG-VIP",
+  "BLINDAGEM2026",
+  "CONVITE-VIP"
+];
+
 export async function POST(request: Request) {
   try {
-    const { email, password, name, oab } = await request.json();
+    const { email, password, name, inviteCode } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json({ error: "E-mail e senha são obrigatórios." }, { status: 400 });
+    }
+
+    const cleanCode = (inviteCode || "").trim().toUpperCase();
+    if (!cleanCode || !VALID_INVITE_CODES.includes(cleanCode)) {
+      return NextResponse.json(
+        { error: "Código de Convite VIP inválido. O cadastro é restrito a parceiros homologados." },
+        { status: 403 }
+      );
     }
 
     const supabaseAdmin = createAdminClient();
@@ -19,6 +37,8 @@ export async function POST(request: Request) {
       email_confirm: true,
       user_metadata: {
         name: name?.trim() || "Parceiro B2B",
+        invite_code: cleanCode,
+        partner_tier: "VIP_HOMOLOGATED"
       },
     });
 

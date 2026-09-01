@@ -52,6 +52,7 @@ export default function AuthPage() {
 
   // Form states
   const [name, setName] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -61,13 +62,20 @@ export default function AuthPage() {
   const isMobile = isMobileRaw ?? false;
 
   useEffect(() => {
-    // Checar query params na URL (?mode=register, ?mode=forgot, ?mode=reset)
+    // Checar query params na URL (?mode=register, ?mode=forgot, ?mode=reset, ?invite=CODE)
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get("mode");
+    const inviteParam = params.get("invite") || params.get("codigo") || params.get("convite");
     const isRecoveryHash = typeof window !== "undefined" && window.location.hash.includes("type=recovery");
+
+    if (inviteParam) {
+      setInviteCode(inviteParam.toUpperCase());
+    }
 
     if (modeParam === "register" || modeParam === "forgot" || modeParam === "reset") {
       setMode(modeParam);
+    } else if (inviteParam) {
+      setMode("register");
     } else if (isRecoveryHash) {
       setMode("reset");
     }
@@ -170,7 +178,11 @@ export default function AuthPage() {
 
     if (mode === "register") {
       if (!name.trim()) {
-        setErrorMessage("Por favor, informe seu nome.");
+        setErrorMessage("Por favor, informe seu nome ou da sua empresa.");
+        return;
+      }
+      if (!inviteCode.trim()) {
+        setErrorMessage("Por favor, informe o Código de Convite VIP para concluir o cadastro.");
         return;
       }
       if (!agreeTerms) {
@@ -222,6 +234,7 @@ export default function AuthPage() {
             email: email.trim(),
             password: password,
             name: name.trim(),
+            inviteCode: inviteCode.trim().toUpperCase(),
           }),
         });
 
@@ -370,6 +383,33 @@ export default function AuthPage() {
                     className="pl-9"
                   />
                 </div>
+              </div>
+            )}
+
+            {/* REGISTER: Código de Convite VIP (Exclusivo B2B) */}
+            {mode === "register" && (
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="inviteCode">Código de Convite VIP *</Label>
+                  <span className="text-[10px] font-mono text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-bold">
+                    Acesso Exclusivo
+                  </span>
+                </div>
+                <div className="relative flex items-center">
+                  <KeyRound className="absolute left-3 size-4 text-primary pointer-events-none" />
+                  <Input
+                    id="inviteCode"
+                    type="text"
+                    value={inviteCode}
+                    onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                    placeholder="Ex: VIP-DG2026"
+                    required={mode === "register"}
+                    className="pl-9 font-mono uppercase tracking-wider border-primary/30 focus-visible:ring-primary/20"
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Adesão restrita a parceiros convidados e homologados.
+                </p>
               </div>
             )}
 
