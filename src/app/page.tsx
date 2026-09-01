@@ -633,8 +633,8 @@ export default function LandingPage() {
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Fase Prévia</span>
                 </div>
                 <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  <Bot className="size-4 text-primary" />
-                  Triagem & Raio-X IA
+                  <Search className="size-4 text-primary" />
+                  Triagem & Raio-X
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   Varredura de colidências na base de marcas registradas, enquadramento nas 45 classes de Nice e cálculo de probabilidade de deferimento.
