@@ -32,7 +32,12 @@ import {
   Bot,
   Eye,
   BellRing,
-  ArrowUpRight
+  ArrowUpRight,
+  Clock,
+  Zap,
+  ArrowDown,
+  Gavel,
+  Radio
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -207,67 +212,292 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 1: COMO FUNCIONA O ACORDO DE PARCERIA ── */}
+      {/* ── SEÇÃO 1: FLUXO OPERACIONAL & PIPELINE B2B (3 CAMADAS) ── */}
       <section id="como-funciona" className="relative z-10 flex w-full flex-col items-center px-4 py-20 bg-card/40 border-y border-border/60">
         <div className="w-full max-w-5xl mx-auto space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary uppercase tracking-wider">
               <Layers className="size-3.5" />
-              Modelo Operacional
+              Arquitetura Operacional B2B
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Como Funciona Nossa Parceria B2B
+            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+              Como a Operação Acontece na Prática
             </h2>
-            <p className="text-sm text-muted-foreground font-normal">
-              Suporte jurídico completo para sua empresa atender mais clientes e focar no atendimento.
+            <p className="text-xs sm:text-base text-muted-foreground font-normal leading-relaxed">
+              Do fechamento comercial à defesa jurídica de alta complexidade: um ecossistema sincronizado em 3 camadas para sua empresa lucrar sem riscos operacionais.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-card/70 border-border/70 p-6 flex flex-col justify-between backdrop-blur-md">
-              <div className="space-y-3 pb-2">
-                <div className="size-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                  1
+          {/* ── FLOWCHART PIPELINE CONTAINER ── */}
+          <div className="relative flex flex-col items-center space-y-4">
+            
+            {/* ═══ CAMADA 1: PARCEIRO / COMERCIAL ═══ */}
+            <div className="w-full rounded-2xl border border-primary/30 bg-gradient-to-b from-card/90 to-card/60 p-5 sm:p-7 shadow-lg backdrop-blur-md relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 sm:size-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                    <Users className="size-5 sm:size-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-primary">
+                      Camada 1 • Entrada & Vendas
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+                      Parceiro / Comercial
+                    </h3>
+                  </div>
                 </div>
-                <h3 className="text-base font-bold text-foreground">1. Atendimento ao Cliente</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                  Sua empresa prospecta e atende o cliente, utilizando nossa ferramenta de pesquisa prévia e inteligência para qualificar a demanda.
-                </p>
-              </div>
-              <div className="text-[11px] text-primary/80 font-mono pt-3 border-t border-border/40">
-                Relacionamento Direto
-              </div>
-            </Card>
 
-            <Card className="bg-card/70 border-border/70 p-6 flex flex-col justify-between backdrop-blur-md">
-              <div className="space-y-3 pb-2">
-                <div className="size-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                  2
+                <div className="inline-flex items-center gap-1.5 self-start md:self-auto rounded-full bg-primary/15 border border-primary/30 px-3 py-1 text-[11px] font-semibold text-primary">
+                  <CheckCircle2 className="size-3.5" />
+                  <span>Autonomia Comercial Total</span>
                 </div>
-                <h3 className="text-base font-bold text-foreground">2. Cadastro do Protocolo</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                  Basta lançar o número do processo na sua dashboard de parceiro. Em segundos, o sistema sincroniza os dados do INPI e ativa o pipeline de acompanhamento contínuo.
-                </p>
               </div>
-              <div className="text-[11px] text-primary/80 font-mono pt-3 border-t border-border/40">
-                Sincronização Instantânea
-              </div>
-            </Card>
 
-            <Card className="bg-card/70 border-border/70 p-6 flex flex-col justify-between backdrop-blur-md">
-              <div className="space-y-3 pb-2">
-                <div className="size-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                  3
+              {/* Conteúdo Camada 1 */}
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-1.5">
+                  <div className="text-xs font-mono text-primary font-bold">01. Prospecção & Venda</div>
+                  <h4 className="text-sm font-semibold text-foreground">Relacionamento com o Cliente</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Sua empresa precifica, atende o cliente e gerencia as propostas com total liberdade de margem de lucro.
+                  </p>
                 </div>
-                <h3 className="text-base font-bold text-foreground">3. Suporte Jurídico Especializado</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
-                  Nossa advocacia atua na assessoria técnica: análise de anterioridades, cumprimento de exigências, manifestações, oposições, recursos e peticionamentos oficiais.
-                </p>
+
+                <div className="rounded-xl border border-primary/40 bg-primary/5 p-4 space-y-1.5 relative">
+                  <div className="text-xs font-mono text-primary font-bold">02. Cadastro Simplificado</div>
+                  <h4 className="text-sm font-semibold text-foreground">Lançamento do Protocolo</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Vendeu? Basta cadastrar o número do protocolo do pedido na sua plataforma parceira em segundos.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-1.5">
+                  <div className="text-xs font-mono text-primary font-bold">03. Sincronização Imediata</div>
+                  <h4 className="text-sm font-semibold text-foreground">Ingestão de Dados</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    A plataforma conecta ao INPI, sincroniza titulares, classes e inicia a telemetria do processo.
+                  </p>
+                </div>
               </div>
-              <div className="text-[11px] text-primary/80 font-mono pt-3 border-t border-border/40">
-                Rigor Técnico & Ético
+            </div>
+
+            {/* ═══ CONECTOR 1 -> 2 ═══ */}
+            <div className="flex flex-col items-center justify-center py-2">
+              <div className="h-6 w-0.5 bg-gradient-to-b from-primary to-primary/40" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/90 px-3 py-1 text-[11px] font-mono text-muted-foreground shadow-xs my-0.5">
+                <Radio className="size-3 text-primary animate-pulse" />
+                <span>Telemetria em tempo real & sincronização contínua</span>
+                <ArrowDown className="size-3 text-primary" />
               </div>
-            </Card>
+              <div className="h-6 w-0.5 bg-gradient-to-b from-primary/40 to-primary" />
+            </div>
+
+            {/* ═══ CAMADA 2: BACKEND TECNOLÓGICO ═══ */}
+            <div className="w-full rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 to-card/60 p-5 sm:p-7 shadow-lg backdrop-blur-md relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500/60 via-emerald-400 to-emerald-500/60" />
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 sm:size-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 shadow-inner">
+                    <Cpu className="size-5 sm:size-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
+                      Camada 2 • Automação & Inteligência
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+                      Seu Backend Tecnológico
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 self-start md:self-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 text-[11px] font-semibold text-emerald-400">
+                  <Clock className="size-3.5" />
+                  <span>Vigilância Contínua 24/7</span>
+                </div>
+              </div>
+
+              {/* 3 Recursos do Backend Tecnológico */}
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="size-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <Clock className="size-4" />
+                    </div>
+                    <h4 className="text-sm font-bold text-foreground">Cron da RPI (Terças-feiras)</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Varredura semanal automatizada e telemetria profunda de todos os despachos a cada nova edição da Revista da Propriedade Industrial.
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-border/40 text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                    <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Varredura Semanal em Lote
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="size-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                      <BellRing className="size-4" />
+                    </div>
+                    <h4 className="text-sm font-bold text-foreground">Alertas de Prazos Fatais</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Notificações preventivas em tempo real de prazos críticos: Exigências formais, Oposições de terceiros e Indeferimentos.
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-border/40 text-[11px] font-mono text-amber-400 flex items-center gap-1">
+                    <span className="size-1.5 rounded-full bg-amber-400" />
+                    Zero Risco de Preclusão
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                      <Sparkles className="size-4" />
+                    </div>
+                    <h4 className="text-sm font-bold text-foreground">Risco & Colidências</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Relatórios instantâneos com cálculo de colidência fonética, visual e ideológica para antecipar qualquer conflito marcário.
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-border/40 text-[11px] font-mono text-primary flex items-center gap-1">
+                    <span className="size-1.5 rounded-full bg-primary" />
+                    Diagnóstico em Tempo Real
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ═══ CONECTOR 2 -> 3 ═══ */}
+            <div className="flex flex-col items-center justify-center py-2">
+              <div className="h-6 w-0.5 bg-gradient-to-b from-emerald-400 to-amber-500/50" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/90 px-3 py-1 text-[11px] font-mono text-muted-foreground shadow-xs my-0.5">
+                <Zap className="size-3 text-amber-400" />
+                <span>Gatilho de Incidente → Acionamento Técnico Imediato</span>
+                <ArrowDown className="size-3 text-amber-400" />
+              </div>
+              <div className="h-6 w-0.5 bg-gradient-to-b from-amber-500/50 to-primary" />
+            </div>
+
+            {/* ═══ CAMADA 3: BACKEND JURÍDICO (SOB DEMANDA) ═══ */}
+            <div className="w-full rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 to-card/60 p-5 sm:p-7 shadow-lg backdrop-blur-md relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-amber-400 to-primary/60" />
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 sm:size-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                    <Scale className="size-5 sm:size-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-primary">
+                      Camada 3 • Retaguarda Jurídica
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+                      Seu Backend Jurídico (Sob Demanda)
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 self-start md:self-auto rounded-full bg-primary/10 border border-primary/30 px-3 py-1 text-[11px] font-semibold text-primary">
+                  <Gavel className="size-3.5" />
+                  <span>Advocacia Especializada em PI</span>
+                </div>
+              </div>
+
+              {/* 4 Mapeamentos Jurídicos */}
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* 1. Oposição Sofrida */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">
+                      Oposição Sofrida
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Art. 158 LPI</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Manifestação Técnica Especializada</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Elaboração de peça fundamentada comprovando distintividade, anterioridade ou coexistência para reverter o ataque do concorrente.
+                  </p>
+                </div>
+
+                {/* 2. Marca Colidente Publicada */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                      Marca Colidente Publicada
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Vigilância Ativa</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Oposição Ativa no INPI</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Protocolo tempestivo de oposição para impugnar marcas parecidas e barrar a concessão indevida a terceiros.
+                  </p>
+                </div>
+
+                {/* 3. Despacho Formal */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
+                      Despacho Formal / Exigência
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Saneamento</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Cumprimento de Exigência</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Saneamento ágil de pendências documentais, taxas complementares e adequação da especificação de produtos e serviços.
+                  </p>
+                </div>
+
+                {/* 4. Indeferimento Publicado */}
+                <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20">
+                      Indeferimento Publicado
+                    </span>
+                    <span className="text-[11px] font-mono text-muted-foreground font-semibold">Art. 212 LPI</span>
+                  </div>
+                  <div className="text-sm font-bold text-foreground flex items-center gap-1.5 pt-1">
+                    <ArrowRight className="size-3.5 text-primary shrink-0" />
+                    <span>Recurso contra Indeferimento</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Recurso técnico administrativo perante a 2ª Instância do INPI com doutrina, jurisprudência e teses de distintividade.
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Bottom Assurance Banner */}
+              <div className="mt-5 p-3.5 rounded-xl border border-primary/20 bg-primary/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                <div className="flex items-center gap-2.5 text-xs text-foreground font-medium">
+                  <CheckCircle2 className="size-4 text-primary shrink-0" />
+                  <span>Sua empresa atende o cliente com autoridade máxima. Nós garantimos todo o respaldo técnico e jurídico nos bastidores.</span>
+                </div>
+                <Link
+                  href="/register"
+                  className={cn(buttonVariants({ size: "sm" }), "shrink-0 text-xs font-semibold bg-primary text-primary-foreground rounded-lg gap-1.5")}
+                >
+                  <span>Cadastrar Marca</span>
+                  <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
+
+            </div>
+
           </div>
         </div>
       </section>
