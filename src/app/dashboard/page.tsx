@@ -808,16 +808,6 @@ export default function DashboardPage() {
                 />
               )}
 
-              {activeTab === "cease_desist" && (
-                <NamingClient
-                  initialTab="cease_desist"
-                  onVerifyTrademark={(marca, classe) => {
-                    setInjectedQuery({ query: marca, classe });
-                    setActiveTab("consultas");
-                  }}
-                />
-              )}
-
           {/* TAB 2: RADAR INPI */}
           {activeTab === "marcas" && (
             <div className="space-y-6">

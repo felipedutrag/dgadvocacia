@@ -29,7 +29,7 @@ interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onNavigateTab: (
-    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "plans" | "profile"
   ) => void;
   onSearchProcesso?: (numero: string) => void;
   onSearchMarca?: (termo: string) => void;
@@ -51,7 +51,7 @@ export function CommandPalette({
   }, [open]);
 
   const handleSelectTab = (
-    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "plans" | "profile"
   ) => {
     onNavigateTab(tab);
     onOpenChange(false);

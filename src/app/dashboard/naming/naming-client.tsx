@@ -248,14 +248,12 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
             {activeSubTab === "logos" && <span>Criador de Logomarcas & Identidade Visual</span>}
             {activeSubTab === "nice" && <span>Enquadrador Inteligente de Classes Nice</span>}
             {activeSubTab === "domains" && <span>Checador de Domínios & Redes Sociais</span>}
-            {activeSubTab === "cease_desist" && <span>Gerador de Notificação Extrajudicial</span>}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
             {activeSubTab === "naming" && "Criação de marcas nominativas com alta distintividade perante o Art. 124 da LPI."}
             {activeSubTab === "logos" && "Geração de conceitos de marca mista e elementos figurativos em alta definição."}
             {activeSubTab === "nice" && "Mapeamento oficial das 45 classes de Nice e especificações pré-aprovadas no INPI."}
             {activeSubTab === "domains" && "Verificação instantânea no Registro.br (.com.br), .com e canais sociais."}
-            {activeSubTab === "cease_desist" && "Minuta jurídica fundamentada nos Arts. 129, 189 e 209 da Lei nº 9.279/96."}
           </p>
         </div>
       </div>
