@@ -348,6 +348,9 @@ export async function inpiConsultarProcesso(
   try {
     const cookies = await getInpiSessionCookies(options?.user, options?.password);
     let codPedido = '';
+    let titularFromSearch = '';
+    let marcaFromSearch = '';
+    let situacaoFromSearch = '';
 
     if (/^\d{1,7}$/.test(numeroOuCodPedido.trim())) {
       codPedido = numeroOuCodPedido.trim();
@@ -378,19 +381,31 @@ export async function inpiConsultarProcesso(
       }
 
       const searchHtml = iconv.decode(Buffer.from(await searchRes.arrayBuffer()), 'ISO-8859-1');
+      const searchProcessos = parseInpiHtml(searchHtml);
+      if (searchProcessos && searchProcessos.length > 0) {
+        titularFromSearch = searchProcessos[0].titular || '';
+        marcaFromSearch = searchProcessos[0].marca || '';
+        situacaoFromSearch = searchProcessos[0].situacao || '';
+        if (searchProcessos[0].codPedido) {
+          codPedido = searchProcessos[0].codPedido;
+        }
+      }
+
       const $s = cheerio.load(searchHtml);
       const detailLink = $s('a[href*="Action=detail"]').first().attr('href');
 
-      if (!detailLink) {
+      if (!detailLink && !codPedido) {
         return {
           success: false,
           error: `Processo ${numeroOuCodPedido} não encontrado no banco de dados do INPI.`
         };
       }
 
-      const matchCod = detailLink.match(/CodPedido=(\d+)/);
-      if (matchCod) {
-        codPedido = matchCod[1];
+      if (detailLink) {
+        const matchCod = detailLink.match(/CodPedido=(\d+)/);
+        if (matchCod) {
+          codPedido = matchCod[1];
+        }
       }
     }
 
@@ -419,11 +434,13 @@ export async function inpiConsultarProcesso(
     
     const marca = $('font:contains("Marca:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
       $('td:contains("Marca:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('th:contains("Marca:")').next().text().replace(/\s+/g, ' ').trim();
+      $('th:contains("Marca:")').next().text().replace(/\s+/g, ' ').trim() ||
+      marcaFromSearch;
 
     const situacao = $('font:contains("Situação:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
       $('td:contains("Situação:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('th:contains("Situação:")').next().text().replace(/\s+/g, ' ').trim();
+      $('th:contains("Situação:")').next().text().replace(/\s+/g, ' ').trim() ||
+      situacaoFromSearch;
 
     const apresentacao = $('font:contains("Apresentação:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
       $('td:contains("Apresentação:")').next().text().replace(/\s+/g, ' ').trim();
@@ -431,24 +448,54 @@ export async function inpiConsultarProcesso(
     const natureza = $('font:contains("Natureza:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
       $('td:contains("Natureza:")').next().text().replace(/\s+/g, ' ').trim();
 
-    // Extração ultra resiliente de Titular
-    let titular = $('font:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
-      $('td:contains("Titular:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('th:contains("Titular:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('b:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
-      $('span:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
-      $('#accordion-titular').closest('.accordion-item').find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim() ||
-      $('.titular').text().replace(/\s+/g, ' ').trim();
+    // ── Extração ultra abrangente de Titular ──
+    let titular = '';
 
-    // Fallback: busca no DOM por linha contendo "Titular"
+    // 1. Tenta extrair da tabela da aba/painel de Titulares (Nome/Razão Social)
+    $('th:contains("Razão Social"), th:contains("Nome/Razão"), th:contains("Nome / Razão"), th:contains("Nome do Titular")')
+      .closest('table')
+      .find('tbody tr')
+      .each((_, tr) => {
+        const firstTd = $(tr).find('td').first().text().replace(/\s+/g, ' ').trim();
+        if (firstTd && firstTd.length > 2 && !firstTd.toLowerCase().includes('titular') && !firstTd.toLowerCase().includes('razão social')) {
+          titular = firstTd;
+          return false;
+        }
+      });
+
+    // 2. Tenta extrair por cabeçalhos ou links de acordion contendo Titular
+    if (!titular) {
+      $('a:contains("Titular"), button:contains("Titular"), h4:contains("Titular"), h5:contains("Titular")').each((_, el) => {
+        const container = $(el).closest('.accordion-group, .accordion-item, .panel, .card, div');
+        const tdText = container.find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim();
+        if (tdText && tdText.length > 2 && !tdText.toLowerCase().includes('titular')) {
+          titular = tdText;
+          return false;
+        }
+      });
+    }
+
+    // 3. Tenta seletores diretos de rótulos com ou sem colchetes / dois pontos
+    if (!titular) {
+      titular = $('font:contains("Titular")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+        $('td:contains("Titular")').next().text().replace(/\s+/g, ' ').trim() ||
+        $('th:contains("Titular")').next().text().replace(/\s+/g, ' ').trim() ||
+        $('b:contains("Titular")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+        $('span:contains("Titular")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+        $('font:contains("Requerente")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+        $('td:contains("Requerente")').next().text().replace(/\s+/g, ' ').trim() ||
+        $('.titular').text().replace(/\s+/g, ' ').trim();
+    }
+
+    // 4. Fallback: varredura em todas as linhas <tr>
     if (!titular) {
       $('tr').each((_, tr) => {
         const text = $(tr).text();
-        if (text.includes('Titular:') || text.includes('Titular')) {
+        if (text.includes('Titular') || text.includes('Requerente') || text.includes('Razão Social')) {
           const tds = $(tr).find('td');
           if (tds.length >= 2) {
             const potential = $(tds[1]).text().replace(/\s+/g, ' ').trim();
-            if (potential && potential.length > 2 && !potential.toLowerCase().includes('titular')) {
+            if (potential && potential.length > 2 && !potential.toLowerCase().includes('titular') && !potential.toLowerCase().includes('requerente')) {
               titular = potential;
               return false;
             }
@@ -457,12 +504,17 @@ export async function inpiConsultarProcesso(
       });
     }
 
+    // 5. Fallback definitivo: Usar o titular capturado na tabela oficial de busca do INPI
+    if (!titular && titularFromSearch) {
+      titular = titularFromSearch;
+    }
+
     // Extração resiliente de Procurador
-    let procurador = $('font:contains("Procurador:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
-      $('td:contains("Procurador:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('th:contains("Procurador:")').next().text().replace(/\s+/g, ' ').trim() ||
-      $('b:contains("Procurador:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
-      $('#accordion-procurador').closest('.accordion-item').find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim();
+    let procurador = $('font:contains("Procurador")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Procurador")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('th:contains("Procurador")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('b:contains("Procurador")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('#accordion-procurador').closest('.accordion-item, .accordion-group, div').find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim();
 
     let dataDeposito = '';
     let dataConcessao = '';

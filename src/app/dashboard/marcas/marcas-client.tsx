@@ -179,14 +179,14 @@ export function MarcasClient() {
         setMarcas(list);
         setStoredCache(list);
 
-        const limit = profile?.marcas_limit ?? 3;
+        const limit = profile?.marcas_limit ?? 1;
         const used = list.length;
         const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
         setQuota({
           total: limit,
           used: used,
           remaining: Math.max(0, limit - used),
-          plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : `Plano Base (${limit} ${limit === 1 ? "Marca" : "Marcas"})`,
+          plan: isPaid ? (profile?.plan || `Radar RPI (${limit} ${limit === 1 ? "Marca" : "Marcas"})`) : `Gratuito (${limit} ${limit === 1 ? "Marca" : "Marcas"})`,
         });
       }
     } catch (err: any) {

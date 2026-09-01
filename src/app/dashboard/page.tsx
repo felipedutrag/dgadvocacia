@@ -285,9 +285,9 @@ export default function DashboardPage() {
         name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Parceiro B2B",
         email: user.email || "",
         company_name: data?.company_name || "",
-        marcas_limit: data?.marcas_limit ?? 3,
+        marcas_limit: data?.marcas_limit ?? 1,
         marcas_used: data?.marcas_used ?? (marcasCount ?? 0),
-        consultorias_creditos: data?.consultorias_creditos ?? 5,
+        consultorias_creditos: data?.consultorias_creditos ?? 1,
         is_admin: data?.is_admin ?? false,
       };
 
