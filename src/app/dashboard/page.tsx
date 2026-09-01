@@ -1307,14 +1307,12 @@ export default function DashboardPage() {
                         <span className="text-xs text-muted-foreground font-normal">/mês</span>
                       </div>
                     </div>
-                    {calcProcessos > 3 && (
-                      <div className="border-l border-border/60 pl-3">
-                        <div className="text-[10px] font-mono text-muted-foreground uppercase">Custo / Marca</div>
-                        <div className="text-sm font-bold text-primary font-mono">
-                          R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
-                        </div>
+                    <div className="border-l border-border/60 pl-3">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Custo / Marca</div>
+                      <div className="text-sm font-bold text-primary font-mono">
+                        R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
 
