@@ -942,7 +942,7 @@ export default function DashboardPage() {
             </header>
 
             {/* ── Main Dashboard Content ── */}
-            <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
               {/* TAB 1: CONSULTAS INPI & TELEMETRIA */}
               {(activeTab === "consultas-nome" || activeTab === "consultas-processo" || activeTab === "consultas-figura" || activeTab === "consultas") && (
                 <div className="space-y-6 animate-fade-in">
@@ -1189,8 +1189,16 @@ export default function DashboardPage() {
                     <h3 className="text-xl font-bold text-foreground">
                       Proteção Total de Marcas INPI
                     </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                      Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número no menu &ldquo;Vigilância RPI&rdquo;. A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, manifestação à oposição e defesas administrativas.
+                    <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
+                      Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número no menu{" "}
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("marcas")}
+                        className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80 transition-colors inline cursor-pointer"
+                      >
+                        &ldquo;Vigilância RPI&rdquo;
+                      </button>
+                      . A DG Advocacia assume 100% da condução do processo no INPI — vigilância semanal na RPI contra cópias e colidências, cumprimento de exigências, prazos decenais, manifestação à oposição e defesas administrativas.
                     </p>
                   </div>
 
