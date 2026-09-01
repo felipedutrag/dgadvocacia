@@ -1393,7 +1393,7 @@ Gerado pelo MarcaShield Naming AI.`;
                             {sug.classeSugerida || "Classe Nice Sugerida"}
                           </span>
 
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-1.5">
                             {/* Botão Variações Deste Nome */}
                             <Button
                               type="button"
@@ -1401,7 +1401,7 @@ Gerado pelo MarcaShield Naming AI.`;
                               variant="outline"
                               disabled={isVariationLoading}
                               onClick={() => handleGenerateNames(undefined, sug.nome)}
-                              className="text-[11px] h-7 gap-1 font-bold border-primary/30 hover:bg-primary/10 text-primary"
+                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
                               title="Gerar 6 desdobramentos inteligentes mantendo a raiz deste nome"
                             >
                               {isVariationLoading ? (
@@ -1411,8 +1411,8 @@ Gerado pelo MarcaShield Naming AI.`;
                                 </>
                               ) : (
                                 <>
-                                  <Sparkles className="size-3" />
-                                  <span>+ Variações Deste</span>
+                                  <Sparkles className="size-3 opacity-80" />
+                                  <span>+ Variações</span>
                                 </>
                               )}
                             </Button>
@@ -1423,9 +1423,9 @@ Gerado pelo MarcaShield Naming AI.`;
                               size="xs"
                               variant="outline"
                               onClick={() => setSelectedMockupBrand(sug)}
-                              className="text-[11px] h-7 gap-1 font-bold"
+                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
                             >
-                              <Eye className="size-3 text-cyan-400" />
+                              <Eye className="size-3 opacity-80" />
                               <span>Simular Mockup</span>
                             </Button>
 
@@ -1446,9 +1446,9 @@ Gerado pelo MarcaShield Naming AI.`;
                                 setActiveSubTab("logos");
                               }}
                               variant="outline"
-                              className="text-[11px] h-7 gap-1 font-bold border-amber-500/30 hover:bg-amber-500/10 text-amber-500"
+                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
                             >
-                              <Palette className="size-3" />
+                              <Palette className="size-3 opacity-80" />
                               <span>Criar Logo</span>
                             </Button>
 
@@ -1458,17 +1458,17 @@ Gerado pelo MarcaShield Naming AI.`;
                               size="xs"
                               variant="outline"
                               onClick={() => handleCopyPitch(sug, idx)}
-                              className="text-[11px] h-7 gap-1 font-bold"
+                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
                               title="Copiar briefing completo formatado para WhatsApp/Proposta"
                             >
                               {copiedPitchIndex === idx ? (
                                 <>
-                                  <Check className="size-3 text-emerald-500" />
+                                  <Check className="size-3 text-emerald-400" />
                                   <span>Copiado!</span>
                                 </>
                               ) : (
                                 <>
-                                  <Share2 className="size-3" />
+                                  <Share2 className="size-3 opacity-80" />
                                   <span>Copiar Pitch</span>
                                 </>
                               )}
@@ -1478,12 +1478,13 @@ Gerado pelo MarcaShield Naming AI.`;
                             <Button
                               type="button"
                               size="xs"
+                              variant="outline"
                               onClick={() => {
                                 if (onVerifyTrademark) {
                                   onVerifyTrademark(sug.nome, classeNice);
                                 }
                               }}
-                              className="text-[11px] h-7 gap-1 font-bold bg-primary text-primary-foreground shadow-sm"
+                              className="text-[11px] h-7 px-2.5 gap-1.5 font-semibold border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-all"
                             >
                               <Search className="size-3" />
                               <span>Verificar no INPI</span>
