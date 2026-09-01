@@ -963,31 +963,14 @@ export function ConsultasClient({
             </div>
           </div>
 
-          {/* Botão de Exportação de Parecer em PDF */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border/40">
+          {/* Rodapé informativo */}
+          <div className="pt-2 border-t border-border/40 text-center sm:text-left">
             <span className="text-xs text-muted-foreground font-mono">
               Validação técnica com base nas diretrizes de exame de marcas do INPI
             </span>
-            <Button
-              type="button"
-              onClick={() => setReportModalOpen(true)}
-              className="w-full sm:w-auto text-xs font-bold gap-2 bg-primary text-primary-foreground h-9 px-4"
-            >
-              <FileText className="size-3.5" />
-              <span>Exportar Parecer Técnico em PDF</span>
-            </Button>
           </div>
         </div>
       )}
-
-      {/* Modal de Relatório Jurídico em PDF */}
-      <LegalReportModal
-        open={reportModalOpen}
-        onOpenChange={setReportModalOpen}
-        marca={nomeMarca}
-        classe={classeNice}
-        report={aiReport}
-      />
 
       {/* ── MODAL / DETALHE DO PROCESSO SELECIONADO (RAIO-X) ── */}
       {activeSubTab === "processo" && selectedProcesso && (
