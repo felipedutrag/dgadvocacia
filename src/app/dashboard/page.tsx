@@ -5,6 +5,9 @@ export const dynamic = "force-dynamic";
 import React, { useState, useEffect, useCallback } from "react";
 import { MarcasClient } from "./marcas/marcas-client";
 import { ConsultasClient } from "./consultas/consultas-client";
+import { NamingClient } from "./naming/naming-client";
+import { CommandPalette } from "@/components/dashboard/command-palette";
+import { NotificationsPopover } from "@/components/dashboard/notifications-popover";
 import {
   Search,
   Clock,
@@ -39,6 +42,7 @@ import {
   Scale,
   Minus,
   Plus,
+  Command,
   X
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -87,12 +91,42 @@ export default function DashboardPage() {
   // Layout & Navigation State
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"consultas" | "marcas" | "plans" | "profile">("consultas");
+  const [activeTab, setActiveTab] = useState<"consultas" | "marcas" | "naming" | "plans" | "profile">("consultas");
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [injectedQuery, setInjectedQuery] = useState<{ query?: string; processo?: string; classe?: string } | null>(null);
 
   // User & Data State
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDark, setIsDark] = useState(true);
+
+  // Listener Global de Teclas de Atalho (Ctrl+K / Cmd+K, Ctrl+N, Ctrl+M, Ctrl+P)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+      if (!isCtrlOrCmd) return;
+
+      if (e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCommandPaletteOpen((prev) => !prev);
+      } else if (e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        setActiveTab("naming");
+      } else if (e.key.toLowerCase() === "m") {
+        e.preventDefault();
+        setActiveTab("marcas");
+      } else if (e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        setActiveTab("consultas");
+      } else if (e.key.toLowerCase() === "l") {
+        e.preventDefault();
+        setActiveTab("plans");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Profile Edit State
   const [editName, setEditName] = useState("");
@@ -417,6 +451,24 @@ export default function DashboardPage() {
           </button>
 
           <button
+            onClick={() => { setActiveTab("naming"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "naming"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-amber-500 hover:text-amber-400 hover:bg-amber-500/10"
+            }`}
+            title="Estúdio Naming & Logos IA"
+          >
+            <Sparkles className="size-4 shrink-0 text-amber-500" />
+            {(sidebarOpen || isDrawer) && (
+              <div className="flex items-center justify-between flex-1">
+                <span>Estúdio Naming & IA</span>
+                <span className="font-mono text-[8px] bg-amber-500/20 text-amber-500 px-1.5 py-0.2 rounded font-bold">Novo</span>
+              </div>
+            )}
+          </button>
+
+          <button
             onClick={() => { setActiveTab("marcas"); if (isDrawer) setMobileDrawerOpen(false); }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === "marcas"
@@ -553,61 +605,102 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              onClick={toggleTheme}
-              className="size-8 rounded-lg text-muted-foreground hover:text-foreground"
-              title="Alternar Tema"
-            >
-              {isDark ? <Sun className="size-4 text-amber-500" /> : <Moon className="size-4" />}
-            </Button>
+            <div className="flex items-center gap-2">
+                {/* Botão de Busca Rápida / Command Palette */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCommandPaletteOpen(true)}
+                  className="hidden md:flex items-center gap-2 text-xs text-muted-foreground border-border/70 bg-card/60 h-8 px-2.5 rounded-lg hover:text-foreground"
+                >
+                  <Search className="size-3.5" />
+                  <span>Buscar processo ou comando...</span>
+                  <kbd className="font-mono text-[10px] bg-muted border border-border/80 px-1 py-0.5 rounded text-muted-foreground">
+                    ⌘K
+                  </kbd>
+                </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button variant="ghost" className="relative size-8 rounded-full p-0">
-                    <Avatar className="size-8 border border-border">
-                      <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">
-                        {profile?.name?.charAt(0).toUpperCase() || "D"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                }
-              />
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-xs font-bold leading-none">{profile?.name}</p>
-                    <p className="text-[11px] leading-none text-muted-foreground">{profile?.email}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setActiveTab("profile")} className="text-xs">
-                  <User className="mr-2 size-3.5" />
-                  <span>Minha Conta</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
-                  <Crown className="mr-2 size-3.5 text-amber-500" />
-                  <span>Serviços & Pacotes B2B</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
-                  <LogOut className="mr-2 size-3.5" />
-                  <span>Encerrar Sessão</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </header>
+                {/* Central de Notificações dos Processos */}
+                <NotificationsPopover
+                  onSelectProcesso={(num) => {
+                    setInjectedQuery({ processo: num });
+                    setActiveTab("consultas");
+                  }}
+                  onNavigateTab={(tab) => setActiveTab(tab)}
+                />
 
-        {/* ── Main Dashboard Content ── */}
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
-          {/* TAB 1: CONSULTAS & IA */}
-          {activeTab === "consultas" && (
-            <ConsultasClient />
-          )}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={toggleTheme}
+                  className="size-8 rounded-lg text-muted-foreground hover:text-foreground"
+                  title="Alternar Tema"
+                >
+                  {isDark ? <Sun className="size-4 text-amber-500" /> : <Moon className="size-4" />}
+                </Button>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button variant="ghost" className="relative size-8 rounded-full p-0">
+                        <Avatar className="size-8 border border-border">
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">
+                            {profile?.name?.charAt(0).toUpperCase() || "D"}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    }
+                  />
+                  <DropdownMenuContent className="w-56" align="end">
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-xs font-bold leading-none">{profile?.name}</p>
+                        <p className="text-[11px] leading-none text-muted-foreground">{profile?.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setActiveTab("profile")} className="text-xs">
+                      <User className="mr-2 size-3.5" />
+                      <span>Minha Conta</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
+                      <Sparkles className="mr-2 size-3.5 text-amber-500" />
+                      <span>Estúdio Naming & Logos IA</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
+                      <Crown className="mr-2 size-3.5 text-amber-500" />
+                      <span>Serviços & Pacotes B2B</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
+                      <LogOut className="mr-2 size-3.5" />
+                      <span>Encerrar Sessão</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </header>
+
+            {/* ── Main Dashboard Content ── */}
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
+              {/* TAB 1: CONSULTAS & IA */}
+              {activeTab === "consultas" && (
+                <ConsultasClient
+                  initialQuery={injectedQuery?.query}
+                  initialProcesso={injectedQuery?.processo}
+                  initialClasse={injectedQuery?.classe}
+                />
+              )}
+
+              {/* TAB NOVO: ESTÚDIO DE NAMING & LOGOS IA */}
+              {activeTab === "naming" && (
+                <NamingClient
+                  onVerifyTrademark={(marca, classe) => {
+                    setInjectedQuery({ query: marca, classe });
+                    setActiveTab("consultas");
+                  }}
+                />
+              )}
 
           {/* TAB 2: RADAR INPI */}
           {activeTab === "marcas" && (
@@ -1132,24 +1225,32 @@ export default function DashboardPage() {
                     value={pixData.pixCode}
                     className="text-[11px] font-mono h-9 bg-muted/30"
                   />
-                  <Button
-                    onClick={handleCopyPix}
-                    className="text-xs font-bold h-9 px-4 gap-1.5 shrink-0"
-                  >
-                    {copiedPix ? <CheckCheck className="size-3.5 text-emerald-400" /> : <Copy className="size-3.5" />}
-                    <span>{copiedPix ? "Copiado!" : "Copiar"}</span>
-                  </Button>
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-center text-muted-foreground flex items-center justify-center gap-1.5 pt-1">
+                  <Loader2 className="size-3 animate-spin text-primary" />
+                  <span>Aguardando confirmação em tempo real...</span>
                 </div>
               </div>
+            ) : null}
+          </DialogContent>
+        </Dialog>
 
-              <div className="text-[11px] text-center text-muted-foreground flex items-center justify-center gap-1.5 pt-1">
-                <Loader2 className="size-3 animate-spin text-primary" />
-                <span>Aguardando confirmação em tempo real...</span>
-              </div>
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
+        {/* ── COMMAND PALETTE GLOBAL (ATALHOS CTRL+K / CTRL+N / CTRL+P) ── */}
+        <CommandPalette
+          open={commandPaletteOpen}
+          onOpenChange={setCommandPaletteOpen}
+          onNavigateTab={(tab) => setActiveTab(tab)}
+          onSearchProcesso={(num) => {
+            setInjectedQuery({ processo: num });
+            setActiveTab("consultas");
+          }}
+          onSearchMarca={(termo) => {
+            setInjectedQuery({ query: termo });
+            setActiveTab("consultas");
+          }}
+        />
+      </div>
+    );
+  }

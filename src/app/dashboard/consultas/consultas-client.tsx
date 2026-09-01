@@ -90,16 +90,22 @@ interface AiViabilityReport {
   }>;
 }
 
-export function ConsultasClient() {
+interface ConsultasClientProps {
+  initialQuery?: string;
+  initialProcesso?: string;
+  initialClasse?: string;
+}
+
+export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }: ConsultasClientProps) {
   const supabase = createClient();
   const [activeSubTab, setActiveSubTab] = useState<"marca" | "processo" | "figura" | "meus_pedidos">("marca");
 
   // Form States
-  const [nomeMarca, setNomeMarca] = useState("");
-  const [classeNice, setClasseNice] = useState("");
+  const [nomeMarca, setNomeMarca] = useState(initialQuery || "");
+  const [classeNice, setClasseNice] = useState(initialClasse || "");
   const [buscaExata, setBuscaExata] = useState(false);
 
-  const [numeroProcesso, setNumeroProcesso] = useState("");
+  const [numeroProcesso, setNumeroProcesso] = useState(initialProcesso || "");
 
   const [vienaCodigo, setVienaCodigo] = useState("");
   const [vienaClasse, setVienaClasse] = useState("");
