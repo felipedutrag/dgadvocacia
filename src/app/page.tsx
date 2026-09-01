@@ -578,7 +578,7 @@ export default function LandingPage() {
                   <span>Parecer Técnico: Concessão Decenal</span>
                   <span className="text-primary font-mono text-[10px]">Certificado Emitido</span>
                 </div>
-                <div className="text-muted-foreground text-[11px]">Vigência de 10 anos deferida • Dr. Felipe Dutra (OAB/SP)</div>
+                <div className="text-muted-foreground text-[11px]">Vigência de 10 anos deferida • Felipe Dutra Gonçalves (OAB/SP)</div>
               </div>
             </div>
             <div className="pt-2">
@@ -851,7 +851,7 @@ export default function LandingPage() {
                   <Scale className="size-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-foreground">Dr. Felipe Dutra Gonçalves</div>
+                  <div className="text-xs font-bold text-foreground">Felipe Dutra Gonçalves</div>
                   <div className="text-[11px] font-mono text-primary font-medium">OAB/SP nº 459.254</div>
                 </div>
               </div>

@@ -102,7 +102,7 @@ export function LegalReportModal({
                 Parecer Técnico de Registrabilidade
               </h2>
               <p className="text-xs text-zinc-400 print:text-zinc-600">
-                Dr. Felipe Dutra Gonçalves — OAB/SP nº 459.254
+                Felipe Dutra Gonçalves — OAB/SP nº 459.254
               </p>
             </div>
 
@@ -199,7 +199,7 @@ export function LegalReportModal({
               Validação com base nas diretrizes de exame de marcas do INPI.
             </div>
             <div className="text-center">
-              <div className="text-xs font-bold text-zinc-200 print:text-black">Dr. Felipe Dutra Gonçalves</div>
+              <div className="text-xs font-bold text-zinc-200 print:text-black">Felipe Dutra Gonçalves</div>
               <div className="text-[10px] text-primary font-mono font-bold">OAB/SP nº 459.254</div>
             </div>
           </div>
