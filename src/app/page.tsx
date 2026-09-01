@@ -166,19 +166,19 @@ export default function LandingPage() {
       </header>
 
       {/* ── HERO SECTION (B2B Parceria Estratégica) ── */}
-      <section id="hero" className="relative z-10 flex w-full flex-col items-center px-4 pt-32 sm:pt-36 pb-16 text-center">
+      <section id="hero" className="relative z-10 flex w-full flex-col items-center px-4 pt-24 sm:pt-36 pb-12 sm:pb-16 text-center">
         <div className="flex w-full max-w-4xl flex-col items-center mx-auto">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary tracking-wide backdrop-blur-md">
+          <div className="mb-4 sm:mb-5 inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-semibold text-primary tracking-wide backdrop-blur-md">
             <Handshake className="size-3.5" />
-            Parceria Jurídica B2B & Backend de Registro de Marcas
+            <span>Parceria Jurídica B2B & Backend de Marcas</span>
           </div>
 
-          <h1 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.15] max-w-3xl mx-auto">
+          <h1 className="mb-3 sm:mb-4 text-[22px] xs:text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.2] sm:leading-[1.15] max-w-3xl mx-auto">
             Sua empresa atende os clientes. <br className="hidden sm:inline" />
             Nós fornecemos o <span className="text-primary">suporte jurídico especializado no INPI</span>.
           </h1>
 
-          <p className="mb-8 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground font-normal">
+          <p className="mb-6 sm:mb-8 max-w-2xl mx-auto text-xs sm:text-base md:text-lg leading-relaxed text-muted-foreground font-normal">
             Acordo de cooperação e assessoria com a DG Advocacia: otimize a operação do seu negócio enquanto nossa banca especializada assume pareceres, protocolos, defesas e recursos com o apoio de uma dashboard em tempo real.
           </p>
 
