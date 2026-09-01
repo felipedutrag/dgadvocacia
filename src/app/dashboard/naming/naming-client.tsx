@@ -1429,29 +1429,6 @@ Gerado pelo MarcaShield Naming AI.`;
                               <span>Simular Mockup</span>
                             </Button>
 
-                            {/* Botão Gerar Logo (1-clique) */}
-                            <Button
-                              type="button"
-                              size="xs"
-                              onClick={() => {
-                                setLogoMarca(sug.nome);
-                                setLogoSegmento(segmento || sug.classeSugerida);
-                                if (sug.paletaRecomendada?.cores && sug.paletaRecomendada.cores.length > 0) {
-                                  if (sug.paletaRecomendada.cores[0]) setCorPrimaria(sug.paletaRecomendada.cores[0]);
-                                  if (sug.paletaRecomendada.cores[1]) setCorSecundaria(sug.paletaRecomendada.cores[1]);
-                                }
-                                if (sug.simboloSugerido) {
-                                  setLogoSimbolo(sug.simboloSugerido);
-                                }
-                                setActiveSubTab("logos");
-                              }}
-                              variant="outline"
-                              className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
-                            >
-                              <Palette className="size-3 opacity-80" />
-                              <span>Criar Logo</span>
-                            </Button>
-
                             {/* Botão Copiar Pitch */}
                             <Button
                               type="button"
@@ -1680,25 +1657,6 @@ Gerado pelo MarcaShield Naming AI.`;
                 Score LPI: <strong className="text-emerald-500">{selectedMockupBrand.distintividadeScore}%</strong>
               </span>
               <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  size="xs"
-                  variant="outline"
-                  onClick={() => {
-                    setLogoMarca(selectedMockupBrand.nome);
-                    setLogoSegmento(segmento || selectedMockupBrand.classeSugerida);
-                    if (selectedMockupBrand.paletaRecomendada?.cores && selectedMockupBrand.paletaRecomendada.cores.length > 0) {
-                      if (selectedMockupBrand.paletaRecomendada.cores[0]) setCorPrimaria(selectedMockupBrand.paletaRecomendada.cores[0]);
-                      if (selectedMockupBrand.paletaRecomendada.cores[1]) setCorSecundaria(selectedMockupBrand.paletaRecomendada.cores[1]);
-                    }
-                    setSelectedMockupBrand(null);
-                    setActiveSubTab("logos");
-                  }}
-                  className="text-xs font-bold gap-1 text-amber-500 border-amber-500/30"
-                >
-                  <Palette className="size-3.5" />
-                  <span>Criar Logo desta Marca</span>
-                </Button>
                 <Button
                   type="button"
                   size="xs"
