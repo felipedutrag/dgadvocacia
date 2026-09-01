@@ -879,11 +879,7 @@ Gerado pelo MarcaShield Naming AI.`;
                                 <ShieldCheck className="size-3" /> Score LPI: {sug.distintividadeScore}%
                               </span>
                             </div>
-                            {sug.slogan && (
-                              <p className="text-xs text-amber-500 font-medium italic">
-                                "{sug.slogan}"
-                              </p>
-                            )}
+
                           </div>
 
                           <div className="flex items-center gap-1.5 shrink-0">
