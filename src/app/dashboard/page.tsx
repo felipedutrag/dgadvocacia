@@ -897,49 +897,54 @@ export default function DashboardPage() {
                       </Button>
                     }
                   />
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-xs font-bold leading-none">{profile?.name}</p>
-                        <p className="text-[11px] leading-none text-muted-foreground">{profile?.email}</p>
+                  <DropdownMenuContent align="end" sideOffset={8} className="w-64">
+                    <DropdownMenuLabel className="font-normal p-2">
+                      <div className="flex items-center gap-2.5">
+                        <Avatar className="size-8 border border-border shrink-0 rounded-lg">
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs rounded-lg">
+                            {profile?.name?.charAt(0).toUpperCase() || "D"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-bold text-foreground truncate leading-tight">{profile?.name || "Parceiro B2B"}</p>
+                          <p className="text-[10px] text-muted-foreground truncate leading-tight mt-0.5">{profile?.email}</p>
+                        </div>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => setActiveTab("profile")} className="text-xs">
-                      <User className="mr-2 size-3.5" />
-                      <span>Minha Conta</span>
+
+                    <div className="px-1.5 py-1 text-[10px] font-mono font-bold uppercase text-muted-foreground/70 tracking-wider">
+                      Acesso Rápido
+                    </div>
+
+                    <DropdownMenuItem onClick={() => setActiveTab("marcas")}>
+                      <Shield className="size-3.5 text-emerald-400" />
+                      <span>Vigilância RPI</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("consultas-nome")} className="text-xs">
-                      <Search className="mr-2 size-3.5" />
-                      <span>Pesquisar Marca no INPI</span>
+                    <DropdownMenuItem onClick={() => setActiveTab("consultas-nome")}>
+                      <Search className="size-3.5" />
+                      <span>Pesquisar Marca</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("consultas-processo")} className="text-xs">
-                      <FileText className="mr-2 size-3.5" />
+                    <DropdownMenuItem onClick={() => setActiveTab("consultas-processo")}>
+                      <FileText className="size-3.5" />
                       <span>Consultar Processo</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("consultas-figura")} className="text-xs">
-                      <Layers className="mr-2 size-3.5" />
-                      <span>Elementos Figurativos</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("nice")} className="text-xs">
-                      <Layers className="mr-2 size-3.5" />
-                      <span>Enquadrador Nice</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
-                      <Lightbulb className="mr-2 size-3.5" />
+                    <DropdownMenuItem onClick={() => setActiveTab("naming")}>
+                      <Lightbulb className="size-3.5" />
                       <span>Gerador de Marcas</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("domains")} className="text-xs">
-                      <Globe className="mr-2 size-3.5" />
-                      <span>Domínios & @</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
-                      <Crown className="mr-2 size-3.5" />
+                    <DropdownMenuItem onClick={() => setActiveTab("plans")}>
+                      <Crown className="size-3.5 text-primary" />
                       <span>Proteção de Marcas</span>
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("profile")}>
+                      <User className="size-3.5" />
+                      <span>Minha Conta</span>
+                    </DropdownMenuItem>
+
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
-                      <LogOut className="mr-2 size-3.5" />
+                    <DropdownMenuItem onClick={handleLogout} variant="destructive">
+                      <LogOut className="size-3.5" />
                       <span>Encerrar Sessão</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

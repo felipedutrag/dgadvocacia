@@ -1273,6 +1273,49 @@ html:not(.dark) input:-webkit-autofill:active {
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
+/* Fix Chrome / Edge / Safari autofill background turning white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #242220 inset !important;
+  box-shadow: 0 0 0 1000px #242220 inset !important;
+  -webkit-text-fill-color: #f3f4f6 !important;
+  caret-color: #f3f4f6 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #252220 inset !important;
+  box-shadow: 0 0 0 1000px #252220 inset !important;
+  -webkit-text-fill-color: #f3f4f6 !important;
+  caret-color: #f3f4f6 !important;
+}
+
+html:not(.dark) input:-webkit-autofill,
+html:not(.dark) input:-webkit-autofill:hover,
+html:not(.dark) input:-webkit-autofill:focus,
+html:not(.dark) input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  caret-color: #1f2937 !important;
+}
+
+@media print {
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
     overflow: visible !important;
     height: auto !important;
   }
@@ -1325,23 +1368,23 @@ html:not(.dark) input:-webkit-autofill:active {
   --sidebar-accent-foreground: oklch(0.9850 0 0);
   --sidebar-border: oklch(0.2750 0 0);
   --sidebar-ring: oklch(0.4390 0 0);
-  --shadow-color: oklch(0 0 0);
-  --shadow-opacity: 0.1;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 0;
-  --shadow-offset-y: 1px;
-  --letter-spacing: 0em;
-  --spacing: 0.25rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* ── Custom Styled Native Select Dropdowns ── */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.65rem center;
+  background-repeat: no-repeat;
+  background-size: 1.15em 1.15em;
+  padding-right: 2.2rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+select option {
+  background-color: #121317;
+  color: #f3f4f6;
+  padding: 8px 12px;
 }
