@@ -280,18 +280,14 @@ export default function DashboardPage() {
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.id);
 
-      // Sem plano pago ativo contratado, o limite da conta é estritamente 1 marca
-      const isPaidPlan = data?.plan && data.plan !== "free" && !data.plan.toLowerCase().includes("gratuito") && data.plan_status === "active";
-      const effectiveLimit = isPaidPlan ? (data?.marcas_limit || 1) : 1;
-
       const userProfile: UserProfile = {
         id: user.id,
         name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Parceiro B2B",
         email: user.email || "",
         company_name: data?.company_name || "",
-        marcas_limit: effectiveLimit,
-        marcas_used: marcasCount ?? 0,
-        consultorias_creditos: isPaidPlan ? (data?.consultorias_creditos ?? 5) : 1,
+        marcas_limit: data?.marcas_limit ?? 3,
+        marcas_used: data?.marcas_used ?? (marcasCount ?? 0),
+        consultorias_creditos: data?.consultorias_creditos ?? 5,
         is_admin: data?.is_admin ?? false,
       };
 
@@ -1047,24 +1043,24 @@ export default function DashboardPage() {
                         <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
                           <span>
                             {activeTab === "consultas-processo"
-                              ? "Consultar Processo"
+                              ? "Consulta por Número de Processo"
                               : activeTab === "consultas-figura"
-                              ? "Elementos Figurativos"
-                              : "Pesquisar Marca no INPI"}
+                              ? "Pesquisa por Elementos Figurativos (Viena)"
+                              : "Pesquisa por Nome de Marca"}
                           </span>
                           <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
                             {activeTab === "consultas-processo"
-                              ? "Telemetria em Tempo Real"
+                              ? "IPAS / RPI Oficial"
                               : activeTab === "consultas-figura"
-                              ? "Classificação de Viena (CFE)"
-                              : "Base Oficial INPI"}
+                              ? "Classificação de Viena"
+                              : "Diretrizes INPI & LPI"}
                           </span>
                         </h1>
                         <p className="text-xs text-muted-foreground mt-0.5">
                           {activeTab === "consultas-processo"
-                            ? "Consulte despachos, prazos legais, titularidade e eventos oficiais de qualquer processo no INPI."
+                            ? "Acompanhe despachos, oposições e o status jurídico completo de qualquer processo no INPI."
                             : activeTab === "consultas-figura"
-                            ? "Consulte códigos de Viena e logotipos com elementos gráficos cadastrados no INPI."
+                            ? "Busque marcas por elementos visuais, símbolos e códigos da Classificação Internacional de Viena."
                             : "Pesquise marcas idênticas ou semelhantes em todas as classes Nice e verifique a viabilidade de registro."}
                         </p>
                       </div>
@@ -1148,6 +1144,7 @@ export default function DashboardPage() {
                       ? "domains"
                       : "naming"
                   }
+                  onGoToPlans={() => setActiveTab("plans")}
                   onVerifyTrademark={(marca, classe) => {
                     setInjectedQuery({ query: marca, classe });
                     setActiveTab("consultas-nome");
@@ -1712,7 +1709,12 @@ export default function DashboardPage() {
         <CommandPalette
           open={commandPaletteOpen}
           onOpenChange={setCommandPaletteOpen}
-          onNavigateTab={(tab) => setActiveTab(tab)}
+          onNavigateTab={(tab) => {
+            if (isToolsDisabled && (tab === "naming" || tab === "nice" || tab === "domains")) {
+              return;
+            }
+            setActiveTab(tab);
+          }}
           onSearchProcesso={(num) => {
             setInjectedQuery({ processo: num });
             setActiveTab("consultas-processo");

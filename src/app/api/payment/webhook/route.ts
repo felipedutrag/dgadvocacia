@@ -134,14 +134,30 @@ export async function POST(request: Request) {
         console.warn("Aviso ao atualizar transação existente:", err);
       }
 
-      // Fallback para o usuário logado / primeiro usuário se for webhook de teste
+      // Resolução segura e prioritária do usuário associado
       let targetUserId = paymentRecord?.user_id;
+      if (!targetUserId && (paymentRecord?.payer_email || payload.payer?.email)) {
+        try {
+          const emailToFind = paymentRecord?.payer_email || payload.payer?.email;
+          const { data: userProfile } = await supabase
+            .from("profiles")
+            .select("id")
+            .ilike("email", emailToFind)
+            .maybeSingle();
+          if (userProfile?.id) {
+            targetUserId = userProfile.id;
+          }
+        } catch (e) {
+          console.warn("Aviso ao buscar perfil por e-mail no webhook:", e);
+        }
+      }
+
       if (!targetUserId) {
         try {
           const { data: firstProfile } = await supabase.from("profiles").select("id").limit(1).maybeSingle();
-          targetUserId = firstProfile?.id || "b052ac7c-76f1-4184-9422-3ae26b6e26e5";
+          targetUserId = firstProfile?.id || null;
         } catch {
-          targetUserId = "b052ac7c-76f1-4184-9422-3ae26b6e26e5";
+          targetUserId = null;
         }
       }
 

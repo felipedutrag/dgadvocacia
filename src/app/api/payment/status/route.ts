@@ -51,7 +51,22 @@ export async function GET(request: Request) {
               .eq("external_id", externalId);
 
             // Se temos o registro do pagamento e o usuário associado, atualiza o plano no profile
-            const targetUserId = paymentRecord?.user_id;
+            let targetUserId = paymentRecord?.user_id;
+            if (!targetUserId && paymentRecord?.payer_email) {
+              try {
+                const { data: userProfile } = await supabase
+                  .from("profiles")
+                  .select("id")
+                  .ilike("email", paymentRecord.payer_email)
+                  .maybeSingle();
+                if (userProfile?.id) {
+                  targetUserId = userProfile.id;
+                }
+              } catch (e) {
+                console.warn("Aviso ao buscar perfil por e-mail no status:", e);
+              }
+            }
+
             if (targetUserId) {
               let marcasToAdd = 3;
               let packName = "Radar RPI (3 Marcas)";

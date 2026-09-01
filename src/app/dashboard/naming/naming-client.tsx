@@ -21,18 +21,18 @@ import {
   Scale,
   ShieldAlert,
   Send,
-  Printer,
   Star,
   Sparkles,
   Eye,
   Share2,
   FileText,
   Bookmark,
-  SlidersHorizontal,
   Briefcase,
   X,
   ExternalLink,
   ShieldCheck,
+  Shield,
+  Lock,
   TrendingUp,
   Trash2,
 } from "lucide-react";
@@ -48,55 +48,43 @@ const NICHO_PRESETS = [
     label: "SaaS & IA B2B",
     segmento: "Software SaaS e Inteligência Artificial B2B",
     descricao: "Automação inteligente de processos operacionais e análise preditiva",
-    keywords: "inteligência, dados, velocidade, automação",
     publico: "Diretores de Tecnologia, Gestores e Startups",
     tom: "Inovador & Tecnológico",
-    classe: "42",
   },
   {
     label: "Advocacia & Tributário",
     segmento: "Sociedade de Advogados e Direito Tributário",
     descricao: "Assessoria jurídica de alto valor, planejamento tributário e blindagem",
-    keywords: "justiça, escudo, solidez, autoridade",
     publico: "Empresários, C-Levels e Grandes Corporações",
     tom: "Autoritário & Nobre",
-    classe: "35",
   },
   {
     label: "FinTech & Crédito",
     segmento: "FinTech de Meios de Pagamento e Crédito Digital",
     descricao: "Soluções de liquidez instantânea, split de pagamentos e banking ágil",
-    keywords: "capital, fluxo, confiança, liquidez",
     publico: "PMEs, Lojistas e Empresas Digitais",
     tom: "Inovador & Tecnológico",
-    classe: "36",
   },
   {
     label: "Estética & Saúde Premium",
     segmento: "Clínica de Dermatologia e Estética Avançada",
     descricao: "Tratamentos de alta performance, laser moderno e rejuvenescimento",
-    keywords: "beleza, harmonia, pele, vitalidade",
     publico: "Público Exigente e Mercado de Luxo",
     tom: "Luxo & Sofisticação",
-    classe: "44",
   },
   {
     label: "Café & Gastronomia",
     segmento: "Torrefação e Cafeteria de Cafés Especiais",
     descricao: "Grãos selecionados de alta pontuação com torra artesanal sob demanda",
-    keywords: "aroma, essência, torra, terroir",
     publico: "Apreciadores de Gastronomia e Cafés Especiais",
     tom: "Acolhedor & Experiencial",
-    classe: "43",
   },
   {
     label: "Moda & Streetwear",
     segmento: "Marca de Roupas e Vestuário Urbano Autoral",
     descricao: "Estilo autêntico, peças oversized e coleções com tiragem limitada",
-    keywords: "estilo, atitude, urbano, essência",
     publico: "Jovens e Geração Z",
     tom: "Audacioso & Disruptivo",
-    classe: "25",
   },
 ];
 
@@ -119,9 +107,10 @@ const SYMBOL_PRESETS = [
 interface NamingClientProps {
   initialTab?: "naming" | "logos" | "nice" | "domains";
   onVerifyTrademark?: (marca: string, classe?: string) => void;
+  onGoToPlans?: () => void;
 }
 
-export function NamingClient({ initialTab = "naming", onVerifyTrademark }: NamingClientProps) {
+export function NamingClient({ initialTab = "naming", onVerifyTrademark, onGoToPlans }: NamingClientProps) {
   const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains">(initialTab);
 
   React.useEffect(() => {
@@ -131,19 +120,16 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
   // Naming Form State
   const [segmento, setSegmento] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [palavrasChave, setPalavrasChave] = useState("");
   const [publicoAlvo, setPublicoAlvo] = useState("B2B & Corporativo");
   const [tomVoz, setTomVoz] = useState("Autoritário & Nobre");
   const [estilo, setEstilo] = useState("Equilibrado (Mix Estratégico)");
   const [idiomaOrigem, setIdiomaOrigem] = useState("Português e Raiz Latina");
-  const [classeNice, setClasseNice] = useState("35");
-  const [showAdvancedBriefing, setShowAdvancedBriefing] = useState(false);
 
   const [namingLoading, setNamingLoading] = useState(false);
   const [variationLoadingFor, setVariationLoadingFor] = useState<string | null>(null);
   const [sugestoes, setSugestoes] = useState<NamingSuggestion[]>([]);
   const [favoritos, setFavoritos] = useState<NamingSuggestion[]>([]);
-  const [activeFilter, setActiveFilter] = useState<"all" | "top90" | "favoritos">("all");
+  const [activeFilter, setActiveFilter] = useState<"all" | "favoritos">("all");
   const [namingError, setNamingError] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedPitchIndex, setCopiedPitchIndex] = useState<number | null>(null);
@@ -278,12 +264,10 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
         const parsed = JSON.parse(savedNaming);
         if (parsed.segmento) setSegmento(parsed.segmento);
         if (parsed.descricao) setDescricao(parsed.descricao);
-        if (parsed.palavrasChave) setPalavrasChave(parsed.palavrasChave);
         if (parsed.publicoAlvo) setPublicoAlvo(parsed.publicoAlvo);
         if (parsed.tomVoz) setTomVoz(parsed.tomVoz);
         if (parsed.estilo) setEstilo(parsed.estilo);
         if (parsed.idiomaOrigem) setIdiomaOrigem(parsed.idiomaOrigem);
-        if (parsed.classeNice) setClasseNice(parsed.classeNice);
         if (parsed.sugestoes?.length) setSugestoes(parsed.sugestoes);
         if (parsed.favoritos?.length) setFavoritos(parsed.favoritos);
       }
@@ -327,18 +311,16 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
         JSON.stringify({
           segmento,
           descricao,
-          palavrasChave,
           publicoAlvo,
           tomVoz,
           estilo,
           idiomaOrigem,
-          classeNice,
           sugestoes,
           favoritos,
         })
       );
     } catch (e) {}
-  }, [segmento, descricao, palavrasChave, publicoAlvo, tomVoz, estilo, idiomaOrigem, classeNice, sugestoes, favoritos]);
+  }, [segmento, descricao, publicoAlvo, tomVoz, estilo, idiomaOrigem, sugestoes, favoritos]);
 
   // Salvar automaticamente alterações do Estúdio de Logos
   React.useEffect(() => {
@@ -377,7 +359,6 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
     if (window.confirm("Deseja limpar todos os dados do briefing e nomes gerados para iniciar um novo projeto?")) {
       setSegmento("");
       setDescricao("");
-      setPalavrasChave("");
       setSugestoes([]);
       setFavoritos([]);
       localStorage.removeItem("marcashield_naming_state");
@@ -406,12 +387,10 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
         body: JSON.stringify({
           segmento,
           descricao,
-          palavrasChave,
           publicoAlvo,
           tomVoz,
           estilo,
           idiomaOrigem,
-          classe: classeNice ? `NCL ${classeNice}` : undefined,
           variacaoDe: customVariacaoDe,
         }),
       });
@@ -477,174 +456,9 @@ Gerado pelo MarcaShield Naming AI.`;
     setTimeout(() => setCopiedPitchIndex(null), 2500);
   };
 
-  // Exportar Dossier de Naming em Janela de Impressão / PDF
-  const handleExportDossier = () => {
-    const itemsToExport = favoritos.length > 0 ? favoritos : sugestoes;
-    if (itemsToExport.length === 0) return;
-
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) return;
-
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Dossier Executivo de Naming - ${segmento || 'Projeto de Marca'}</title>
-        <meta charset="utf-8" />
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-          body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #ffffff;
-            color: #09090b;
-            padding: 40px;
-            margin: 0;
-            line-height: 1.6;
-          }
-          .header {
-            border-bottom: 2px solid #D4AF37;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .brand-title {
-            font-family: 'Cinzel', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #09090b;
-            letter-spacing: 2px;
-          }
-          .badge {
-            background: #f4f4f5;
-            border: 1px solid #e4e4e7;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #71717a;
-          }
-          .briefing-box {
-            background: #fafafa;
-            border: 1px solid #f0f0f0;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 30px;
-            font-size: 13px;
-          }
-          .card {
-            border: 1px solid #e4e4e7;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            page-break-inside: avoid;
-          }
-          .card-name {
-            font-size: 22px;
-            font-weight: 800;
-            color: #09090b;
-            margin: 0 0 4px 0;
-          }
-          .card-slogan {
-            font-size: 14px;
-            color: #b45309;
-            font-style: italic;
-            margin-bottom: 12px;
-          }
-          .section-title {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #71717a;
-            margin-top: 12px;
-            margin-bottom: 4px;
-          }
-          .score-pill {
-            background: #ecfdf5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-          }
-          .footer {
-            margin-top: 40px;
-            border-top: 1px solid #e4e4e7;
-            padding-top: 16px;
-            font-size: 11px;
-            color: #a1a1aa;
-            text-align: center;
-          }
-          @media print {
-            body { padding: 20px; }
-            button { display: none; }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <div>
-            <div class="brand-title">MARCASHIELD &bull; DOSSIER DE NAMING</div>
-            <div style="font-size: 13px; color: #71717a; margin-top: 4px;">Relatório de Estratégia de Identidade e Registrabilidade Marcária (LPI)</div>
-          </div>
-          <div class="badge">NCL ${classeNice || '35'}</div>
-        </div>
-
-        <div class="briefing-box">
-          <strong>Segmento:</strong> ${segmento || 'Não informado'} | 
-          <strong>Público-Alvo:</strong> ${publicoAlvo} | 
-          <strong>Tom de Voz:</strong> ${tomVoz}
-          <br />
-          <strong>Proposta de Valor:</strong> ${descricao || 'Não informada'}
-        </div>
-
-        <div>
-          ${itemsToExport.map((item, idx) => `
-            <div class="card">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 class="card-name">${idx + 1}. ${item.nome}</h2>
-                <span class="score-pill">Score LPI: ${item.distintividadeScore}%</span>
-              </div>
-              ${item.slogan ? `<div class="card-slogan">"${item.slogan}"</div>` : ''}
-
-              <div class="section-title">Racional Criativo & Semiótica:</div>
-              <p style="font-size: 13px; margin: 0; color: #3f3f46;">${item.racional}</p>
-
-              <div class="section-title">Análise de Viabilidade Jurídica (Lei 9.279/96):</div>
-              <p style="font-size: 12px; margin: 0; color: #047857;">${item.analiseJuridicaLPI || 'Conforme com Art. 124 da LPI, sem conflito de genericidade.'}</p>
-
-              ${item.sugestoesDominio ? `
-                <div class="section-title">Sugestões de Domínios:</div>
-                <div style="font-size: 12px; font-family: monospace; color: #1e3a8a;">
-                  ${item.sugestoesDominio.join(' | ')}
-                </div>
-              ` : ''}
-            </div>
-          `).join('')}
-        </div>
-
-        <div class="footer">
-          Documento gerado para tomada de decisão estratégica de marca e protocolo junto ao INPI.
-        </div>
-
-        <script>
-          window.onload = function() { window.print(); }
-        </script>
-      </body>
-      </html>
-    `;
-
-    printWindow.document.write(htmlContent);
-    printWindow.document.close();
-  };
-
   // Filtragem de Nomes
   const filteredSugestoes = sugestoes.filter((sug) => {
     if (activeFilter === "favoritos") return isFavorito(sug.nome);
-    if (activeFilter === "top90") return sug.distintividadeScore >= 90;
     return true;
   });
 
@@ -1016,10 +830,8 @@ Gerado pelo MarcaShield Naming AI.`;
                         onClick={() => {
                           setSegmento(preset.segmento);
                           setDescricao(preset.descricao);
-                          setPalavrasChave(preset.keywords);
                           setPublicoAlvo(preset.publico);
                           setTomVoz(preset.tom);
-                          setClasseNice(preset.classe);
                         }}
                         className="text-[10px] px-2.5 py-1 rounded-lg border border-border/60 bg-muted/30 hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all text-muted-foreground font-medium"
                       >
@@ -1040,7 +852,7 @@ Gerado pelo MarcaShield Naming AI.`;
                   <div className="space-y-1.5">
                     <Label className="text-xs">Segmento / Nicho de Atuação *</Label>
                     <Input
-                      placeholder="Ex: SaaS Jurídico B2B, Clínica de Estética, Cafeteria Artesanal..."
+                      placeholder="Ex: Sociedade de Advogados, Clínica Médica, Software B2B..."
                       value={segmento}
                       onChange={(e) => setSegmento(e.target.value)}
                       className="text-xs h-9 bg-card/80"
@@ -1051,110 +863,12 @@ Gerado pelo MarcaShield Naming AI.`;
                   <div className="space-y-1.5">
                     <Label className="text-xs">Proposta de Valor / O que o negócio faz</Label>
                     <textarea
-                      placeholder="Ex: Plataforma para automação de processos, rápida, elegante e segura com foco em escritórios..."
+                      placeholder="Ex: Assessoria jurídica corporativa de alto padrão focada em planejamento tributário estratégico e governança..."
                       value={descricao}
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescricao(e.target.value)}
                       className="w-full rounded-md border border-input bg-card/80 p-2.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[60px] resize-none"
                     />
                   </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">Palavras-Chave de Inspiração</Label>
-                      <Input
-                        placeholder="Ex: escudo, fluxo, luz"
-                        value={palavrasChave}
-                        onChange={(e) => setPalavrasChave(e.target.value)}
-                        className="text-xs h-9 bg-card/80"
-                      />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">Classe Nice (NCL)</Label>
-                      <Input
-                        placeholder="Ex: 35, 42, 09, 25..."
-                        value={classeNice}
-                        onChange={(e) => setClasseNice(e.target.value)}
-                        className="text-xs h-9 bg-card/80 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Toggle para Configurações Avançadas */}
-                  <div className="pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setShowAdvancedBriefing(!showAdvancedBriefing)}
-                      className="text-xs text-primary/90 hover:text-primary flex items-center gap-1.5 font-semibold transition-colors"
-                    >
-                      <SlidersHorizontal className="size-3.5" />
-                      <span>{showAdvancedBriefing ? "Ocultar Personalização Avançada" : "Personalização Avançada (Público, Tom, Idioma)"}</span>
-                    </button>
-                  </div>
-
-                  {showAdvancedBriefing && (
-                    <div className="space-y-3 p-3.5 rounded-xl bg-background/50 border border-border/50 animate-fade-in">
-                      <div className="space-y-1.5">
-                        <Label className="text-xs">Público-Alvo / ICP</Label>
-                        <select
-                          value={publicoAlvo}
-                          onChange={(e) => setPublicoAlvo(e.target.value)}
-                          className="w-full h-8.5 rounded-md border border-input bg-card/80 px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                        >
-                          <option value="B2B & Corporativo">B2B Corporativo / Empresas & C-Levels</option>
-                          <option value="Mercado de Luxo & Alta Renda">Mercado de Luxo & Alta Renda (Classe A+)</option>
-                          <option value="PMEs & Profissionais Liberais">PMEs, Lojistas & Profissionais Liberais</option>
-                          <option value="Jovens & Geração Z">Jovens, Geração Z & Criativos</option>
-                          <option value="Consumidor Final & Famílias">Consumidor Final & Famílias</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label className="text-xs">Tom de Voz & Personalidade</Label>
-                        <select
-                          value={tomVoz}
-                          onChange={(e) => setTomVoz(e.target.value)}
-                          className="w-full h-8.5 rounded-md border border-input bg-card/80 px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                        >
-                          <option value="Autoritário & Nobre">Autoritário & Nobre (Dark Luxury / Jurídico / Soberano)</option>
-                          <option value="Inovador & Tecnológico">Inovador, Futurista & Tecnológico</option>
-                          <option value="Minimalista & Sofisticado">Minimalista, Elegante & Premium</option>
-                          <option value="Acolhedor & Experiencial">Acolhedor, Sensorial & Humano</option>
-                          <option value="Audacioso & Disruptivo">Audacioso, Ousado & Rebelde</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label className="text-xs">Estilo de Naming Preferido</Label>
-                        <select
-                          value={estilo}
-                          onChange={(e) => setEstilo(e.target.value)}
-                          className="w-full h-8.5 rounded-md border border-input bg-card/80 px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                        >
-                          <option value="Equilibrado (Mix Estratégico)">Equilibrado (Mix Estratégico de Técnicas)</option>
-                          <option value="Neologismo & Fusão Inteligente">Neologismo & Fusão Inteligente (Portmanteau)</option>
-                          <option value="Evocativo & Metafórico">Evocativo & Metafórico (Sensorial)</option>
-                          <option value="Fantasioso Premium">Fantasioso Puro com Raiz Setorial</option>
-                          <option value="Curto & Punchy (4 a 6 letras)">Curto & Punchy (4 a 6 letras / Monossílabo)</option>
-                          <option value="Global & Internacional">Global & Internacional (Inglês / Global)</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label className="text-xs">Raiz Fonética / Idioma</Label>
-                        <select
-                          value={idiomaOrigem}
-                          onChange={(e) => setIdiomaOrigem(e.target.value)}
-                          className="w-full h-8.5 rounded-md border border-input bg-card/80 px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                        >
-                          <option value="Português e Raiz Latina">Português e Raiz Latina Nobre</option>
-                          <option value="Internacional e Global (Inglês)">Internacional e Global (Inglês Fluido)</option>
-                          <option value="Neologismo Universal">Neologismo Universal (Sem barreiras de idioma)</option>
-                          <option value="Greco-Romano Clássico">Greco-Romano Clássico (Autoridade Milenar)</option>
-                        </select>
-                      </div>
-                    </div>
-                  )}
 
                   <Button
                     type="submit"
@@ -1169,7 +883,7 @@ Gerado pelo MarcaShield Naming AI.`;
                     ) : (
                       <>
                         <Lightbulb className="size-4" />
-                        <span>Gerar 6 Sugestões de Nomes com IA</span>
+                        <span>Gerar 3 Sugestões de Nomes com IA</span>
                       </>
                     )}
                   </Button>
@@ -1206,18 +920,6 @@ Gerado pelo MarcaShield Naming AI.`;
                     </button>
                     <button
                       type="button"
-                      onClick={() => setActiveFilter("top90")}
-                      className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1 ${
-                        activeFilter === "top90"
-                          ? "bg-emerald-500 text-white shadow-sm"
-                          : "bg-muted/50 text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <ShieldCheck className="size-3.5" />
-                      <span>Top LPI (90%+)</span>
-                    </button>
-                    <button
-                      type="button"
                       onClick={() => setActiveFilter("favoritos")}
                       className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1 ${
                         activeFilter === "favoritos"
@@ -1229,17 +931,6 @@ Gerado pelo MarcaShield Naming AI.`;
                       <span>Favoritas ({favoritos.length})</span>
                     </button>
                   </div>
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="xs"
-                    onClick={handleExportDossier}
-                    className="text-xs h-8 gap-1.5 font-bold border-border/70 hover:bg-primary/10 hover:text-primary"
-                  >
-                    <Printer className="size-3.5" />
-                    <span>Exportar Dossier (PDF)</span>
-                  </Button>
                 </div>
 
                 {/* Lista de Cards de Nomes Gerados */}
@@ -1402,7 +1093,7 @@ Gerado pelo MarcaShield Naming AI.`;
                               disabled={isVariationLoading}
                               onClick={() => handleGenerateNames(undefined, sug.nome)}
                               className="text-[11px] h-7 px-2.5 gap-1.5 font-medium border-border/70 bg-card/40 hover:bg-card hover:text-foreground text-muted-foreground rounded-lg transition-all"
-                              title="Gerar 6 desdobramentos inteligentes mantendo a raiz deste nome"
+                              title="Gerar 3 variações inteligentes mantendo a raiz deste nome"
                             >
                               {isVariationLoading ? (
                                 <>
@@ -1458,7 +1149,8 @@ Gerado pelo MarcaShield Naming AI.`;
                               variant="outline"
                               onClick={() => {
                                 if (onVerifyTrademark) {
-                                  onVerifyTrademark(sug.nome, classeNice);
+                                  const match = sug.classeSugerida?.match(/\d+/);
+                                  onVerifyTrademark(sug.nome, match ? match[0] : undefined);
                                 }
                               }}
                               className="text-[11px] h-7 px-2.5 gap-1.5 font-semibold border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-all"

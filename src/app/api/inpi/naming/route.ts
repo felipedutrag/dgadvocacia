@@ -23,12 +23,10 @@ export async function POST(req: Request) {
     const {
       segmento,
       descricao,
-      palavrasChave,
       publicoAlvo,
       tomVoz,
       estilo,
       idiomaOrigem,
-      classe,
       variacaoDe,
     } = body;
 
@@ -43,46 +41,45 @@ export async function POST(req: Request) {
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
     const variationClause = variacaoDe
-      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário gostou do nome "${variacaoDe}". Crie 6 novas variações e desdobramentos inteligentes mantendo a raiz semântica, fonética ou o conceito central de "${variacaoDe}", mas explorando sufixos nobres, prefixos dinâmicos, fusões morfológicas ou sinônimos refinados.`
-      : `MISSÃO: Criar 6 nomes de marcas comerciais de altíssimo nível, altamente memoráveis, foneticamente elegantes e com CONEXÃO DIRETA e PROFUNDA com o segmento e proposta de valor do cliente.`;
+      ? `ATENÇÃO ESPECIAL (MODO VARIAÇÕES): O usuário gostou do nome "${variacaoDe}". Crie 3 novas variações e desdobramentos inteligentes mantendo a raiz semântica, fonética ou o conceito central de "${variacaoDe}", mas explorando sufixos nobres, prefixos dinâmicos, fusões morfológicas ou sinônimos refinados.`
+      : `MISSÃO: Criar 3 nomes de marcas comerciais de altíssimo nível, altamente memoráveis, foneticamente elegantes, modernos e com CONEXÃO DIRETA e PROFUNDA com o segmento e proposta de valor do cliente.`;
 
-    const prompt = `Você é o MarcaShield Naming & Brand Strategy AI, autoridade máxima em Naming Corporativo, Semiótica, Linguística Aplicada e Direito da Propriedade Industrial (Lei 9.279/96 - LPI).
+    const prompt = `Você é o MarcaShield Naming & Brand Strategy AI, autoridade máxima em Naming Corporativo, Branding Executivo, Semiótica e Direito da Propriedade Industrial (Lei 9.279/96 - LPI).
 
 ${variationClause}
 
-DIRETRIZES CRÍTICAS DE CONEXÃO E RELEVÂNCIA (LEIA COM EXTREMA ATENÇÃO):
-1. **PROIBIDO GERAR NOMES ALEATÓRIOS OU DESCONECTADOS**: Cada nome DEVE nascer de raízes etimológicas, metáforas do nicho, analogias reais de valor ou fusões morfológicas (portmanteau) que façam total sentido para o cliente final.
+DIRETRIZES CRÍTICAS DE BRANDING E QUALIDADE MERCADOLÓGICA:
+1. **NOMES REAIS, ELEGANTES E DE ALTO VALOR PERCEBIDO**:
+   - Crie nomes que soem como marcas reais, sólidas e consagradas do mercado nacional e global (ex: Veltis, Primus, Lumina, Vertice, Opus, Kestra, Nexa, Audax, Vanguarda, Legis, etc.).
+   - PROIBIDO NOMES CARICATOS OU MITOLÓGICOS LITERAIS (não use clichês forçados como Zeus, Atena, deuses gregos/romanos literais ou traduções infantis como "Clypeo", "Egilex", etc., a menos que haja um contexto semiótico impecável).
+   - Para escritórios de advocacia / sociedades jurídicas / consultorias: crie nomes que transmitam imensa sobriedade, sofisticação institucional, peso executivo, rigor e autoridade.
 2. **DISTINTIVIDADE LEGAL (Art. 124, VI e XIX da Lei 9.279/96)**:
-   - Evite termos genéricos puros ou meramente descritivos (ex: não usar "Café Bom" para café ou "Advocacia Rápida" para direito).
-   - Crie nomes **Evocativos/Sugestivos de Alto Impacto**, **Neologismos/Fusões Inteligentes** ou **Fantasiosos com Raízes Léxicas Setoriais** que garantam registro e exclusividade no INPI com risco quase nulo de colidência.
-3. **SONORIDADE E FONÉTICA COMERCIAL**: Nomes fáceis de pronunciar, sem encontros consonantais desagradáveis, com excelente ritmo verbal, sem duplo sentido cômico ou pejorativo.
-4. **DIVERSIDADE ESTRATÉGICA DAS 6 SUGESTÕES**:
-   - Sugestão 1: **Neologismo / Fusão Inteligente (Portmanteau)** (ex: estilo Netflix, Nubank, Spotify, Omie).
-   - Sugestão 2: **Evocativo & Metafórico** (remete à sensação, poder, transformação ou resultado gerado).
-   - Sugestão 3: **Fantasioso Premium com Raiz Setorial** (palavra exclusiva mas que soa natural e respeitada no nicho).
-   - Sugestão 4: **Curto & Punchy (4 a 6 letras)** (impacto rápido, fácil de digitar e viralizar).
-   - Sugestão 5: **Moderno & Autoridade Composta** (posicionamento de liderança de mercado).
-   - Sugestão 6: **Global / Internacional Fluido** (soa impecável tanto em português quanto internacionalmente).
+   - Afaste termos descritivos óbvios (ex: não usar "Advocacia Express" ou "Direito Fácil").
+   - Crie termos com excelente distintividade intrínseca (Evocativos de prestígio, Neologismos fonéticos nobres ou Nomes de fantasia corporativa) com altíssima probabilidade de deferimento no INPI.
+3. **FONÉTICA E RITMO COMERCIAL**:
+   - Nomes fluídos, fáceis de pronunciar, memoráveis no boca a boca e elegantes no cartão de visitas ou fachada corporativa.
+4. **DIVERSIDADE ESTRATÉGICA DAS 3 SUGESTÕES**:
+   - Sugestão 1: **Neologismo Corporativo / Fusão Nobre** (moderno, sofisticado, sonoro).
+   - Sugestão 2: **Evocativo & Institucional** (expressa valor, solidez, liderança e autoridade).
+   - Sugestão 3: **Fantasioso Premium / Curto & Punchy** (impactante, exclusivo e fácil de registrar).
 
 BRIEFING DETALHADO DO PROJETO:
 - **Segmento / Nicho de Atuação:** "${segmento || 'Não especificado'}"
-- **Proposta de Valor / Diferenciais:** "${descricao || 'Não especificado'}"
-- **Palavras-Chave de Inspiração:** "${palavrasChave || 'Livre'}"
-- **Público-Alvo / ICP:** "${publicoAlvo || 'Público Geral e Corporativo'}"
-- **Tom de Voz / Personalidade:** "${tomVoz || 'Inovador, Autoritário e Sofisticado'}"
-- **Estilo de Naming Preferido:** "${estilo || 'Equilibrado e Moderno'}"
-- **Idioma / Raiz Fonética:** "${idiomaOrigem || 'Português e Raiz Latina / Universal'}"
-- **Classe Nice Pretendida:** "${classe || 'Identificar automaticamente a classe ideal'}"
+- **Proposta de Valor / O que o negócio faz:** "${descricao || 'Não especificado'}"
+- **Público-Alvo / ICP:** "${publicoAlvo || 'B2B & Corporativo'}"
+- **Tom de Voz / Personalidade:** "${tomVoz || 'Autoritário & Nobre'}"
+- **Estilo de Naming Preferido:** "${estilo || 'Equilibrado (Mix Estratégico)'}"
+- **Idioma / Raiz Fonética:** "${idiomaOrigem || 'Português e Raiz Latina'}"
 
-Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
+Retorne APENAS um JSON válido e estritamente formatado conforme este schema (a classe Nice deve ser identificada automaticamente por você com base no segmento):
 {
   "sugestoes": [
     {
       "nome": "NomeDaMarca",
       "slogan": "Tagline ou slogan potente de posicionamento",
-      "racional": "Explicação profunda e clara de como este nome foi construído: suas raízes de palavras, significado semiótico e por que ele expressa com precisão o negócio do cliente.",
-      "estilo": "Neologismo Inteligente",
-      "classeSugerida": "Classe Nice 35 (Serviços de Negócios e Gestão)",
+      "racional": "Explicação profunda de como este nome foi construído: sua raiz fonética/semântica e por que ele expressa autoridade e posicionamento no segmento.",
+      "estilo": "Neologismo Corporativo",
+      "classeSugerida": "Classe Nice 35 (Serviços de Negócios e Gestão) ou Classe 45 (Serviços Jurídicos)",
       "distintividadeScore": 95,
       "analiseJuridicaLPI": "Alta registrabilidade perante o Art. 124 da LPI. Não possui caráter genérico direto e ostenta distintividade intrínseca favorável ao deferimento no INPI.",
       "pontosFortes": [
@@ -99,14 +96,15 @@ Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
         "nome": "Dark Luxury & Ouro",
         "cores": ["#D4AF37", "#09090B", "#F4F4F5"]
       },
-      "simboloSugerido": "Escudo geométrico minimalista com traços ascendentes que simbolizam crescimento e segurança"
+      "simboloSugerido": "Monograma geométrico minimalista com traços ascendentes que simbolizam solidez e autoridade"
     }
   ]
 }`;
 
-    // 1. Tentar Gemini (Flash Models - Primário 3.1 Flash Lite)
+    // 1. Tentar Gemini (Primário gemini-3.1-pro-preview)
     if (GEMINI_API_KEY) {
       const models = [
+        "gemini-3.1-pro-preview",
         "gemini-3.1-flash-lite",
         "gemini-2.5-flash",
         "gemini-1.5-flash"
