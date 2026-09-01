@@ -417,12 +417,52 @@ export async function inpiConsultarProcesso(
     const numeroProcesso = $('input#numeroProcesso').val()?.toString().trim() ||
       $('font:contains("Nº do Processo:")').parent().next().text().replace(/\s+/g, ' ').trim() || numeroOuCodPedido;
     
-    const marca = $('font:contains("Marca:")').parent().next().text().replace(/\s+/g, ' ').trim();
-    const situacao = $('font:contains("Situação:")').parent().next().text().replace(/\s+/g, ' ').trim();
-    const apresentacao = $('font:contains("Apresentação:")').parent().next().text().replace(/\s+/g, ' ').trim();
-    const natureza = $('font:contains("Natureza:")').parent().next().text().replace(/\s+/g, ' ').trim();
-    const titular = $('font:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim();
-    const procurador = $('font:contains("Procurador:")').parent().next().text().replace(/\s+/g, ' ').trim();
+    const marca = $('font:contains("Marca:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Marca:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('th:contains("Marca:")').next().text().replace(/\s+/g, ' ').trim();
+
+    const situacao = $('font:contains("Situação:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Situação:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('th:contains("Situação:")').next().text().replace(/\s+/g, ' ').trim();
+
+    const apresentacao = $('font:contains("Apresentação:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Apresentação:")').next().text().replace(/\s+/g, ' ').trim();
+
+    const natureza = $('font:contains("Natureza:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Natureza:")').next().text().replace(/\s+/g, ' ').trim();
+
+    // Extração ultra resiliente de Titular
+    let titular = $('font:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Titular:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('th:contains("Titular:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('b:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('span:contains("Titular:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('#accordion-titular').closest('.accordion-item').find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim() ||
+      $('.titular').text().replace(/\s+/g, ' ').trim();
+
+    // Fallback: busca no DOM por linha contendo "Titular"
+    if (!titular) {
+      $('tr').each((_, tr) => {
+        const text = $(tr).text();
+        if (text.includes('Titular:') || text.includes('Titular')) {
+          const tds = $(tr).find('td');
+          if (tds.length >= 2) {
+            const potential = $(tds[1]).text().replace(/\s+/g, ' ').trim();
+            if (potential && potential.length > 2 && !potential.toLowerCase().includes('titular')) {
+              titular = potential;
+              return false;
+            }
+          }
+        }
+      });
+    }
+
+    // Extração resiliente de Procurador
+    let procurador = $('font:contains("Procurador:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('td:contains("Procurador:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('th:contains("Procurador:")').next().text().replace(/\s+/g, ' ').trim() ||
+      $('b:contains("Procurador:")').parent().next().text().replace(/\s+/g, ' ').trim() ||
+      $('#accordion-procurador').closest('.accordion-item').find('table tbody tr td').first().text().replace(/\s+/g, ' ').trim();
 
     let dataDeposito = '';
     let dataConcessao = '';
