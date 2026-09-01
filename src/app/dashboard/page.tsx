@@ -688,13 +688,14 @@ export default function DashboardPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => setCommandPaletteOpen(true)}
-                  className="hidden md:flex items-center gap-2 text-xs text-muted-foreground border-border/70 bg-card/60 h-8 px-2.5 rounded-lg hover:text-foreground"
+                  className="hidden md:flex items-center gap-2.5 text-xs text-muted-foreground border-border/70 bg-card/60 h-8 pl-2.5 pr-1.5 rounded-lg hover:text-foreground"
                 >
-                  <Search className="size-3.5" />
+                  <Search className="size-3.5 shrink-0" />
                   <span>Buscar processo ou comando...</span>
-                  <kbd className="font-mono text-[10px] bg-muted border border-border/80 px-1 py-0.5 rounded text-muted-foreground">
-                    ⌘K
-                  </kbd>
+                  <div className="flex items-center gap-1 font-mono text-[10px] bg-muted border border-border/80 px-1.5 py-0.5 rounded text-muted-foreground ml-1">
+                    <span>⌘</span>
+                    <span>K</span>
+                  </div>
                 </Button>
 
                 {/* Central de Notificações dos Processos */}
