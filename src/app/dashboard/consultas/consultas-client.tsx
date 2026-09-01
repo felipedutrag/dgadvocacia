@@ -112,14 +112,55 @@ export function ConsultasClient({
   );
   const [resultsActiveType, setResultsActiveType] = useState<"marca" | "processo" | "figura" | "meus_pedidos" | null>(null);
 
+  // Helper para carregar cache individual da modalidade
+  const loadCachedSearch = (tab: "marca" | "processo" | "figura" | "meus_pedidos") => {
+    try {
+      if (tab === "marca") {
+        const cached = localStorage.getItem("dg_cache_search_marca_v1");
+        if (cached) {
+          const data = JSON.parse(cached);
+          if (data.nomeMarca) setNomeMarca(data.nomeMarca);
+          if (data.classeNice) setClasseNice(data.classeNice);
+          if (data.resultsList) setResultsList(data.resultsList);
+          if (data.aiReport) setAiReport(data.aiReport);
+          setResultsActiveType("marca");
+        } else {
+          setResultsList([]);
+          setAiReport(null);
+        }
+      } else if (tab === "processo") {
+        const cached = localStorage.getItem("dg_cache_search_processo_v1");
+        if (cached) {
+          const data = JSON.parse(cached);
+          if (data.numeroProcesso) setNumeroProcesso(data.numeroProcesso);
+          if (data.selectedProcesso) setSelectedProcesso(data.selectedProcesso);
+          setResultsActiveType("processo");
+        } else {
+          setSelectedProcesso(null);
+        }
+      } else if (tab === "figura") {
+        const cached = localStorage.getItem("dg_cache_search_figura_v1");
+        if (cached) {
+          const data = JSON.parse(cached);
+          if (data.vienaCodigo) setVienaCodigo(data.vienaCodigo);
+          if (data.vienaClasse) setVienaClasse(data.vienaClasse);
+          if (data.resultsList) setResultsList(data.resultsList);
+          setResultsActiveType("figura");
+        } else {
+          setResultsList([]);
+        }
+      }
+    } catch (e) {
+      console.warn("Erro ao restaurar cache da pesquisa:", e);
+    }
+  };
+
   React.useEffect(() => {
     if (initialSubTab && initialSubTab !== activeSubTab) {
       setActiveSubTab(initialSubTab);
-      setResultsList([]);
-      setSelectedProcesso(null);
       setErrorMsg(null);
       setSuccessMsg(null);
-      setAiReport(null);
+      loadCachedSearch(initialSubTab);
     }
   }, [initialSubTab]);
 
@@ -140,12 +181,16 @@ export function ConsultasClient({
     }
   }, [initialQuery, initialClasse]);
 
+  // Carregar cache inicial da aba ativa na montagem
+  React.useEffect(() => {
+    loadCachedSearch(initialSubTab || "marca");
+  }, []);
+
   const switchTab = (tab: "marca" | "processo" | "figura" | "meus_pedidos") => {
     setActiveSubTab(tab);
-    setResultsList([]);
-    setSelectedProcesso(null);
     setErrorMsg(null);
-    setAiReport(null);
+    setSuccessMsg(null);
+    loadCachedSearch(tab);
     if (onSubTabChange) {
       onSubTabChange(tab);
     }
@@ -278,6 +323,16 @@ export function ConsultasClient({
         totalResultados: procs.length,
       });
 
+      // Salva no LocalStorage da pesquisa de marcas
+      try {
+        localStorage.setItem("dg_cache_search_marca_v1", JSON.stringify({
+          nomeMarca: targetName.trim(),
+          classeNice: targetClass.trim(),
+          resultsList: procs,
+          aiReport: null,
+        }));
+      } catch {}
+
       // Dispara automaticamente a análise de viabilidade por IA
       triggerAiAnalysis(targetName.trim(), targetClass.trim(), procs);
 
@@ -309,6 +364,15 @@ export function ConsultasClient({
         const data = await res.json();
         if (data.analysis) {
           setAiReport(data.analysis);
+          // Atualiza cache de marca com o laudo de IA
+          try {
+            localStorage.setItem("dg_cache_search_marca_v1", JSON.stringify({
+              nomeMarca: marcaStr,
+              classeNice: classeStr,
+              resultsList: procs,
+              aiReport: data.analysis,
+            }));
+          } catch {}
         }
       }
     } catch (err) {
@@ -337,6 +401,14 @@ export function ConsultasClient({
 
       setSelectedProcesso(data);
       setResultsActiveType("processo");
+
+      // Salva no LocalStorage da consulta de processo
+      try {
+        localStorage.setItem("dg_cache_search_processo_v1", JSON.stringify({
+          numeroProcesso: targetNum.trim(),
+          selectedProcesso: data,
+        }));
+      } catch {}
 
       addSearchToHistory({
         termo: targetNum.trim(),
@@ -379,6 +451,15 @@ export function ConsultasClient({
       const procs = data.processos || [];
       setResultsList(procs);
       setResultsActiveType("figura");
+
+      // Salva no LocalStorage da busca figurativa
+      try {
+        localStorage.setItem("dg_cache_search_figura_v1", JSON.stringify({
+          vienaCodigo: targetViena.trim(),
+          vienaClasse: targetClasse.trim(),
+          resultsList: procs,
+        }));
+      } catch {}
 
       addSearchToHistory({
         termo: targetViena.trim(),
