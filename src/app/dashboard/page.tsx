@@ -36,6 +36,7 @@ import {
   Zap,
   Sparkles,
   Layers,
+  Scale,
   X
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -43,6 +44,7 @@ import { useIsBreakpoint } from "@/hooks/use-is-breakpoint";
 import { SmartDocLogo, SmartDocBrand } from "@/components/brand-logo";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -110,6 +112,19 @@ export default function DashboardPage() {
   const [pixError, setPixError] = useState<string | null>(null);
   const [pixSuccess, setPixSuccess] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
+
+  // Calculadora de Processos B2B
+  const [calcProcessos, setCalcProcessos] = useState<number>(25);
+
+  const getUnitPrice = (qty: number) => {
+    if (qty <= 10) return 29.90;
+    if (qty <= 50) return 19.90;
+    if (qty <= 200) return 12.90;
+    return 7.90;
+  };
+
+  const calcUnitPrice = getUnitPrice(calcProcessos);
+  const calcTotalPrice = Math.round(calcProcessos * calcUnitPrice);
 
   // Toast de Pagamento
   const [paymentToast, setPaymentToast] = useState<{ show: boolean; title: string; message: string; planName?: string; time?: string } | null>(null);
@@ -603,137 +618,267 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* TAB 3: SERVIÇOS & PLANOS */}
+          {/* TAB 3: SERVIÇOS & PLANOS (CALCULADORA DE PROCESSOS B2B) */}
           {activeTab === "plans" && (
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-8 animate-fade-in">
               <div className="border-b border-border/60 pb-4">
-                <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span>Backend Jurídico & Pacotes de Parceria B2B</span>
-                  <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
-                    Tabela para Parceiros
-                  </span>
-                </h1>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Contrate pacotes de acompanhamento de carteira, protocolos de pedidos e elaboração de defesas/oposições para os seus clientes.
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                      <span>Calculadora de Carteira & Backend Jurídico</span>
+                      <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
+                        Tabela B2B
+                      </span>
+                    </h1>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Monitore a carteira de marcas da sua empresa ou contrate assessoria jurídica sob demanda com honorários exclusivos para parceiros.
+                    </p>
+                  </div>
+                  <div className="text-xs font-mono bg-muted border border-border/60 px-3 py-1.5 rounded-xl self-start sm:self-auto">
+                    Limite Atual: <span className="font-bold text-primary">{profile?.marcas_limit || 10}</span> processos
+                  </div>
+                </div>
               </div>
 
-              {/* Grid de Serviços */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {/* 1. Radar Mensal */}
-                <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">Radar RPI</span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-500">Recorrência Mensal</span>
+              {/* ── CALCULADORA DINÂMICA DE CARTEIRA (RADAR RPI) ── */}
+              <div className="rounded-2xl border-2 border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/60">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
+                        Calculadora de Monitoramento
+                      </span>
+                      <span className="text-xs text-emerald-500 font-bold font-mono">
+                        Adesão & Setup Grátis
+                      </span>
                     </div>
-                    <div className="mt-3 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-foreground">R$ 47</span>
-                      <span className="text-xs text-muted-foreground font-medium">/mês</span>
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Vigilância ativa semanal na Revista da Propriedade Industrial (RPI) contra cópias.
+                    <h3 className="text-lg font-bold text-foreground">
+                      Quantos processos você deseja monitorar na sua carteira?
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Arraste a barra para calcular a mensalidade da sua empresa com desconto progressivo por volume.
                     </p>
-
-                    <ul className="mt-5 space-y-2 text-xs text-muted-foreground">
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Monitoramento de até 3 marcas</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Alertas automáticos no Telegram</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Consultas e Raio-X IA Ilimitados</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Controle de vigência decenal</li>
-                    </ul>
                   </div>
 
-                  <Button
-                    variant="outline"
-                    onClick={() => handleOpenPixModal({
-                      id: "radar_mensal",
-                      name: "Radar INPI Mensal",
-                      price: 47.00,
-                      description: "DG Advocacia - Assinatura Radar INPI Mensal",
-                    })}
-                    className="mt-6 w-full text-xs h-10 border-border font-bold hover:bg-muted/80 gap-1.5"
-                  >
-                    <Zap className="size-3.5 text-primary" />
-                    <span>Contratar Radar (Pix)</span>
-                  </Button>
+                  {/* Preço Calculado */}
+                  <div className="flex items-baseline gap-2 bg-background/80 border border-border/70 p-4 rounded-xl self-start md:self-auto">
+                    <div>
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Valor do Pacote</div>
+                      <div className="text-3xl font-extrabold text-foreground tracking-tight">
+                        R$ {calcTotalPrice.toLocaleString("pt-BR")}
+                        <span className="text-xs text-muted-foreground font-normal">/mês</span>
+                      </div>
+                    </div>
+                    <div className="border-l border-border/60 pl-3">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Custo Unitário</div>
+                      <div className="text-sm font-bold text-emerald-500 font-mono">
+                        R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
+                        <span className="text-[10px] text-muted-foreground font-normal">{" /marca"}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* 2. Registro Completo de Marca (Destaque) */}
-                <div className="relative flex flex-col justify-between rounded-2xl border-2 border-primary bg-card/80 p-5 shadow-xl shadow-primary/5 backdrop-blur-md">
-                  <div className="absolute -top-3 right-4 rounded-full bg-primary px-2.5 py-0.5 font-mono text-[9px] font-bold text-primary-foreground uppercase">
-                    Mais Procurado
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] text-primary uppercase bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md font-bold">Depósito INPI</span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-500">Taxa Única</span>
-                    </div>
-                    <div className="mt-3 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-foreground">R$ 497</span>
-                      <span className="text-xs text-muted-foreground font-medium">/processo</span>
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Protocolo completo do pedido de registro no INPI com assessoria jurídica e enquadramento Nice.
-                    </p>
-
-                    <ul className="mt-5 space-y-2 text-xs text-foreground font-medium">
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> <strong>Parecer de Viabilidade IA + Humano</strong></li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Enquadramento de classes e especificação</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Protocolo oficial do pedido no INPI</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Acompanhamento do exame formal</li>
-                    </ul>
+                {/* Slider Interativo */}
+                <div className="space-y-4 pt-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-muted-foreground">Volume Selecionado:</span>
+                    <span className="font-bold text-base text-primary bg-primary/10 px-3 py-1 rounded-lg border border-primary/20">
+                      {calcProcessos} {calcProcessos === 1 ? "Processo" : "Processos Ativos"}
+                    </span>
                   </div>
 
-                  <Button
-                    onClick={() => handleOpenPixModal({
-                      id: "registro_marca",
-                      name: "Registro de Marca no INPI",
-                      price: 497.00,
-                      description: "DG Advocacia - Assessoria Completa para Registro de Marca no INPI",
-                    })}
-                    className="mt-6 w-full text-xs h-10 font-bold gap-1.5"
-                  >
-                    <Crown className="size-3.5" />
-                    <span>Contratar Registro (Pix)</span>
-                  </Button>
+                  <input
+                    type="range"
+                    min="5"
+                    max="500"
+                    step="5"
+                    value={calcProcessos}
+                    onChange={(e) => setCalcProcessos(Number(e.target.value))}
+                    className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                  />
+
+                  {/* Atalhos Rápidos de Seleção */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <span className="text-[11px] font-mono text-muted-foreground">Atalhos rápidos:</span>
+                    {[10, 25, 50, 100, 200, 500].map((qty) => (
+                      <Button
+                        key={qty}
+                        type="button"
+                        variant={calcProcessos === qty ? "default" : "outline"}
+                        size="xs"
+                        onClick={() => setCalcProcessos(qty)}
+                        className="text-[11px] font-mono h-7"
+                      >
+                        {qty} marcas
+                      </Button>
+                    ))}
+                  </div>
                 </div>
 
-                {/* 3. Defesa & Oposição */}
-                <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">Jurídico</span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-500">Avulso</span>
-                    </div>
-                    <div className="mt-3 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-foreground">R$ 750</span>
-                      <span className="text-xs text-muted-foreground font-medium">/peça</span>
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Elaboração de Oposição a marcas colidentes de terceiros ou Defesa contra oposições sofridas.
-                    </p>
+                {/* Faixas de Desconto B2B */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos <= 10 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground">Até 10 marcas</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 29,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                  </div>
+                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 10 && calcProcessos <= 50 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground">11 a 50 marcas</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 19,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                  </div>
+                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 50 && calcProcessos <= 200 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground">51 a 200 marcas</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 12,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                  </div>
+                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 200 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground">201 a 500+ marcas</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 7,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                  </div>
+                </div>
 
-                    <ul className="mt-5 space-y-2 text-xs text-muted-foreground">
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Oposição contra imitação de marca</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Manifestação a Oposição sofrida</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Cumprimento de Exigência do INPI</li>
-                      <li className="flex items-center gap-2"><Check className="size-3.5 text-primary shrink-0" /> Recurso contra indeferimento (LPI)</li>
-                    </ul>
+                {/* Botão de Contratação do Plano Calculado */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/50">
+                  <div className="text-xs text-muted-foreground flex items-center gap-2">
+                    <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
+                    <span>Inclui Radar RPI Semanal, Alertas Telegram, Consultas IA e Suporte Jurídico.</span>
                   </div>
 
                   <Button
-                    variant="outline"
+                    size="lg"
                     onClick={() => handleOpenPixModal({
-                      id: "defesa_oposicao",
-                      name: "Defesa / Oposição Marcária",
-                      price: 750.00,
-                      description: "DG Advocacia - Defesa / Oposição em Processo do INPI",
+                      id: `pack_${calcProcessos}`,
+                      name: `Plano Carteira B2B (${calcProcessos} Processos)`,
+                      price: calcTotalPrice,
+                      description: `DG Advocacia - Assinatura B2B para ${calcProcessos} marcas no Radar INPI`,
                     })}
-                    className="mt-6 w-full text-xs h-10 border-border font-bold hover:bg-muted/80 gap-1.5"
+                    className="w-full sm:w-auto text-xs font-bold gap-2 h-11 px-6 bg-primary text-primary-foreground"
                   >
-                    <ShieldCheck className="size-3.5 text-primary" />
-                    <span>Contratar Defesa (Pix)</span>
+                    <Zap className="size-4" />
+                    <span>Ativar Plano de {calcProcessos} Processos (Pix)</span>
                   </Button>
+                </div>
+              </div>
+
+              {/* ── SERVIÇOS JURÍDICOS SOB DEMANDA (BACKEND B2B) ── */}
+              <div className="space-y-4">
+                <div className="border-b border-border/60 pb-2">
+                  <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                    <Scale className="size-4 text-primary" />
+                    <span>Serviços Jurídicos Avulsos (Sob Demanda)</span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Contrate a atuação técnica da banca da DG Advocacia para atos específicos dos seus clientes no INPI.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* 1. Protocolo de Registro */}
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[10px] text-primary uppercase bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md font-bold">Depósito INPI</span>
+                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Taxa Única</span>
+                      </div>
+                      <div className="mt-3 flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-foreground">R$ 490</span>
+                        <span className="text-xs text-muted-foreground font-medium">/processo</span>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                        Protocolo completo do pedido com qualificação formal, enquadramento de classes e especificação.
+                      </p>
+                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Parecer de Viabilidade IA + Humano</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento no e-Marcas</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Acompanhamento do exame formal</li>
+                      </ul>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => handleOpenPixModal({
+                        id: "deposito_inpi",
+                        name: "Depósito de Marca no INPI",
+                        price: 490.00,
+                        description: "DG Advocacia - Assessoria Completa para Depósito de Marca no INPI",
+                      })}
+                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
+                    >
+                      <Crown className="size-3.5 text-primary" />
+                      <span>Contratar Depósito (Pix)</span>
+                    </Button>
+                  </div>
+
+                  {/* 2. Oposição & Manifestação */}
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">Defesa LPI</span>
+                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Peça Técnica</span>
+                      </div>
+                      <div className="mt-3 flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-foreground">R$ 690</span>
+                        <span className="text-xs text-muted-foreground font-medium">/peça</span>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                        Elaboração de Oposição contra marcas colidentes ou Manifestação a Oposição sofrida.
+                      </p>
+                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Fundamentação no Art. 124 da LPI</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Assinatura por advogado habilitado</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Protocolo dentro do prazo de 60 dias</li>
+                      </ul>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => handleOpenPixModal({
+                        id: "oposicao_manifestacao",
+                        name: "Oposição / Manifestação Marcária",
+                        price: 690.00,
+                        description: "DG Advocacia - Elaboração de Oposição ou Manifestação no INPI",
+                      })}
+                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
+                    >
+                      <ShieldCheck className="size-3.5 text-primary" />
+                      <span>Contratar Defesa (Pix)</span>
+                    </Button>
+                  </div>
+
+                  {/* 3. Recurso contra Indeferimento */}
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">2ª Instância</span>
+                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Recurso</span>
+                      </div>
+                      <div className="mt-3 flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-foreground">R$ 890</span>
+                        <span className="text-xs text-muted-foreground font-medium">/recurso</span>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                        Peça recursal técnica ao Presidente do INPI para reverter decisão de indeferimento de marca.
+                      </p>
+                      <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Análise das razões do indeferimento</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Jurisprudência consolidada do INPI</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento tempestivo (60 dias)</li>
+                      </ul>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => handleOpenPixModal({
+                        id: "recurso_inpi",
+                        name: "Recurso ao Presidente do INPI",
+                        price: 890.00,
+                        description: "DG Advocacia - Recurso Administrativo contra Indeferimento no INPI",
+                      })}
+                      className="mt-5 w-full text-xs h-9 border-border font-bold hover:bg-muted/80 gap-1.5"
+                    >
+                      <Scale className="size-3.5 text-primary" />
+                      <span>Contratar Recurso (Pix)</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
