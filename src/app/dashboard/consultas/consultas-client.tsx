@@ -580,17 +580,16 @@ export function ConsultasClient({
             </Button>
           </div>
           {errorMsg.toLowerCase().includes("limite") && (
-            <div className="pt-1">
-              <Button
+            <div className="pt-1.5">
+              <button
                 type="button"
-                size="sm"
                 onClick={() => window.location.href = "/dashboard?tab=plans"}
-                className="w-full text-xs font-bold bg-primary text-primary-foreground h-8 gap-1.5 shadow-sm cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500/20 via-primary/20 to-amber-500/20 hover:from-amber-500/30 hover:to-primary/30 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 transition-all shadow-md shadow-amber-500/5 group cursor-pointer"
               >
-                <Sparkles className="size-3.5" />
-                <span>Ver Planos & Desbloquear Consultas Ilimitadas</span>
-                <ArrowRight className="size-3.5" />
-              </Button>
+                <Sparkles className="size-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span>Ver Planos & Desbloquear Acesso Ilimitado</span>
+                <ArrowRight className="size-3.5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+              </button>
             </div>
           )}
         </div>
