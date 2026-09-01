@@ -660,7 +660,7 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
           {/* Botão de Exportação de Parecer em PDF */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border/40">
             <span className="text-xs text-muted-foreground font-mono">
-              Documento assinado digitalmente por Dr. Felipe Dutra Gonçalves (OAB/SP 45.925)
+              Documento assinado digitalmente por Dr. Felipe Dutra Gonçalves (OAB/SP 459.254)
             </span>
             <Button
               type="button"
