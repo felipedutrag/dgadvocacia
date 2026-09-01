@@ -41,16 +41,6 @@ export function ComplianceClient() {
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Checklist interativo
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({
-    item_1: true,
-    item_2: false,
-    item_3: false,
-    item_4: false,
-    item_5: false,
-    item_6: true,
-  });
-
   useEffect(() => {
     async function loadUser() {
       try {
@@ -66,10 +56,6 @@ export function ComplianceClient() {
     }
     loadUser();
   }, []);
-
-  const toggleCheck = (id: string) => {
-    setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
 
   const handleOpenModalWithService = (servicoName?: string) => {
     if (servicoName) {
@@ -117,9 +103,6 @@ export function ComplianceClient() {
       setSubmitting(false);
     }
   };
-
-  const totalCompleted = Object.values(checkedItems).filter(Boolean).length;
-  const progressPercent = Math.round((totalCompleted / 6) * 100);
 
   return (
     <div className="space-y-4 animate-fade-in">
@@ -293,64 +276,6 @@ export function ComplianceClient() {
           </div>
         </Card>
       </div>
-
-      {/* ── CHECKLIST INTERATIVO DE CONFORMIDADE (LGPD & ANPD) ── */}
-      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5 sm:p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-3">
-          <div>
-            <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
-              <FileCheck2 className="size-4 text-primary" />
-              <span>Diagnóstico de Maturidade Regulatória (Checklist Contínuo)</span>
-            </h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-              Monitore os 6 pilares fundamentais exigidos em fiscalizações da Autoridade Nacional de Proteção de Dados (ANPD).
-            </p>
-          </div>
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-[11px] font-mono font-bold text-muted-foreground">Conformidade:</span>
-            <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border ${
-              progressPercent >= 70 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-amber-500/10 text-amber-500 border-amber-500/20"
-            }`}>
-              {totalCompleted} de 6 Requisitos ({progressPercent}%)
-            </span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {[
-            { id: "item_1", title: "Mapeamento do Inventário de Dados (ROPA)", desc: "Identificação de todos os fluxos de entrada, armazenamento e descarte de dados nos termos do Art. 37 da LGPD." },
-            { id: "item_2", title: "Aviso de Privacidade e Termos de Consentimento", desc: "Cláusulas claras e transparentes de acordo com o Art. 9º da LGPD em todos os formulários e pontos de contato." },
-            { id: "item_3", title: "Canal Formal de Atendimento aos Titulares (DSR)", desc: "Procedimento operacional e canal para responder solicitações de titulares em até 15 dias corridos (Art. 18)." },
-            { id: "item_4", title: "Aditivo de Proteção de Dados (DPA) com Terceiros", desc: "Cláusulas de responsabilidade solidária e obrigações estritas de segurança para operadores e plataformas SaaS." },
-            { id: "item_5", title: "Plano de Resposta a Incidentes & Vazamentos", desc: "Protocolo formal de contenção e comunicação tempestiva à ANPD e aos titulares afetados em caso de incidente." },
-            { id: "item_6", title: "Controle de Acesso Lógico & Criptografia", desc: "Autenticação em dois fatores (2FA), política de senhas fortes e isolamento de privilégios administrativos." },
-          ].map((item) => (
-            <div
-              key={item.id}
-              onClick={() => toggleCheck(item.id)}
-              className={`p-3 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
-                checkedItems[item.id]
-                  ? "bg-primary/5 border-primary/30"
-                  : "bg-background/40 border-border/60 hover:border-border"
-              }`}
-            >
-              <div className={`size-4.5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                checkedItems[item.id] ? "bg-primary border-primary text-primary-foreground" : "border-border bg-card"
-              }`}>
-                {checkedItems[item.id] && <Check className="size-3" />}
-              </div>
-              <div className="space-y-0.5 min-w-0">
-                <h4 className={`text-xs font-bold ${checkedItems[item.id] ? "text-foreground" : "text-muted-foreground"}`}>
-                  {item.title}
-                </h4>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
 
       {/* ── CARD DE AGENDAMENTO / CONSULTORIA DE COMPLIANCE & LGPD ── */}
       <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5">
