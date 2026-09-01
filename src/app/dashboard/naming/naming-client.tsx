@@ -30,12 +30,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { NamingSuggestion } from "@/app/api/inpi/naming/route";
 
 interface NamingClientProps {
-  initialTab?: "naming" | "logos" | "nice" | "domains" | "cease_desist";
+  initialTab?: "naming" | "logos" | "nice" | "domains";
   onVerifyTrademark?: (marca: string, classe?: string) => void;
 }
 
 export function NamingClient({ initialTab = "naming", onVerifyTrademark }: NamingClientProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains" | "cease_desist">(initialTab);
+  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains">(initialTab);
 
   React.useEffect(() => {
     if (initialTab) setActiveSubTab(initialTab);
@@ -863,153 +863,6 @@ export function NamingClient({ initialTab = "naming", onVerifyTrademark }: Namin
           </div>
         </div>
       )}
-
-      {/* ── SUB-ABA 5: GERADOR DE NOTIFICAÇÃO EXTRAJUDICIAL COM IA ── */}
-      {activeSubTab === "cease_desist" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-5 space-y-4">
-            <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-              <CardHeader className="pb-3 border-b border-border/40">
-                <CardTitle className="text-sm font-bold flex items-center gap-2">
-                  <ShieldAlert className="size-4 text-rose-500" />
-                  <span>Notificação Extrajudicial por Uso Indevido</span>
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  Peça técnica com base nos Arts. 129, 189 e 209 da Lei nº 9.279/96 (LPI).
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <form onSubmit={handleGenerateCeaseDesist} className="space-y-3">
-                  {cdError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
-                      {cdError}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <Label className="text-[11px]">Sua Empresa (Notificante) *</Label>
-                      <Input
-                        placeholder="Nome / Razão Social"
-                        value={cdNotificante}
-                        onChange={(e) => setCdNotificante(e.target.value)}
-                        className="text-xs h-8 bg-card/80"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label className="text-[11px]">CNPJ / CPF</Label>
-                      <Input
-                        placeholder="00.000.000/0001-00"
-                        value={cdDoc}
-                        onChange={(e) => setCdDoc(e.target.value)}
-                        className="text-xs h-8 bg-card/80 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <Label className="text-[11px]">Marca Registrada *</Label>
-                      <Input
-                        placeholder="Nome da sua marca"
-                        value={cdMarca}
-                        onChange={(e) => setCdMarca(e.target.value)}
-                        className="text-xs h-8 bg-card/80 font-bold"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label className="text-[11px]">Nº Processo INPI</Label>
-                      <Input
-                        placeholder="Ex: 934812345"
-                        value={cdProcesso}
-                        onChange={(e) => setCdProcesso(e.target.value)}
-                        className="text-xs h-8 bg-card/80 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-[11px]">Nome do Infrator (Notificado) *</Label>
-                    <Input
-                      placeholder="Empresa ou perfil infrator"
-                      value={cdNotificado}
-                      onChange={(e) => setCdNotificado(e.target.value)}
-                      className="text-xs h-8 bg-card/80"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-[11px]">Descrição do Uso Indevido</Label>
-                    <textarea
-                      placeholder="Ex: Utilização do mesmo nome e logo em perfil comercial no Instagram vendendo produtos no mesmo segmento..."
-                      value={cdUso}
-                      onChange={(e) => setCdUso(e.target.value)}
-                      className="w-full rounded-md border border-input bg-card/80 p-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[50px] resize-none"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={cdLoading}
-                    className="w-full text-xs font-bold h-9 gap-2 bg-rose-600 hover:bg-rose-700 text-white"
-                  >
-                    {cdLoading ? (
-                      <>
-                        <Loader2 className="size-4 animate-spin" />
-                        <span>Redigindo Peça Jurídica...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Scale className="size-4" />
-                        <span>Gerar Notificação Extrajudicial</span>
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="lg:col-span-7 space-y-4">
-            {!cdResult ? (
-              <div className="p-12 rounded-2xl border-2 border-dashed border-border/70 text-center space-y-3 bg-muted/20">
-                <ShieldAlert className="size-10 mx-auto text-rose-500/60" />
-                <h3 className="text-sm font-bold text-foreground">Aguardando Dados da Notificação</h3>
-                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Preencha os dados do infrator para gerar a notificação formal de cessação de uso indevido e concorrência desleal.
-                </p>
-              </div>
-            ) : (
-              <Card className="border-border/70 bg-card/60 backdrop-blur-md overflow-hidden">
-                <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle className="text-sm font-bold text-foreground">{cdResult.titulo}</CardTitle>
-                    <CardDescription className="text-xs">{cdResult.resumoJuridico}</CardDescription>
-                  </div>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      navigator.clipboard.writeText(cdResult.notificacaoTexto);
-                      alert("Notificação copiada com sucesso!");
-                    }}
-                    className="text-xs h-8 gap-1.5 font-bold"
-                  >
-                    <Copy className="size-3.5" />
-                    <span>Copiar Peça</span>
-                  </Button>
-                </CardHeader>
-                <CardContent className="p-6 max-h-[500px] overflow-y-auto font-mono text-xs text-foreground/90 whitespace-pre-line leading-relaxed bg-background/50">
-                  {cdResult.notificacaoTexto}
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }

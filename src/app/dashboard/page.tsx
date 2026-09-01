@@ -96,7 +96,7 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+    "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "plans" | "profile"
   >("consultas");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [injectedQuery, setInjectedQuery] = useState<{ query?: string; processo?: string; classe?: string } | null>(null);
@@ -536,19 +536,6 @@ export default function DashboardPage() {
             {(sidebarOpen || isDrawer) && <span>Domínios & @</span>}
           </button>
 
-          <button
-            onClick={() => { setActiveTab("cease_desist"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "cease_desist"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-            title="Notificação Extrajudicial"
-          >
-            <ShieldAlert className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Notificação Extrajudicial</span>}
-          </button>
-
           {/* GRUPO 3: CONTA & PLANOS */}
           <div className="my-2 border-t border-border/60" />
           {(sidebarOpen || isDrawer) && (
@@ -584,54 +571,52 @@ export default function DashboardPage() {
           </button>
 
           {/* Links Legais */}
-          <Link
-            href="/termos-de-uso"
-            target="_blank"
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
-            title="Termos de Uso"
-          >
-            <FileText className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Termos de Uso</span>}
-          </Link>
-
-          <Link
-            href="/politica-de-privacidade"
-            target="_blank"
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
-            title="Política de Privacidade"
-          >
-            <Lock className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Privacidade</span>}
-          </Link>
+          {(sidebarOpen || isDrawer) && (
+            <div className="mt-4 pt-3 border-t border-border/40 px-3 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted-foreground">
+              <Link href="/termos-de-uso" target="_blank" className="hover:text-foreground transition-colors">Termos</Link>
+              <Link href="/politica-de-privacidade" target="_blank" className="hover:text-foreground transition-colors">Privacidade</Link>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Sidebar Footer (Profile / Logout) */}
-      <div className="p-3 border-t border-border/70 space-y-2">
-        {(sidebarOpen || isDrawer) && (
-          <div className="p-2.5 rounded-xl border border-border/60 bg-muted/20 text-xs flex items-center justify-between">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <div className="size-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-[10px] shrink-0">
+      {/* Rodapé / Perfil */}
+      {sidebarOpen ? (
+        <div className="p-3 border-t border-border/70 bg-card/40 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <Avatar className="size-8 border border-border">
+              <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">
                 {profile?.name?.charAt(0).toUpperCase() || "D"}
-              </div>
-              <div className="overflow-hidden">
-                <div className="font-bold text-foreground truncate text-[11px]">{profile?.name}</div>
-                <div className="text-[9px] text-muted-foreground truncate">{profile?.email}</div>
-              </div>
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold truncate text-foreground">{profile?.name || "Parceiro DG"}</div>
+              <div className="text-[10px] text-muted-foreground truncate">{profile?.email}</div>
             </div>
-
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              onClick={handleLogout}
-              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 size-6 rounded shrink-0"
-              title="Sair"
-            >
-              <LogOut className="size-3.5" />
-            </Button>
           </div>
-        )}
-      </div>
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-destructive size-7"
+            title="Sair"
+          >
+            <LogOut className="size-3.5" />
+          </Button>
+        </div>
+      ) : (
+        <div className="p-2 border-t border-border/70 flex flex-col items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-destructive size-8"
+            title="Sair"
+          >
+            <LogOut className="size-3.5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 
@@ -675,7 +660,6 @@ export default function DashboardPage() {
                 {activeTab === "logos" && "Criador de Logomarcas & Identidade Visual"}
                 {activeTab === "nice" && "Enquadrador Inteligente de Classes Nice (NCL)"}
                 {activeTab === "domains" && "Checador de Domínios (.com.br / .com) & Redes Sociais"}
-                {activeTab === "cease_desist" && "Gerador de Notificação Extrajudicial (LPI)"}
                 {activeTab === "plans" && "Serviços B2B & Assessoria Jurídica"}
                 {activeTab === "profile" && "Configurações da Empresa Parceira"}
               </span>
@@ -730,7 +714,7 @@ export default function DashboardPage() {
                       </Button>
                     }
                   />
-                  <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-xs font-bold leading-none">{profile?.name}</p>
@@ -757,10 +741,6 @@ export default function DashboardPage() {
                     <DropdownMenuItem onClick={() => setActiveTab("domains")} className="text-xs">
                       <Globe className="mr-2 size-3.5" />
                       <span>Domínios & @</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab("cease_desist")} className="text-xs">
-                      <ShieldAlert className="mr-2 size-3.5" />
-                      <span>Notificação Extrajudicial</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
                       <Crown className="mr-2 size-3.5" />

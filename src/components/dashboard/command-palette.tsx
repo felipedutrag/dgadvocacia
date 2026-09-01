@@ -183,16 +183,6 @@ export function CommandPalette({
           </button>
 
           <button
-            onClick={() => handleSelectTab("cease_desist")}
-            className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
-          >
-            <div className="flex items-center gap-2.5">
-              <ShieldAlert className="size-4 text-muted-foreground" />
-              <span>Gerador de Notificação Extrajudicial</span>
-            </div>
-          </button>
-
-          <button
             onClick={() => handleSelectTab("marcas")}
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
