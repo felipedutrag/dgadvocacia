@@ -10,6 +10,9 @@ import {
   Command,
   FileText,
   Palette,
+  Layers,
+  Globe,
+  ShieldAlert,
   ArrowRight,
   Zap,
   Check
@@ -25,7 +28,9 @@ import { Input } from "@/components/ui/input";
 interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onNavigateTab: (tab: "consultas" | "marcas" | "naming" | "plans" | "profile") => void;
+  onNavigateTab: (
+    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+  ) => void;
   onSearchProcesso?: (numero: string) => void;
   onSearchMarca?: (termo: string) => void;
 }
@@ -45,7 +50,9 @@ export function CommandPalette({
     }
   }, [open]);
 
-  const handleSelectTab = (tab: "consultas" | "marcas" | "naming" | "plans" | "profile") => {
+  const handleSelectTab = (
+    tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+  ) => {
     onNavigateTab(tab);
     onOpenChange(false);
   };
@@ -138,11 +145,51 @@ export function CommandPalette({
           >
             <div className="flex items-center gap-2.5">
               <Lightbulb className="size-4 text-amber-500" />
-              <span>Estúdio IA de Naming & Criação de Logos</span>
+              <span>Gerador de Nomes Marcários (LPI)</span>
             </div>
             <kbd className="font-mono text-[10px] text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
               Ctrl+N
             </kbd>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab("logos")}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
+          >
+            <div className="flex items-center gap-2.5">
+              <Palette className="size-4 text-amber-500" />
+              <span>Criador de Logomarcas & Identidade Visual</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab("nice")}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
+          >
+            <div className="flex items-center gap-2.5">
+              <Layers className="size-4 text-primary" />
+              <span>Enquadrador Inteligente de Classes Nice</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab("domains")}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
+          >
+            <div className="flex items-center gap-2.5">
+              <Globe className="size-4 text-primary" />
+              <span>Checador de Domínios (.com.br) & Redes Sociais</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab("cease_desist")}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
+          >
+            <div className="flex items-center gap-2.5">
+              <ShieldAlert className="size-4 text-rose-500" />
+              <span>Gerador de Notificação Extrajudicial</span>
+            </div>
           </button>
 
           <button

@@ -30,11 +30,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { NamingSuggestion } from "@/app/api/inpi/naming/route";
 
 interface NamingClientProps {
+  initialTab?: "naming" | "logos" | "nice" | "domains" | "cease_desist";
   onVerifyTrademark?: (marca: string, classe?: string) => void;
 }
 
-export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains" | "cease_desist">("naming");
+export function NamingClient({ initialTab = "naming", onVerifyTrademark }: NamingClientProps) {
+  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains" | "cease_desist">(initialTab);
+
+  React.useEffect(() => {
+    if (initialTab) setActiveSubTab(initialTab);
+  }, [initialTab]);
 
   // Naming Form State
   const [segmento, setSegmento] = useState("");

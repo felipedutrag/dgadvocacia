@@ -40,6 +40,9 @@ import {
   Lightbulb,
   Layers,
   Scale,
+  Palette,
+  Globe,
+  ShieldAlert,
   Minus,
   Plus,
   Command,
@@ -91,7 +94,9 @@ export default function DashboardPage() {
   // Layout & Navigation State
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"consultas" | "marcas" | "naming" | "plans" | "profile">("consultas");
+  const [activeTab, setActiveTab] = useState<
+    "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "cease_desist" | "plans" | "profile"
+  >("consultas");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [injectedQuery, setInjectedQuery] = useState<{ query?: string; processo?: string; classe?: string } | null>(null);
 
@@ -437,6 +442,13 @@ export default function DashboardPage() {
 
         {/* Navigation Items */}
         <div className="p-3 space-y-1">
+          {/* GRUPO 1: PESQUISAS & TELEMETRIA */}
+          {(sidebarOpen || isDrawer) && (
+            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
+              INPI & Vigilância
+            </div>
+          )}
+
           <button
             onClick={() => { setActiveTab("consultas"); if (isDrawer) setMobileDrawerOpen(false); }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -451,34 +463,110 @@ export default function DashboardPage() {
           </button>
 
           <button
-            onClick={() => { setActiveTab("naming"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "naming"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-amber-500 hover:text-amber-400 hover:bg-amber-500/10"
-            }`}
-            title="Estúdio Naming & Logos IA"
-          >
-            <Lightbulb className="size-4 shrink-0 text-amber-500" />
-            {(sidebarOpen || isDrawer) && (
-              <div className="flex items-center justify-between flex-1">
-                <span>Estúdio Naming & IA</span>
-                <span className="font-mono text-[8px] bg-amber-500/20 text-amber-500 px-1.5 py-0.2 rounded font-bold">Novo</span>
-              </div>
-            )}
-          </button>
-
-          <button
             onClick={() => { setActiveTab("marcas"); if (isDrawer) setMobileDrawerOpen(false); }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === "marcas"
                 ? "bg-primary text-primary-foreground font-bold shadow-xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             }`}
-            title="Radar INPI"
+            title="Radar RPI"
           >
             <Shield className="size-4 shrink-0" />
-            {(sidebarOpen || isDrawer) && <span>Radar INPI</span>}
+            {(sidebarOpen || isDrawer) && <span>Radar RPI</span>}
+          </button>
+
+          {/* GRUPO 2: FERRAMENTAS & ESTÚDIO IA */}
+          <div className="my-2 border-t border-border/60" />
+          {(sidebarOpen || isDrawer) && (
+            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
+              Inteligência & Ativos
+            </div>
+          )}
+
+          <button
+            onClick={() => { setActiveTab("naming"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "naming"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+            title="Gerador de Nomes"
+          >
+            <Lightbulb className="size-4 shrink-0 text-amber-500" />
+            {(sidebarOpen || isDrawer) && <span>Gerador de Nomes</span>}
+          </button>
+
+          <button
+            onClick={() => { setActiveTab("logos"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "logos"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+            title="Criador de Logos"
+          >
+            <Palette className="size-4 shrink-0 text-amber-500" />
+            {(sidebarOpen || isDrawer) && <span>Criador de Logos</span>}
+          </button>
+
+          <button
+            onClick={() => { setActiveTab("nice"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "nice"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+            title="Enquadrador Nice"
+          >
+            <Layers className="size-4 shrink-0 text-primary" />
+            {(sidebarOpen || isDrawer) && <span>Enquadrador Nice</span>}
+          </button>
+
+          <button
+            onClick={() => { setActiveTab("domains"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "domains"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+            title="Domínios & @"
+          >
+            <Globe className="size-4 shrink-0 text-primary" />
+            {(sidebarOpen || isDrawer) && <span>Domínios & @</span>}
+          </button>
+
+          <button
+            onClick={() => { setActiveTab("cease_desist"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "cease_desist"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+            title="Notificação Extrajudicial"
+          >
+            <ShieldAlert className="size-4 shrink-0 text-rose-500" />
+            {(sidebarOpen || isDrawer) && <span>Notificação Extrajudicial</span>}
+          </button>
+
+          {/* GRUPO 3: CONTA & PLANOS */}
+          <div className="my-2 border-t border-border/60" />
+          {(sidebarOpen || isDrawer) && (
+            <div className="px-3 pt-1 pb-1 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
+              Gestão & B2B
+            </div>
+          )}
+
+          <button
+            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === "plans"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20"
+            }`}
+            title="Serviços & Planos"
+          >
+            <Crown className="size-4 shrink-0 text-amber-500" />
+            {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
           </button>
 
           <button
@@ -492,23 +580,6 @@ export default function DashboardPage() {
           >
             <User className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Minha Conta</span>}
-          </button>
-
-          {/* Divisor */}
-          <div className="my-2 border-t border-border/60" />
-
-          {/* Destaque Serviços & Planos */}
-          <button
-            onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-              activeTab === "plans"
-                ? "bg-primary text-primary-foreground font-bold shadow-xs"
-                : "text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20"
-            }`}
-            title="Serviços & Planos"
-          >
-            <Crown className="size-4 shrink-0 text-amber-500" />
-            {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
           </button>
 
           {/* Links Legais */}
@@ -597,8 +668,13 @@ export default function DashboardPage() {
 
             <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-foreground capitalize">
-                {activeTab === "consultas" && "Pesquisa de Marcas & Viabilidade"}
-                {activeTab === "marcas" && "Acompanhamento de Protocolos (Radar INPI)"}
+                {activeTab === "consultas" && "Pesquisa de Marcas & Viabilidade (INPI)"}
+                {activeTab === "marcas" && "Acompanhamento de Protocolos (Radar RPI)"}
+                {activeTab === "naming" && "Gerador Estratégico de Nomes Marcários"}
+                {activeTab === "logos" && "Criador de Logomarcas & Identidade Visual"}
+                {activeTab === "nice" && "Enquadrador Inteligente de Classes Nice (NCL)"}
+                {activeTab === "domains" && "Checador de Domínios (.com.br / .com) & Redes Sociais"}
+                {activeTab === "cease_desist" && "Gerador de Notificação Extrajudicial (LPI)"}
                 {activeTab === "plans" && "Serviços B2B & Assessoria Jurídica"}
                 {activeTab === "profile" && "Configurações da Empresa Parceira"}
               </span>
@@ -665,7 +741,23 @@ export default function DashboardPage() {
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
                       <Lightbulb className="mr-2 size-3.5 text-amber-500" />
-                      <span>Estúdio Naming & Logos IA</span>
+                      <span>Gerador de Nomes</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("logos")} className="text-xs">
+                      <Palette className="mr-2 size-3.5 text-amber-500" />
+                      <span>Criador de Logos</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("nice")} className="text-xs">
+                      <Layers className="mr-2 size-3.5 text-primary" />
+                      <span>Enquadrador Nice</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("domains")} className="text-xs">
+                      <Globe className="mr-2 size-3.5 text-primary" />
+                      <span>Domínios & @</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveTab("cease_desist")} className="text-xs">
+                      <ShieldAlert className="mr-2 size-3.5 text-rose-500" />
+                      <span>Notificação Extrajudicial</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
                       <Crown className="mr-2 size-3.5 text-amber-500" />
@@ -692,9 +784,50 @@ export default function DashboardPage() {
                 />
               )}
 
-              {/* TAB NOVO: ESTÚDIO DE NAMING & LOGOS IA */}
+              {/* PÁGINAS DEDICADAS DE FERRAMENTAS INTELIGENTES */}
               {activeTab === "naming" && (
                 <NamingClient
+                  initialTab="naming"
+                  onVerifyTrademark={(marca, classe) => {
+                    setInjectedQuery({ query: marca, classe });
+                    setActiveTab("consultas");
+                  }}
+                />
+              )}
+
+              {activeTab === "logos" && (
+                <NamingClient
+                  initialTab="logos"
+                  onVerifyTrademark={(marca, classe) => {
+                    setInjectedQuery({ query: marca, classe });
+                    setActiveTab("consultas");
+                  }}
+                />
+              )}
+
+              {activeTab === "nice" && (
+                <NamingClient
+                  initialTab="nice"
+                  onVerifyTrademark={(marca, classe) => {
+                    setInjectedQuery({ query: marca, classe });
+                    setActiveTab("consultas");
+                  }}
+                />
+              )}
+
+              {activeTab === "domains" && (
+                <NamingClient
+                  initialTab="domains"
+                  onVerifyTrademark={(marca, classe) => {
+                    setInjectedQuery({ query: marca, classe });
+                    setActiveTab("consultas");
+                  }}
+                />
+              )}
+
+              {activeTab === "cease_desist" && (
+                <NamingClient
+                  initialTab="cease_desist"
                   onVerifyTrademark={(marca, classe) => {
                     setInjectedQuery({ query: marca, classe });
                     setActiveTab("consultas");
