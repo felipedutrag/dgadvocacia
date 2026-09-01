@@ -131,22 +131,32 @@ export async function POST(request: Request) {
         console.warn("Aviso ao atualizar transação existente:", err);
       }
 
-      // Fallback para o usuário admin (felipedutra@outlook.com) caso seja um teste da GG Pix ou transação avulsa
-      const ADMIN_FALLBACK_USER_ID = "b052ac7c-76f1-4184-9422-3ae26b6e26e5"; // felipedutra@outlook.com
-      const targetUserId = paymentRecord?.user_id || ADMIN_FALLBACK_USER_ID;
+      // Fallback para o usuário logado / primeiro usuário se for webhook de teste
+      let targetUserId = paymentRecord?.user_id;
+      if (!targetUserId) {
+        try {
+          const { data: firstProfile } = await supabase.from("profiles").select("id").limit(1).maybeSingle();
+          targetUserId = firstProfile?.id || "b052ac7c-76f1-4184-9422-3ae26b6e26e5";
+        } catch {
+          targetUserId = "b052ac7c-76f1-4184-9422-3ae26b6e26e5";
+        }
+      }
 
       // Se a transação não existia previamente no banco (ex: teste manual do painel da GG Pix), registrar agora
       if (!paymentRecord && (externalId || transactionId)) {
         try {
-          await supabase.from("payments").insert({
-            user_id: targetUserId,
+          const insertPayload: any = {
             external_id: externalId || String(transactionId),
             ggpix_transaction_id: transactionId ? String(transactionId) : null,
             amount_cents: payload.amount ? Math.round(payload.amount * 100) : 100,
             status: "PAID",
             payer_name: payload.payer?.name || "Teste Painel GG Pix",
             paid_at: payload.paidAt || new Date().toISOString(),
-          });
+          };
+          if (targetUserId) {
+            insertPayload.user_id = targetUserId;
+          }
+          await supabase.from("payments").insert(insertPayload);
         } catch (insertErr) {
           console.warn("Aviso ao registrar pagamento de teste:", insertErr);
         }
