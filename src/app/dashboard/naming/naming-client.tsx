@@ -1031,20 +1031,26 @@ Gerado pelo MarcaShield Naming AI.`;
 
                 <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
                   {namingError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
-                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                      <span>
-                        {namingError}{" "}
-                        {namingError.toLowerCase().includes("limite") && (
-                          <button
-                            type="button"
-                            onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
-                          >
-                            clique aqui para conhecer nossos planos
-                          </button>
-                        )}
-                      </span>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="size-4 shrink-0" />
+                        <span>
+                          {namingError}{" "}
+                          {namingError.toLowerCase().includes("limite") && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const searchParams = new URLSearchParams(window.location.search);
+                                searchParams.set("tab", "plans");
+                                window.location.search = searchParams.toString();
+                              }}
+                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
+                            >
+                              Clique aqui para assinar um plano.
+                            </button>
+                          )}
+                        </span>
+                      </div>
                     </div>
                   )}
 
@@ -2126,20 +2132,26 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleClassifyNice} className="space-y-3.5">
                   {niceError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
-                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                      <span>
-                        {niceError}{" "}
-                        {niceError.toLowerCase().includes("limite") && (
-                          <button
-                            type="button"
-                            onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
-                          >
-                            clique aqui para conhecer nossos planos
-                          </button>
-                        )}
-                      </span>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="size-4 shrink-0" />
+                        <span>
+                          {niceError}{" "}
+                          {niceError.toLowerCase().includes("limite") && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const searchParams = new URLSearchParams(window.location.search);
+                                searchParams.set("tab", "plans");
+                                window.location.search = searchParams.toString();
+                              }}
+                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
+                            >
+                              Clique aqui para assinar um plano.
+                            </button>
+                          )}
+                        </span>
+                      </div>
                     </div>
                   )}
                   <div className="space-y-1.5">
@@ -2240,20 +2252,26 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleCheckDomains} className="space-y-3.5">
                   {domainError && (
-                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-start gap-2 leading-relaxed">
-                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
-                      <span>
-                        {domainError}{" "}
-                        {domainError.toLowerCase().includes("limite") && (
-                          <button
-                            type="button"
-                            onClick={() => window.location.href = "/dashboard?tab=plans"}
-                            className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
-                          >
-                            clique aqui para conhecer nossos planos
-                          </button>
-                        )}
-                      </span>
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="size-4 shrink-0" />
+                        <span>
+                          {domainError}{" "}
+                          {domainError.toLowerCase().includes("limite") && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const searchParams = new URLSearchParams(window.location.search);
+                                searchParams.set("tab", "plans");
+                                window.location.search = searchParams.toString();
+                              }}
+                              className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
+                            >
+                              Clique aqui para assinar um plano.
+                            </button>
+                          )}
+                        </span>
+                      </div>
                     </div>
                   )}
                   <div className="space-y-1.5">

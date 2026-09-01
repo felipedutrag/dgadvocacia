@@ -11,15 +11,6 @@ export interface QuotaCheckResult {
   error?: string;
 }
 
-const FEATURE_LABELS: Record<QuotaFeature, string> = {
-  naming: "Gerador de Marcas com IA",
-  nice: "Enquadrador de Classes Nice",
-  domain: "Consulta de Domínios",
-  search: "Pesquisa de Anterioridade de Marcas no INPI",
-  processo: "Raio-X de Processos do INPI",
-  figura: "Pesquisa Figurativa de Viena (CFE)",
-};
-
 export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaCheckResult> {
   try {
     const supabase = await createClient();
@@ -31,7 +22,7 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
         allowed: false,
         isPaid: false,
         usedCount: 0,
-        error: "Faça login na plataforma para utilizar as ferramentas de inteligência marcária."
+        error: "Faça login na plataforma para continuar."
       };
     }
 
@@ -73,7 +64,7 @@ export async function checkFeatureQuota(feature: QuotaFeature): Promise<QuotaChe
         isPaid: false,
         usedCount,
         userId: user.id,
-        error: `Você atingiu o limite gratuito de 1 uso de ${FEATURE_LABELS[feature]}. Para continuar utilizando de forma ilimitada,`
+        error: `Limite gratuito de 1 uso atingido.`
       };
     }
 

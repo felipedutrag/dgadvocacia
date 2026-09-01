@@ -569,18 +569,22 @@ export function ConsultasClient({
     <div className="space-y-6">
       {/* ── Feedback Alerts ── */}
       {errorMsg && (
-        <div className="p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs flex items-start justify-between gap-3">
-          <div className="flex items-start gap-2 leading-relaxed">
-            <ShieldAlert className="size-4 shrink-0 mt-0.5" />
+        <div className="p-3 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <ShieldAlert className="size-4 shrink-0" />
             <span>
               {errorMsg}{" "}
               {errorMsg.toLowerCase().includes("limite") && (
                 <button
                   type="button"
-                  onClick={() => window.location.href = "/dashboard?tab=plans"}
-                  className="font-bold underline underline-offset-2 text-primary hover:text-primary/80 transition-colors inline cursor-pointer ml-1"
+                  onClick={() => {
+                    const searchParams = new URLSearchParams(window.location.search);
+                    searchParams.set("tab", "plans");
+                    window.location.search = searchParams.toString();
+                  }}
+                  className="font-bold underline underline-offset-2 text-foreground hover:text-primary transition-colors cursor-pointer ml-1"
                 >
-                  clique aqui para conhecer nossos planos
+                  Clique aqui para assinar um plano.
                 </button>
               )}
             </span>
