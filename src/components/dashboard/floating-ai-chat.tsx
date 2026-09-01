@@ -206,7 +206,7 @@ export function FloatingAiChat({ mode = "dashboard" }: FloatingAiChatProps) {
           className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs px-4 py-3 rounded-full shadow-2xl transition-all transform hover:scale-105"
         >
           <Bot className="size-5" />
-          <span>Consultoria IA (INPI)</span>
+          <span>{isSales ? "Precisa de ajuda?" : "Consultoria IA (INPI)"}</span>
         </button>
       )}
 
