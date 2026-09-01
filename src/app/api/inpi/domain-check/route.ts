@@ -1,7 +1,17 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 export async function GET(req: Request) {
   try {
+    // Checagem de Quota: 1 uso grátis para não-pagantes
+    const quotaCheck = await checkFeatureQuota("domain");
+    if (!quotaCheck.allowed) {
+      return NextResponse.json(
+        { error: quotaCheck.error, limitReached: true, upgradeRequired: true },
+        { status: 403 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const rawDomain = searchParams.get("domain");
 
@@ -55,6 +65,10 @@ export async function GET(req: Request) {
       }
     } catch (e) {
       console.warn("Erro ao checar .com:", e);
+    }
+
+    if (!quotaCheck.isPaid && quotaCheck.userId) {
+      await incrementFeatureQuota("domain", quotaCheck.userId);
     }
 
     return NextResponse.json({

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkFeatureQuota, incrementFeatureQuota } from "@/lib/quotas";
 
 export type NamingSuggestion = {
   nome: string;
@@ -19,6 +20,15 @@ export type NamingSuggestion = {
 
 export async function POST(req: Request) {
   try {
+    // Checagem de Quota: 1 uso grátis para não-pagantes
+    const quotaCheck = await checkFeatureQuota("naming");
+    if (!quotaCheck.allowed) {
+      return NextResponse.json(
+        { error: quotaCheck.error, limitReached: true, upgradeRequired: true },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       segmento,
@@ -136,6 +146,9 @@ Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
               const cleanJson = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
               const parsed = JSON.parse(cleanJson);
               if (parsed.sugestoes && Array.isArray(parsed.sugestoes) && parsed.sugestoes.length > 0) {
+                if (!quotaCheck.isPaid && quotaCheck.userId) {
+                  await incrementFeatureQuota("naming", quotaCheck.userId);
+                }
                 return NextResponse.json(parsed);
               }
             }
@@ -170,6 +183,9 @@ Retorne APENAS um JSON válido e estritamente formatado conforme este schema:
             const cleanJson = rawContent.replace(/```json/g, "").replace(/```/g, "").trim();
             const parsed = JSON.parse(cleanJson);
             if (parsed.sugestoes && Array.isArray(parsed.sugestoes) && parsed.sugestoes.length > 0) {
+              if (!quotaCheck.isPaid && quotaCheck.userId) {
+                await incrementFeatureQuota("naming", quotaCheck.userId);
+              }
               return NextResponse.json(parsed);
             }
           }

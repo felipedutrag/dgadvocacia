@@ -1031,9 +1031,25 @@ Gerado pelo MarcaShield Naming AI.`;
 
                 <form onSubmit={(e) => handleGenerateNames(e)} className="space-y-3.5 pt-1">
                   {namingError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center gap-2">
-                      <AlertTriangle className="size-4 shrink-0" />
-                      <span>{namingError}</span>
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
+                      <div className="flex items-start gap-2 font-medium">
+                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                        <span>{namingError}</span>
+                      </div>
+                      {namingError.toLowerCase().includes("limite") && (
+                        <div className="pt-1">
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => window.location.href = "/dashboard?tab=plans"}
+                            className="w-full text-xs font-bold bg-primary text-primary-foreground h-8 gap-1.5 shadow-sm cursor-pointer"
+                          >
+                            <Sparkles className="size-3.5" />
+                            <span>Conhecer Planos de Acesso Ilimitado</span>
+                            <ArrowRight className="size-3.5" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -2126,8 +2142,25 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleClassifyNice} className="space-y-3.5">
                   {niceError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
-                      {niceError}
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
+                      <div className="flex items-start gap-2 font-medium">
+                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                        <span>{niceError}</span>
+                      </div>
+                      {niceError.toLowerCase().includes("limite") && (
+                        <div className="pt-1">
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => window.location.href = "/dashboard?tab=plans"}
+                            className="w-full text-xs font-bold bg-primary text-primary-foreground h-8 gap-1.5 shadow-sm cursor-pointer"
+                          >
+                            <Sparkles className="size-3.5" />
+                            <span>Conhecer Planos de Acesso Ilimitado</span>
+                            <ArrowRight className="size-3.5" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
                   <div className="space-y-1.5">
@@ -2228,8 +2261,25 @@ Gerado pelo MarcaShield Naming AI.`;
               <CardContent className="pt-2">
                 <form onSubmit={handleCheckDomains} className="space-y-3.5">
                   {domainError && (
-                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
-                      {domainError}
+                    <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs space-y-2">
+                      <div className="flex items-start gap-2 font-medium">
+                        <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                        <span>{domainError}</span>
+                      </div>
+                      {domainError.toLowerCase().includes("limite") && (
+                        <div className="pt-1">
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => window.location.href = "/dashboard?tab=plans"}
+                            className="w-full text-xs font-bold bg-primary text-primary-foreground h-8 gap-1.5 shadow-sm cursor-pointer"
+                          >
+                            <Sparkles className="size-3.5" />
+                            <span>Conhecer Planos de Acesso Ilimitado</span>
+                            <ArrowRight className="size-3.5" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
                   <div className="space-y-1.5">
