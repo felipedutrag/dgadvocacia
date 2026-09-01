@@ -18,9 +18,9 @@ export async function GET(request: Request) {
     if (externalId) {
       const { data } = await supabase
         .from("payments")
-        .select("*, documents(id, is_paid)")
+        .select("*")
         .eq("external_id", externalId)
-        .single();
+        .maybeSingle();
       paymentRecord = data;
     }
 
@@ -49,13 +49,6 @@ export async function GET(request: Request) {
                 paid_at: new Date().toISOString(),
               })
               .eq("external_id", externalId);
-
-            if (paymentRecord?.document_id) {
-              await supabase
-                .from("documents")
-                .update({ is_paid: true })
-                .eq("id", paymentRecord.document_id);
-            }
           }
 
           return NextResponse.json({ status: "COMPLETE", paid: true });

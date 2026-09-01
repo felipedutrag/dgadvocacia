@@ -55,6 +55,7 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(true);
 
   const isMobileRaw = useIsBreakpoint("max", 900);
   const isMobile = isMobileRaw ?? false;
@@ -172,6 +173,10 @@ export default function AuthPage() {
         setErrorMessage("Por favor, informe seu nome.");
         return;
       }
+      if (!agreeTerms) {
+        setErrorMessage("Você precisa concordar com os Termos de Parceria e a Política de Privacidade para continuar.");
+        return;
+      }
       if (password !== confirmPassword) {
         setErrorMessage("As senhas não coincidem.");
         return;
@@ -284,16 +289,16 @@ export default function AuthPage() {
               <SmartDocBrand size="md" />
             </Link>
 
-            <h1 className="mt-4 text-2xl font-bold tracking-tight text-foreground">
-              {mode === "login" && "Acesse sua conta"}
-              {mode === "register" && "Crie sua conta"}
+            <h1 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              {mode === "login" && "Acesse o Painel do Parceiro"}
+              {mode === "register" && "Cadastre sua Empresa"}
               {mode === "forgot" && "Recuperação de Senha"}
               {mode === "reset" && "Definir Nova Senha"}
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {mode === "login" && "Seu painel de monitoramento INPI, consultas e marcas aguardam você."}
-              {mode === "register" && "Proteja sua marca e acompanhe processos oficiais no INPI."}
-              {mode === "forgot" && "Informe seu e-mail para receber o link seguro de redefinição."}
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
+              {mode === "login" && "Gerencie sua carteira de marcas, acompanhe despachos da RPI e acesse ferramentas de consulta."}
+              {mode === "register" && "Cadastre sua empresa para gerenciar protocolos, monitorar processos e solicitar suporte jurídico."}
+              {mode === "forgot" && "Informe seu e-mail corporativo para receber as instruções seguras de redefinição."}
               {mode === "reset" && "Digite sua nova senha de acesso abaixo."}
             </p>
           </div>
@@ -310,8 +315,8 @@ export default function AuthPage() {
               className="mb-6 w-full"
             >
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Entrar</TabsTrigger>
-                <TabsTrigger value="register">Criar Conta</TabsTrigger>
+                <TabsTrigger value="login">Acessar Painel</TabsTrigger>
+                <TabsTrigger value="register">Nova Parceria</TabsTrigger>
               </TabsList>
             </Tabs>
           )}
@@ -349,10 +354,10 @@ export default function AuthPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* REGISTER: Nome */}
+            {/* REGISTER: Nome da Empresa / Responsável */}
             {mode === "register" && (
               <div className="space-y-1.5">
-                <Label htmlFor="name">Nome *</Label>
+                <Label htmlFor="name">Nome do Responsável / Empresa *</Label>
                 <div className="relative flex items-center">
                   <User className="absolute left-3 size-4 text-muted-foreground pointer-events-none" />
                   <Input
@@ -360,7 +365,7 @@ export default function AuthPage() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Seu nome"
+                    placeholder="Seu nome ou Razão Social"
                     required={mode === "register"}
                     className="pl-9"
                   />
@@ -371,7 +376,7 @@ export default function AuthPage() {
             {/* EMAIL (Login, Register, Forgot) */}
             {mode !== "reset" && (
               <div className="space-y-1.5">
-                <Label htmlFor="email">E-mail *</Label>
+                <Label htmlFor="email">E-mail Corporativo *</Label>
                 <div className="relative flex items-center">
                   <Mail className="absolute left-3 size-4 text-muted-foreground pointer-events-none" />
                   <Input
@@ -379,7 +384,7 @@ export default function AuthPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seu@email.com"
+                    placeholder="contato@suaempresa.com.br"
                     required
                     className="pl-9"
                   />
@@ -392,7 +397,7 @@ export default function AuthPage() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">
-                    {mode === "reset" ? "Nova Senha *" : "Senha *"}
+                    {mode === "reset" ? "Nova Senha *" : "Senha de Acesso *"}
                   </Label>
                   {mode === "login" && (
                     <button
@@ -451,65 +456,91 @@ export default function AuthPage() {
               </div>
             )}
 
+            {/* Checkbox de Concordância com Termos e Privacidade (Apenas no Cadastro) */}
+            {mode === "register" && (
+              <div className="flex items-start gap-2 pt-0.5 pb-0.5">
+                <input
+                  type="checkbox"
+                  id="agreeTerms"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                  className="size-3.5 mt-0.5 rounded border-border text-primary accent-primary focus:ring-primary/20 cursor-pointer shrink-0"
+                />
+                <label htmlFor="agreeTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer select-none">
+                  Ao prosseguir com o cadastro, você declara concordar com os nossos respectivos{" "}
+                  <Link href="/termos-de-uso" target="_blank" className="underline hover:text-foreground font-medium text-foreground/90">
+                    Termos de Parceria
+                  </Link>{" "}
+                  e a{" "}
+                  <Link href="/politica-de-privacidade" target="_blank" className="underline hover:text-foreground font-medium text-foreground/90">
+                    Política de Privacidade
+                  </Link>
+                  .
+                </label>
+              </div>
+            )}
+
             {/* Submit Button */}
             <Button
               type="submit"
-              disabled={loading}
-              className="mt-2 h-10 w-full font-bold"
+              disabled={loading || (mode === "register" && !agreeTerms)}
+              className="mt-1 h-10 w-full font-bold"
             >
               {loading ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
-                  <span>Processando...</span>
+                  <span>Autenticando...</span>
                 </>
               ) : (
                 <>
-                  {mode === "login" && <span>Acessar Meu Painel</span>}
-                  {mode === "register" && <span>Criar Minha Conta</span>}
+                  {mode === "login" && <span>Acessar Painel do Parceiro</span>}
+                  {mode === "register" && <span>Criar Conta de Parceiro</span>}
                   {mode === "forgot" && <span>Enviar Link de Recuperação</span>}
-                  {mode === "reset" && <span>Salvar Nova Senha</span>}
+                  {mode === "reset" && <span>Atualizar Senha</span>}
                   <ArrowRight className="size-4" />
                 </>
               )}
             </Button>
           </form>
-
-          {/* Terms info */}
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Ao continuar, você concorda com nossos{" "}
-            <Link href="/termos-de-uso" className="underline hover:text-foreground">
-              Termos de Uso
-            </Link>{" "}
-            e{" "}
-            <Link href="/politica-de-privacidade" className="underline hover:text-foreground">
-              Política de Privacidade
-            </Link>
-            .
-          </p>
         </div>
 
-        {/* Right Side: Showcase Testimonial Panel (Desktop Only) */}
+        {/* Right Side: Showcase B2B Partnership Panel (Desktop Only) */}
         {!isMobile && (
           <div className="relative flex flex-col justify-between border-l border-border bg-muted/40 p-8 md:col-span-5">
             <div>
               <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                <Shield className="size-3.5" />
-                <span>Inteligência & Blindagem no INPI</span>
+                <Scale className="size-3.5" />
+                <span>Assessoria & Suporte B2B</span>
               </div>
 
-              <h2 className="text-xl font-bold tracking-tight text-foreground leading-snug">
-                &ldquo;A consulta prévia com IA identificou um risco crítico de anterioridade que evitou o indeferimento da nossa marca. Registro deferido com tranquilidade total.&rdquo;
+              <h2 className="text-base sm:text-lg font-medium tracking-normal text-foreground/90 leading-relaxed">
+                &ldquo;Cadastramos os protocolos dos nossos clientes e temos acompanhamento em tempo real da RPI, com suporte jurídico técnico em oposições e defesas.&rdquo;
               </h2>
+              
+              <ul className="mt-6 space-y-2.5 text-xs text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-primary shrink-0" />
+                  <span>Sincronização imediata por número do pedido</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-primary shrink-0" />
+                  <span>Alertas automáticos a cada nova edição da RPI</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-primary shrink-0" />
+                  <span>Consultoria jurídica sob demanda para a sua carteira</span>
+                </li>
+              </ul>
             </div>
 
-            {/* Client Persona Card */}
-            <div className="mt-8 flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3 shadow-sm">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground text-sm">
-                FD
+            {/* Credential Card */}
+            <div className="mt-8 flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3 shadow-xs">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/20 font-bold text-primary text-xs">
+                DG
               </div>
               <div>
-                <div className="text-sm font-semibold text-foreground">Felipe Dutra</div>
-                <div className="text-xs text-muted-foreground">Fundador • Nexus Tech</div>
+                <div className="text-xs font-bold text-foreground">DG Advocacia</div>
+                <div className="text-[11px] font-mono text-muted-foreground">Dr. Felipe Dutra Gonçalves • OAB/MG 45.925</div>
               </div>
             </div>
           </div>

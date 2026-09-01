@@ -150,9 +150,9 @@ export async function POST(request: Request) {
         }
       }
 
-      // Determinar pacote de créditos adquirido
-      let creditsToAdd = 30;
-      let packName = "Pacote Profissional (30 Petições)";
+      // Determinar pacote de processos / marcas adquirido
+      let marcasToAdd = 30;
+      let packName = "Pacote Carteira B2B (30 Processos)";
 
       const paidAmount = payload.amount ? Math.round(payload.amount * 100) : (paymentRecord?.amount_cents || 9700);
 
@@ -160,27 +160,27 @@ export async function POST(request: Request) {
         (externalId && (externalId.includes("pack_10") || externalId.includes("start") || externalId.includes("pack_start"))) ||
         paidAmount === 4700 || payload.amount === 47 || paidAmount === 500 || payload.amount === 5 || paidAmount === 100 || payload.amount === 1 || paidAmount === 4700 || payload.amount === 47
       ) {
-        creditsToAdd = 10;
-        packName = "Pacote Inicial (10 Petições)";
+        marcasToAdd = 10;
+        packName = "Pacote Start B2B (10 Processos)";
       } else if (
         (externalId && (externalId.includes("pack_80") || externalId.includes("office") || externalId.includes("pack_office"))) ||
         paidAmount === 19700 || payload.amount === 197
       ) {
-        creditsToAdd = 80;
-        packName = "Pacote Escritório (80 Petições)";
+        marcasToAdd = 80;
+        packName = "Pacote Scale B2B (80 Processos)";
       } else if (
         (externalId && (externalId.includes("pack_200") || externalId.includes("elite") || externalId.includes("pack_elite"))) ||
         paidAmount === 34700 || payload.amount === 347
       ) {
-        creditsToAdd = 200;
-        packName = "Pacote Elite (200 Petições)";
+        marcasToAdd = 200;
+        packName = "Pacote Corporativo (200 Processos)";
       } else {
         // Padrão ou R$ 97
-        creditsToAdd = 30;
-        packName = "Pacote Profissional (30 Petições)";
+        marcasToAdd = 30;
+        packName = "Pacote Carteira B2B (30 Processos)";
       }
 
-      // Ativar / Adicionar Créditos ao Usuário
+      // Ativar / Adicionar Limite de Processos ao Usuário
       if (targetUserId) {
         // 1. Atualizar user_metadata no Supabase Auth
         try {
@@ -191,28 +191,26 @@ export async function POST(request: Request) {
           console.error("Erro ao atualizar user_metadata no Auth:", authErr);
         }
 
-        // 2. Adicionar créditos de forma cumulativa na tabela profiles
+        // 2. Adicionar limite de marcas de forma cumulativa na tabela profiles
         try {
           const { data: currentProfile } = await supabase
             .from("profiles")
-            .select("petitions_limit, petitions_used")
+            .select("marcas_limit, marcas_used")
             .eq("id", targetUserId)
             .maybeSingle();
 
-          const currentLimit = currentProfile?.petitions_limit ?? 0;
-          const newLimit = currentLimit + creditsToAdd;
+          const currentLimit = currentProfile?.marcas_limit ?? 10;
+          const newLimit = currentLimit + marcasToAdd;
 
           await supabase
             .from("profiles")
             .update({
-              plan: packName,
-              plan_status: "active",
-              petitions_limit: newLimit,
+              marcas_limit: newLimit,
               updated_at: new Date().toISOString(),
             })
             .eq("id", targetUserId);
 
-          console.log(`[WEBHOOK] Adicionados +${creditsToAdd} créditos para o usuário ${targetUserId}. Novo total: ${newLimit} créditos.`);
+          console.log(`[WEBHOOK] Adicionados +${marcasToAdd} processos para o parceiro ${targetUserId}. Novo total: ${newLimit} processos.`);
         } catch (profileErr) {
           console.warn("Aviso ao atualizar profiles:", profileErr);
         }
@@ -236,14 +234,6 @@ export async function POST(request: Request) {
         } catch (mailErr) {
           console.error("[WEBHOOK] Falha ao disparar e-mail de pagamento:", mailErr);
         }
-      }
-
-      // Liberar documento avulso se houver
-      if (paymentRecord?.document_id) {
-        await supabase
-          .from("documents")
-          .update({ is_paid: true })
-          .eq("id", paymentRecord.document_id);
       }
     } else if (status === "FAILED" || status === "CANCELED") {
       let query = supabase.from("payments").update({

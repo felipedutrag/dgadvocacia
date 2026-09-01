@@ -67,7 +67,11 @@ interface UserProfile {
   id: string;
   name: string;
   email: string;
-  plan?: string;
+  company_name?: string;
+  marcas_limit?: number;
+  marcas_used?: number;
+  consultorias_creditos?: number;
+  is_admin?: boolean;
 }
 
 export default function DashboardPage() {
@@ -157,9 +161,13 @@ export default function DashboardPage() {
 
       const userProfile: UserProfile = {
         id: user.id,
-        name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Cliente",
+        name: data?.name || user.user_metadata?.name || user.email?.split("@")[0] || "Parceiro B2B",
         email: user.email || "",
-        plan: data?.plan || "Plano Start",
+        company_name: data?.company_name || "",
+        marcas_limit: data?.marcas_limit ?? 10,
+        marcas_used: data?.marcas_used ?? 0,
+        consultorias_creditos: data?.consultorias_creditos ?? 5,
+        is_admin: data?.is_admin ?? false,
       };
 
       setProfile(userProfile);
@@ -513,10 +521,10 @@ export default function DashboardPage() {
 
             <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-foreground capitalize">
-                {activeTab === "consultas" && "Pesquisa de Marcas"}
-                {activeTab === "marcas" && "Radar INPI"}
-                {activeTab === "plans" && "Serviços & Assessoria INPI"}
-                {activeTab === "profile" && "Configurações da Conta"}
+                {activeTab === "consultas" && "Pesquisa de Marcas & Viabilidade"}
+                {activeTab === "marcas" && "Acompanhamento de Protocolos (Radar INPI)"}
+                {activeTab === "plans" && "Serviços B2B & Assessoria Jurídica"}
+                {activeTab === "profile" && "Configurações da Empresa Parceira"}
               </span>
             </div>
           </div>
@@ -558,7 +566,7 @@ export default function DashboardPage() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">
                   <Crown className="mr-2 size-3.5 text-amber-500" />
-                  <span>Serviços & Planos</span>
+                  <span>Serviços & Pacotes B2B</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-xs text-destructive focus:text-destructive">
@@ -571,7 +579,7 @@ export default function DashboardPage() {
         </header>
 
         {/* ── Main Dashboard Content ── */}
-        <div className="flex-1 p-4 sm:p-5 lg:p-6 max-w-6xl mx-auto w-full">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
           {/* TAB 1: CONSULTAS & IA */}
           {activeTab === "consultas" && (
             <ConsultasClient />
@@ -579,16 +587,16 @@ export default function DashboardPage() {
 
           {/* TAB 2: RADAR INPI */}
           {activeTab === "marcas" && (
-            <div className="space-y-3.5">
-              <div className="border-b border-border/60 pb-2.5">
+            <div className="space-y-6">
+              <div className="border-b border-border/60 pb-4">
                 <h1 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span>Radar INPI</span>
+                  <span>Acompanhamento de Protocolos & Carteira</span>
                   <span className="font-mono text-[10px] text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-normal">
-                    Automático
+                    Radar RPI Automático
                   </span>
                 </h1>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Monitoramento contínuo da Revista da Propriedade Industrial (RPI) para as suas marcas.
+                  Cadastre o número do protocolo do pedido para que a DG Advocacia monitore despachos, prazos e atue no backend jurídico.
                 </p>
               </div>
               <MarcasClient />
@@ -600,13 +608,13 @@ export default function DashboardPage() {
             <div className="space-y-6 animate-fade-in">
               <div className="border-b border-border/60 pb-4">
                 <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <span>Serviços de Assessoria Marcária & Blindagem</span>
+                  <span>Backend Jurídico & Pacotes de Parceria B2B</span>
                   <span className="font-mono text-[10px] bg-primary/10 border border-primary/20 text-primary px-2.5 py-0.5 rounded-full font-bold">
-                    Assessoria Especializada
+                    Tabela para Parceiros
                   </span>
                 </h1>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Contrate pacotes de acompanhamento, depósitos e defesas jurídicas no INPI com pagamento instantâneo via Pix.
+                  Contrate pacotes de acompanhamento de carteira, protocolos de pedidos e elaboração de defesas/oposições para os seus clientes.
                 </p>
               </div>
 

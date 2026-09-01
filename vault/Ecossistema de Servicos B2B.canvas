@@ -1,0 +1,26 @@
+{
+	"nodes":[
+		{"id":"grupo-4","type":"group","x":1400,"y":720,"width":480,"height":520,"color":"3","label":"4. SERVIÇOS ACESSÓRIOS CORPORATIVOS & UPSELL"},
+		{"id":"grupo-3","type":"group","x":1400,"y":60,"width":480,"height":500,"color":"1","label":"3. BACKEND JURÍDICO & DEFESAS TÉCNICAS (OAB)"},
+		{"id":"grupo-1","type":"group","x":-160,"y":-40,"width":460,"height":480,"color":"4","label":"1. FERRAMENTAS COMERCIAIS & IA (NA DASHBOARD)"},
+		{"id":"grupo-2","type":"group","x":-160,"y":600,"width":460,"height":380,"color":"5","label":"2. MONITORAMENTO & RADAR AUTOMATIZADO"},
+		{"id":"hub-central","type":"text","text":"👑 **DG ADVOCACIA & LEGALTECH**\n*Ecossistema de Serviços B2B & Backend Operacional*","x":600,"y":430,"width":380,"height":140,"color":"6"},
+		{"id":"card-3-1","type":"text","text":"⚔️ **Oposições Administrativas (Art. 158 LPI)**\n- Minuta gerada por IA com base em anterioridade\n- Argumentação de confusão e concorrência desleal\n- Revisão técnica e protocolo por Dr. Felipe Dutra","x":1420,"y":110,"width":440,"height":120,"color":"1"},
+		{"id":"card-3-2","type":"text","text":"🛡️ **Manifestações a Oposições Sofridas**\n- Defesa da marca do parceiro contra investidas de terceiros\n- Demonstração de especialidade e convivência pacífica","x":1420,"y":250,"width":440,"height":110,"color":"1"},
+		{"id":"card-3-3","type":"text","text":"⚖️ **Recursos contra Indeferimento & PAN**\n- Recursos administrativos ao Presidente do INPI (Art. 212)\n- Processos Administrativos de Nulidade (PAN)\n- Cumprimento de exigências de mérito","x":1420,"y":380,"width":440,"height":140,"color":"1"},
+		{"id":"card-1-1","type":"text","text":"🧠 **Naming Inteligente com IA**\n- Geração de nomes comerciais de alto impacto\n- Filtro por nicho e público-alvo\n- Análise prévia de distintividade","x":-140,"y":10,"width":420,"height":110,"color":"4"},
+		{"id":"card-1-2","type":"text","text":"🎨 **Criação de Logos (Nanobanana)**\n- Geração de identidades visuais com IA\n- Símbolos e monogramas de alta definição\n- Adequação para marcas figurativas e mistas","x":-140,"y":140,"width":420,"height":110,"color":"4"},
+		{"id":"card-1-3","type":"text","text":"🛡️ **MarcaShield: Viabilidade com IA**\n- Varredura em tempo real na base do INPI\n- Cruzamento de Classes de Nice (NCL)\n- Análise fonética, visual e ideológica\n- Score de Risco de 0 a 100%","x":-140,"y":270,"width":420,"height":140,"color":"4"},
+		{"id":"card-2-1","type":"text","text":"⚡ **Sincronização Instantânea**\n- Lançamento apenas com o nº do protocolo\n- Puxa dados do titular, classe e status em segundos\n- Ativação imediata no pipeline","x":-140,"y":650,"width":420,"height":120,"color":"5"},
+		{"id":"card-2-2","type":"text","text":"📡 **Radar Semanal RPI (Terça-feira)**\n- Leitura automatizada do XML oficial do INPI\n- Detecção de pedidos de concorrentes em colidência\n- Alertas preditivos de prazos fatais (60 dias)","x":-140,"y":790,"width":420,"height":150,"color":"5"},
+		{"id":"card-4-1","type":"text","text":"📜 **Notificação Extrajudicial (Cease & Desist)**\n- Notificação formal de infração marcária\n- Exigência de cessação imediata sob pena de indenização\n- Gerada com dados do infrator e assinatura OAB","x":1420,"y":770,"width":440,"height":120,"color":"3"},
+		{"id":"card-4-2","type":"text","text":"📑 **Contratos de Licenciamento & Franquias**\n- Contratos de cessão de direitos de marca\n- Licenciamento de exploração comercial\n- Minutas para redes de franquias (Franchising)","x":1420,"y":910,"width":440,"height":120,"color":"3"},
+		{"id":"card-4-3","type":"text","text":"🌍 **Registro Internacional (Protocolo de Madri)**\n- Extensão de marcas para mais de 120 países via WIPO/OMPI\n- Gestão unificada direta pela plataforma","x":1420,"y":1050,"width":440,"height":110,"color":"3"}
+	],
+	"edges":[
+		{"id":"edge-hub-g1","fromNode":"hub-central","fromSide":"left","toNode":"card-1-2","toSide":"right","color":"4","label":"Comercial & IA"},
+		{"id":"edge-hub-g2","fromNode":"hub-central","fromSide":"bottom","toNode":"card-2-1","toSide":"right","color":"5","label":"Vigilância & RPI"},
+		{"id":"edge-hub-g3","fromNode":"hub-central","fromSide":"right","toNode":"card-3-1","toSide":"left","color":"1","label":"Advocacia & Peças"},
+		{"id":"edge-hub-g4","fromNode":"hub-central","fromSide":"right","toNode":"card-4-1","toSide":"left","color":"3","label":"Upsell & Contratos"}
+	]
+}

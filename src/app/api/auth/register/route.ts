@@ -18,8 +18,7 @@ export async function POST(request: Request) {
       password: password,
       email_confirm: true,
       user_metadata: {
-        name: name?.trim() || "Advogado(a)",
-        oab: oab?.trim() || "",
+        name: name?.trim() || "Parceiro B2B",
       },
     });
 

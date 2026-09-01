@@ -323,10 +323,10 @@ export function ConsultasClient() {
   };
 
   return (
-    <div className="space-y-3.5">
+    <div className="space-y-6">
       {/* ── Top Header ── */}
-      <div className="border-b border-border/60 pb-2.5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+      <div className="border-b border-border/60 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
               <span>Central de Consultas & Inteligência INPI</span>
@@ -354,7 +354,7 @@ export function ConsultasClient() {
         </div>
 
         {/* ── Sub-Navigation Tabs ── */}
-        <div className="flex items-center gap-1 mt-2.5 overflow-x-auto pb-0.5">
+        <div className="flex items-center gap-1 mt-4 overflow-x-auto pb-1">
           <Button
             variant="ghost"
             size="sm"
@@ -427,7 +427,7 @@ export function ConsultasClient() {
       {/* ── TAB 1: BUSCA POR NOME / CLASSE ── */}
       {activeSubTab === "marca" && (
         <Card className="border-border/70 bg-card/60 backdrop-blur-md">
-          <CardHeader className="py-2.5 px-4 sm:px-6 border-b border-border/40">
+          <CardHeader className="pb-3 border-b border-border/40">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <Search className="size-4 text-primary" />
               Pesquisa de Marca por Denominação & Classe Nice
@@ -436,7 +436,7 @@ export function ConsultasClient() {
               Consulte anterioridades e receba um Score de Viabilidade instantâneo emitido pelo MarcaShield AI.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-3 px-4 sm:px-6 pb-4">
+          <CardContent className="pt-4">
             <form onSubmit={handleSearchMarca} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input

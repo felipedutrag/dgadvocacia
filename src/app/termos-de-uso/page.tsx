@@ -48,19 +48,19 @@ export default function TermosDeUsoPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">1</span>
-              Objeto dos Serviços
+              Objeto e Natureza da Parceria B2B
             </h2>
             <p>
-              Estes Termos e Condições de Uso regulam o acesso e a utilização dos serviços jurídicos, tecnológicos e de inteligência em propriedade intelectual fornecidos pela <strong>DG Advocacia</strong> (disponível no endereço eletrônico <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>).
+              Estes Termos e Condições de Uso regulam o acesso, a utilização e a cooperação técnico-institucional fornecida pela <strong>DG Advocacia</strong> (patronada pelo <strong>Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925</strong>, disponível no endereço eletrônico <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>) para empresas parceiras, agências de branding, contabilidades e escritórios que gerenciam carteiras de registro de marcas perante o Instituto Nacional da Propriedade Industrial (INPI).
             </p>
             <p>
-              A plataforma disponibiliza ferramentas para:
+              A plataforma disponibiliza infraestrutura tecnológica de apoio e suporte jurídico especializado, compreendendo:
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-foreground/90">
-              <li>Consulta de anterioridades e análise de colidências na base pública do Instituto Nacional da Propriedade Industrial (INPI);</li>
-              <li>Diagnóstico automatizado de viabilidade e risco marcário assistido por Inteligência Artificial (MarcaShield AI) com fundamentação na Lei de Propriedade Industrial (Lei nº 9.279/1996 - LPI);</li>
-              <li>Monitoramento contínuo de despachos publicados na Revista da Propriedade Industrial (RPI - Radar INPI);</li>
-              <li>Contratação de assessoria jurídica especializada para protocolo de pedidos de registro, manifestações, oposições, recursos e defesas administrativas perante o INPI.</li>
+              <li><strong>Dashboard Operacional de Gestão:</strong> Painel para cadastro e acompanhamento centralizado de protocolos e processos no INPI;</li>
+              <li><strong>Inteligência e Viabilidade com IA:</strong> Ferramentas de pesquisa prévia, análise fonética e diagnóstico técnico preliminar de colidência (Lei nº 9.279/1996 - LPI);</li>
+              <li><strong>Radar RPI Automatizado:</strong> Monitoramento contínuo de publicações semanais na Revista da Propriedade Industrial com alertas de prazos fatais;</li>
+              <li><strong>Backend Jurídico Especializado:</strong> Assessoria jurídica corporativa sob demanda para elaboração e protocolo de manifestações, oposições, recursos e defesas administrativas assinadas por advogado habilitado.</li>
             </ul>
           </section>
 
@@ -68,13 +68,13 @@ export default function TermosDeUsoPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">2</span>
-              Cadastro e Responsabilidade das Informações
+              Cadastro da Empresa Parceira e Responsabilidade das Informações
             </h2>
             <p>
-              Para utilizar as funcionalidades do painel do cliente e contratar serviços, o Usuário deverá fornecer informações cadastrais verídicas, exatas e completas (nome, e-mail, telefone e documento de identificação).
+              O acesso à área restrita do parceiro é concedido mediante cadastro com informações verídicas, incluindo Razão Social / Nome do Responsável, e-mail corporativo e telefone de contato.
             </p>
             <p>
-              O Usuário é o único responsável pela guarda e confidencialidade de suas credenciais de acesso, devendo notificar imediatamente a DG Advocacia caso identifique qualquer acesso não autorizado.
+              A empresa parceira é a única responsável pelas informações dos processos e clientes que cadastrar em seu painel, bem como pela custódia segura de suas credenciais de autenticação.
             </p>
           </section>
 
@@ -85,15 +85,15 @@ export default function TermosDeUsoPage() {
               Diagnóstico de Viabilidade e Inteligência Artificial
             </h2>
             <p>
-              O relatório de viabilidade emitido pelo <strong>MarcaShield AI</strong> constitui parecer técnico-estratégico preliminar fundamentado nos critérios do Art. 124, XIX da Lei 9.279/1996 e nos dados públicos disponibilizados pelo INPI no momento da busca.
+              Os relatórios e scores de viabilidade gerados pelas ferramentas de inteligência artificial constituem análises técnico-probabilísticas de suporte, baseadas nos dados públicos do INPI e nos critérios do Art. 124 da LPI.
             </p>
             <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 text-xs text-foreground/90 space-y-1.5">
               <div className="font-bold flex items-center gap-2 text-primary">
                 <AlertCircle className="size-4" />
-                <span>Natureza da Avaliação:</span>
+                <span>Competência do INPI e Atuação Jurídica:</span>
               </div>
               <p>
-                Embora o sistema utilize algoritmos de alta precisão e bases oficiais, o deferimento ou indeferimento final de um registro é ato discricionário exclusivo dos examinadores do INPI. A aprovação prévia no sistema reduz significativamente o risco, mas não substitui as decisões soberanas da autarquia federal.
+                A concessão final do registro de marca é ato discricionário exclusivo da autarquia federal (INPI). A DG Advocacia atua com elevado rigor técnico e zelo profissional em todas as etapas processuais, assegurando a melhor defesa dos direitos do parceiro e de seus clientes.
               </p>
             </div>
           </section>
@@ -102,14 +102,14 @@ export default function TermosDeUsoPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">4</span>
-              Contratação de Serviços e Pagamentos
+              Honorários, Pacotes de Carteira e Pagamentos
             </h2>
             <p>
-              Os valores dos serviços de assessoria (Registro de Marca, Defesa/Oposição e Radar de Monitoramento) estão expressos na moeda corrente nacional (BRL) e podem ser quitados instantaneamente via Pix por meio de gateway de pagamento seguro integrado.
+              A contratação de pacotes de acompanhamento de carteira (marcas ativas no Radar) e serviços jurídicos avulsos (defesas, oposições, recursos) rege-se pelos valores vigentes na plataforma:
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-foreground/90">
-              <li><strong>Taxas Federais Oficiais do INPI:</strong> Os honorários de assessoria profissional contratados não incluem eventuais Guia de Recolhimento da União (GRU) cobradas diretamente pelo INPI (ex: taxa de protocolo de pedido, concessão de registro decenal, etc.), as quais são recolhidas em favor da União conforme a tabela oficial do governo federal;</li>
-              <li><strong>Início da Prestação:</strong> Os serviços técnicos e elaboração de peças têm início imediato após a confirmação do pagamento e envio dos documentos necessários pelo contratante.</li>
+              <li><strong>Taxas Oficiais (GRU do INPI):</strong> Os honorários de assessoria e tecnologia não compreendem as taxas federais devidas diretamente à União/INPI, cabendo à empresa parceira ou ao cliente final o recolhimento das respectivas guias oficiais;</li>
+              <li><strong>Início da Execução Técnica:</strong> As peças técnicas e monitoramentos são ativados imediatamente após a confirmação da transação e envio dos subsídios necessários.</li>
             </ul>
           </section>
 
@@ -117,13 +117,13 @@ export default function TermosDeUsoPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">5</span>
-              Prazos, Notificações e Radar INPI
+              Sigilo Profissional e Conformidade com o Provimento CFOAB 205/2021
             </h2>
             <p>
-              O serviço <strong>Radar INPI</strong> realiza varreduras automatizadas semanais a cada edição da Revista da Propriedade Industrial (RPI). As notificações enviadas por e-mail ou Telegram possuem caráter informativo e de alerta de prazo processual.
+              A relação entre a DG Advocacia e a empresa parceira é pautada pelo <strong>estrito sigilo profissional</strong>, confidencialidade de projetos de marca e respeito integral às normas do Código de Ética e Disciplina da OAB e do Provimento CFOAB nº 205/2021.
             </p>
             <p>
-              O cliente deve manter seus canais de contato sempre atualizados para o recebimento tempestivo de comunicações urgentes referentes a prazos legais do INPI.
+              A tecnologia e os algoritmos empregados constituem ferramentas auxiliares de produtividade e governança, sendo todas as peças processuais e atos privativos da advocacia submetidos à rigorosa revisão e assinatura do advogado responsável.
             </p>
           </section>
 
@@ -131,24 +131,13 @@ export default function TermosDeUsoPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">6</span>
-              Sigilo Profissional e Propriedade Intelectual
-            </h2>
-            <p>
-              Todas as informações, marcas em segredo de negócio, documentos societários e estratégias compartilhadas pelos clientes são protegidas por <strong>estrito sigilo profissional e confidencialidade</strong>, em conformidade com o Código de Ética e Disciplina da OAB.
-            </p>
-          </section>
-
-          {/* Seção 7 */}
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">7</span>
               Foro e Legislação Aplicável
             </h2>
             <p>
-              Estes Termos são regidos pelas leis da República Federativa do Brasil, especialmente a Lei de Propriedade Industrial (Lei nº 9.279/1996), o Código Civil e a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+              Estes Termos são regidos pelas leis da República Federativa do Brasil, em especial a Lei de Propriedade Industrial (Lei nº 9.279/1996), o Código Civil e a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
             </p>
             <p>
-              Para dirimir quaisquer dúvidas decorrentes deste instrumento, fica eleito o Foro da Comarca de domicílio da sede jurídica da DG Advocacia.
+              Fica eleito o Foro da Comarca da sede jurídica da DG Advocacia para dirimir eventuais controvérsias decorrentes deste instrumento.
             </p>
           </section>
 
@@ -156,10 +145,10 @@ export default function TermosDeUsoPage() {
           <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-md space-y-2 mt-8">
             <h3 className="text-base font-bold text-foreground flex items-center gap-2">
               <ShieldCheck className="size-4 text-primary" />
-              Canal de Atendimento Jurídico
+              Canal Institucional de Parcerias & Suporte
             </h3>
             <p className="text-xs text-muted-foreground">
-              Dúvidas ou solicitações relativas a estes Termos de Uso podem ser encaminhadas diretamente ao nosso time através do e-mail oficial:{" "}
+              Para esclarecimentos sobre estes Termos de Parceria ou questões operacionais, contate nossa assessoria institucional pelo e-mail:{" "}
               <a href="mailto:contato@dgadvocacia.online" className="text-primary font-bold underline">
                 contato@dgadvocacia.online
               </a>.

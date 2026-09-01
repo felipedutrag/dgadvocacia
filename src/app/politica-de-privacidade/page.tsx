@@ -48,13 +48,13 @@ export default function PoliticaDePrivacidadePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">1</span>
-              Compromisso com a Privacidade e Segurança
+              Compromisso com a Privacidade, LGPD e Sigilo Institucional
             </h2>
             <p>
-              A <strong>DG Advocacia</strong> (acessível através do endereço <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>) preza pelo mais absoluto rigor no tratamento de dados pessoais e sigilo das informações empresariais de seus clientes.
+              A <strong>DG Advocacia</strong> (acessível através do endereço <a href="https://dgadvocacia.online" className="text-primary underline">https://dgadvocacia.online</a>), sob responsabilidade técnica do <strong>Dr. Felipe Dutra Gonçalves — OAB/MG nº 45.925</strong>, preza pelo mais absoluto rigor no tratamento de dados pessoais e no sigilo das informações empresariais de seus parceiros comerciais e clientes.
             </p>
             <p>
-              Esta Política de Privacidade descreve como coletamos, armazenamos, utilizamos, processamos e protegemos os seus dados durante a navegação, consultas de marcas e contratação de serviços jurídicos em nosso ambiente digital.
+              Esta Política de Privacidade estabelece as diretrizes de coleta, custódia, processamento e proteção de dados durante o acesso ao painel do parceiro, uso das ferramentas de IA e contratação de serviços técnicos no INPI.
             </p>
           </section>
 
@@ -62,16 +62,16 @@ export default function PoliticaDePrivacidadePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">2</span>
-              Dados Coletados e Finalidades do Tratamento
+              Dados Tratados e Finalidades Específicas
             </h2>
             <p>
-              Em conformidade com o Art. 7º da LGPD, os dados tratados possuem finalidades legítimas e específicas:
+              Em estrita conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD), tratamos apenas os dados estritamente necessários para a execução dos serviços de parceria:
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-foreground/90">
-              <li><strong>Dados de Cadastro e Identificação:</strong> Nome completo, endereço de e-mail, número de telefone/WhatsApp e CPF/CNPJ. Finalidade: Criação da conta de acesso, autenticação segura, emissão de cobranças Pix e qualificação de peças para protocolo no INPI.</li>
-              <li><strong>Dados de Processos e Marcas:</strong> Termos de busca de marcas, classes Nice pesquisadas, números de processos e histórico de anterioridades consultadas. Finalidade: Execução do diagnóstico de viabilidade com IA e acompanhamento no Radar RPI.</li>
-              <li><strong>Dados de Pagamento:</strong> Informações de transação Pix geradas via gateway seguro. A DG Advocacia não armazena dados bancários sensíveis ou senhas financeiras.</li>
-              <li><strong>Registros de Conexão (Logs):</strong> Endereço IP, data e hora de acesso, tipo de navegador e dispositivo. Finalidade: Cumprimento de obrigação legal prevista no Marco Civil da Internet (Lei nº 12.965/2014, Art. 15).</li>
+              <li><strong>Dados Cadastrais da Empresa Parceira:</strong> Razão Social, nome do responsável legal, e-mail corporativo, telefone e dados de qualificação para formalização da cooperação;</li>
+              <li><strong>Dados de Processos e Protocolos INPI:</strong> Números de pedidos, termos pesquisados, classes Nice e históricos de marcas cadastrados pelo parceiro para monitoramento no Radar RPI e elaboração de defesas;</li>
+              <li><strong>Dados de Transações:</strong> Registros das operações de liquidação via Pix processadas por gateway seguro. Não mantemos custódia de dados bancários confidenciais ou senhas de pagamento;</li>
+              <li><strong>Logs de Segurança e Acesso:</strong> Endereço IP, data e hora de conexão, em conformidade com o Marco Civil da Internet (Lei nº 12.965/2014).</li>
             </ul>
           </section>
 
@@ -79,29 +79,29 @@ export default function PoliticaDePrivacidadePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">3</span>
-              Segurança da Informação e Criptografia
+              Segurança da Informação e Blindagem Ética (OAB)
             </h2>
             <p>
-              Adotamos medidas técnicas, administrativas e organizacionais de padrão bancário para proteger seus dados contra acessos não autorizados, vazamentos ou alterações ilícitas:
+              Adotamos mecanismos robustos de segurança cibernética e governança corporativa:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div className="p-3.5 rounded-xl border border-border/70 bg-card/60 space-y-1">
                 <div className="font-bold text-foreground flex items-center gap-1.5">
                   <Lock className="size-3.5 text-primary" />
-                  Criptografia de Ponta a Ponta
+                  Criptografia & Isolamento de Dados
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Todas as comunicações e tráfego de rede são protegidos por protocolo HTTPS com certificado SSL/TLS de 256 bits.
+                  Tráfego protegido por SSL/TLS de 256 bits e banco de dados isolado com políticas rigorosas de Row Level Security (RLS).
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl border border-border/70 bg-card/60 space-y-1">
                 <div className="font-bold text-foreground flex items-center gap-1.5">
                   <EyeOff className="size-3.5 text-primary" />
-                  Sigilo Profissional OAB
+                  Sigilo Profissional da Advocacia
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Seus projetos e nomes de marca antes do protocolo são tratados sob dever legal de sigilo da advocacia brasileira.
+                  Todas as marcas e estratégias processuais estão resguardadas pelo sigilo profissional inalienável assegurado pela OAB.
                 </p>
               </div>
             </div>
@@ -111,15 +111,14 @@ export default function PoliticaDePrivacidadePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">4</span>
-              Compartilhamento de Dados com Terceiros
+              Compartilhamento Restrito de Informações
             </h2>
             <p>
-              A DG Advocacia <strong>não comercializa, vende ou aluga</strong> dados pessoais de clientes em hipótese alguma. O compartilhamento ocorre exclusivamente nas seguintes hipóteses estritas:
+              A DG Advocacia <strong>não comercializa, não transfere e não compartilha</strong> dados com terceiros para fins publicitários. O compartilhamento restringe-se a:
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-foreground/90">
-              <li><strong>Órgãos Oficiais Governamentais:</strong> Instituto Nacional da Propriedade Industrial (INPI) e Receita Federal do Brasil para fins de protocolo oficial de pedidos de registro;</li>
-              <li><strong>Provedores de Infraestrutura e Pagamento:</strong> Supabase (banco de dados em nuvem criptografado), GGPIX (processamento seguro de Pix) e Resend (disparo de e-mails transacionais);</li>
-              <li><strong>Requisições Judiciais:</strong> Cumprimento de ordens judiciais ou determinações de autoridades competentes.</li>
+              <li><strong>Instituto Nacional da Propriedade Industrial (INPI):</strong> Para formalização e protocolo oficial de atos processuais públicos;</li>
+              <li><strong>Provedores de Infraestrutura:</strong> Supabase (hospedagem de banco de dados criptografado), GGPIX (processamento Pix) e Resend (comunicações transacionais essenciais).</li>
             </ul>
           </section>
 
@@ -127,28 +126,10 @@ export default function PoliticaDePrivacidadePage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">5</span>
-              Direitos dos Titulares de Dados (Art. 18 da LGPD)
+              Direitos dos Titulares de Dados
             </h2>
             <p>
-              Você, como titular dos dados, pode exercer a qualquer momento os seguintes direitos mediante simples solicitação por nossos canais de suporte:
-            </p>
-            <ul className="list-disc pl-5 space-y-1.5 text-foreground/90">
-              <li>Confirmação da existência de tratamento e acesso aos dados pessoais cadastrados;</li>
-              <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
-              <li>Anonimização, bloqueio ou eliminação de dados desnecessários ou tratados em desconformidade;</li>
-              <li>Portabilidade dos dados para outro fornecedor de serviços;</li>
-              <li>Revogação do consentimento, ressalvadas as hipóteses de guarda obrigatória por lei.</li>
-            </ul>
-          </section>
-
-          {/* Seção 6 */}
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary text-xs font-mono font-bold">6</span>
-              Uso de Cookies e Tecnologias de Sessão
-            </h2>
-            <p>
-              Utilizamos cookies essenciais e identificadores de sessão unicamente para manter o usuário autenticado de forma segura no painel do cliente, registrar preferências de tema (modo escuro/claro) e garantir o funcionamento adequado da aplicação.
+              Em atendimento ao Art. 18 da LGPD, os parceiros e usuários podem solicitar a qualquer momento a confirmação de tratamento, correção, anonimização, atualização ou portabilidade de seus dados cadastrais.
             </p>
           </section>
 
@@ -156,10 +137,10 @@ export default function PoliticaDePrivacidadePage() {
           <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-md space-y-2 mt-8">
             <h3 className="text-base font-bold text-foreground flex items-center gap-2">
               <CheckCircle2 className="size-4 text-emerald-500" />
-              Canal do Encarregado de Dados (DPO)
+              Canal do Encarregado de Dados (DPO) & Governança
             </h3>
             <p className="text-xs text-muted-foreground">
-              Para exercer seus direitos de privacidade ou esclarecer dúvidas sobre esta Política, entre em contato diretamente com o nosso Encarregado de Proteção de Dados:{" "}
+              Para exercer seus direitos de titular ou sanar dúvidas sobre a proteção de dados na plataforma, contate nosso canal oficial:{" "}
               <a href="mailto:contato@dgadvocacia.online" className="text-primary font-bold underline">
                 contato@dgadvocacia.online
               </a>.

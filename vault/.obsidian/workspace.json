@@ -13,15 +13,15 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "05 - Canvas/MarcaShield-Visao-Geral.canvas",
+                "file": "Ecossistema de Servicos B2B.canvas",
                 "viewState": {
-                  "x": 29.282157342247547,
-                  "y": 130.34927676635135,
-                  "zoom": -0.3074542719933241
+                  "x": 822.9739078103117,
+                  "y": 340.9154493800812,
+                  "zoom": -1.2895066171949847
                 }
               },
               "icon": "lucide-layout-dashboard",
-              "title": "MarcaShield-Visao-Geral"
+              "title": "Ecossistema de Servicos B2B"
             }
           }
         ]
@@ -188,8 +188,17 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "0379e7894ccf5597",
+  "active": "b6b0bba46041ebae",
   "lastOpenFiles": [
+    "07 - Roadmap de Escala ate o Valuation Bilionario.md",
+    "Ecossistema de Servicos B2B.canvas",
+    "01 - Modelo de Negocio B2B e Parcerias Reversas.md",
+    "00 - INDICE DO IMPERIO B2B.md",
+    "06 - Compliance Etico e Blindagem OAB.md",
+    "05 - Estrategia de Aquisicao de Clientes no LinkedIn.md",
+    "04 - Catalogo de Servicos Acessorios e Upsell.md",
+    "03 - Esteira de Servicos e Backend Juridico.md",
+    "02 - Arquitetura da Dashboard e Modulos de IA.md",
     "04 - Recursos e IA/Naming-e-Branding.md",
     "04 - Recursos e IA/Recursos-e-IA.md",
     "03 - Schema de Banco/Schema-Database.md",

@@ -235,7 +235,7 @@ export function MarcasClient() {
   );
 
   return (
-    <div className="space-y-3.5">
+    <div className="space-y-6">
       {/* Feedback Alerts */}
       {errorMsg && (
         <div className="flex items-center justify-between p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs">
@@ -261,18 +261,18 @@ export function MarcasClient() {
         </div>
       )}
 
-      {/* Card de Adição Rápida ao Radar */}
+      {/* Card de Cadastro do Protocolo do Pedido */}
       <Card className="bg-card/60 backdrop-blur-md border-border/70">
-        <CardHeader className="py-2.5 px-4 sm:px-6 border-b border-border/40">
+        <CardHeader className="pb-3 border-b border-border/40">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Plus className="size-4 text-primary" />
-            Rastrear Novo Processo no Radar
+            Cadastrar Protocolo do Pedido para Acompanhamento
           </CardTitle>
           <CardDescription className="text-xs">
-            Insira o número do processo do INPI (9 dígitos). O sistema irá consultar a base oficial, puxar a marca, status, titular e monitorar despachos toda terça-feira.
+            Insira o número do protocolo/processo do INPI do seu cliente. Nossa plataforma sincroniza os dados oficiais, ativa o acompanhamento automático das publicações na RPI e prepara o backend para defesas e prazos.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-3 px-4 sm:px-6 pb-4">
+        <CardContent className="pt-4">
           <form onSubmit={handleAddMarca} className="flex flex-col sm:flex-row gap-3">
             <Input
               placeholder="Ex: 934821902 ou 790330172"
@@ -282,7 +282,7 @@ export function MarcasClient() {
             />
             <Button type="submit" disabled={adding || !newNumero.trim()} className="text-xs font-bold h-9 px-5 gap-1.5">
               {adding ? <Loader2 className="size-3.5 animate-spin" /> : <Plus className="size-3.5" />}
-              <span>{adding ? "Consultando & Rastreando..." : "Rastrear no Radar"}</span>
+              <span>{adding ? "Sincronizando Processo..." : "Cadastrar Protocolo"}</span>
             </Button>
           </form>
         </CardContent>

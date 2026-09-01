@@ -22,28 +22,14 @@ export async function GET() {
         profile: {
           id: user.id,
           email: user.email,
-          name: user.user_metadata?.name || "Advogado(a)",
-          oab: user.user_metadata?.oab || "",
-          plan: "Plano Start Mensal",
-          petitions_limit: 15,
-          petitions_used: 0,
-          extra_credits: 0,
+          name: user.user_metadata?.name || "Parceiro B2B",
+          company_name: user.user_metadata?.company_name || "",
+          marcas_limit: 10,
+          marcas_used: 0,
+          consultorias_creditos: 5,
+          is_admin: false,
         },
       });
-    }
-
-    // Auto-reset mensal de créditos se os 30 dias tiverem expirado
-    if (profile && profile.credits_reset_at && new Date(profile.credits_reset_at) <= new Date()) {
-      const nextReset = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-      await supabase
-        .from("profiles")
-        .update({
-          petitions_used: 0,
-          credits_reset_at: nextReset,
-        })
-        .eq("id", user.id);
-      profile.petitions_used = 0;
-      profile.credits_reset_at = nextReset;
     }
 
     return NextResponse.json({ profile });
