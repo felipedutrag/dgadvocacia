@@ -1034,54 +1034,116 @@ export function ConsultasClient({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-center">
-              {/* Etapa 1 */}
-              <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 space-y-1">
-                <div className="size-5 rounded-full bg-emerald-500 text-black text-[10px] font-bold mx-auto flex items-center justify-center">1</div>
-                <div className="text-[11px] font-bold text-foreground">Depósito</div>
-                <div className="text-[9px] font-mono text-emerald-500">Concluído</div>
-              </div>
+            {(() => {
+              const sit = (selectedProcesso.situacao || "").toLowerCase();
+              const despachosText = (selectedProcesso.despachos || [])
+                .map(d => `${d.descricaoDespacho || ''} ${d.complemento || ''} ${d.codigoDespacho || ''}`)
+                .join(' ')
+                .toLowerCase();
 
-              {/* Etapa 2 */}
-              <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 space-y-1">
-                <div className="size-5 rounded-full bg-emerald-500 text-black text-[10px] font-bold mx-auto flex items-center justify-center">2</div>
-                <div className="text-[11px] font-bold text-foreground">Exame Formal</div>
-                <div className="text-[9px] font-mono text-emerald-500">Superado</div>
-              </div>
+              // Determina o estágio atual (1 a 5)
+              let currentStep = 1;
+              if (
+                sit.includes("conced") || 
+                sit.includes("registro de marca em vigor") || 
+                sit.includes("prorrog") ||
+                sit.includes("decenal") ||
+                despachosText.includes("concessão")
+              ) {
+                currentStep = 5;
+              } else if (
+                sit.includes("deferi") || 
+                sit.includes("indeferi") || 
+                sit.includes("exame de mérito") || 
+                sit.includes("mérito") ||
+                despachosText.includes("deferimento") ||
+                despachosText.includes("indeferimento") ||
+                despachosText.includes("exigência de mérito")
+              ) {
+                currentStep = 4;
+              } else if (
+                sit.includes("oposição") || 
+                sit.includes("publica") || 
+                sit.includes("aguardando prazo") || 
+                despachosText.includes("publicação de pedido") ||
+                despachosText.includes("oposição")
+              ) {
+                currentStep = 3;
+              } else if (
+                sit.includes("exame formal") || 
+                sit.includes("exigência formal") ||
+                despachosText.includes("exame formal")
+              ) {
+                currentStep = 2;
+              } else {
+                currentStep = 1;
+              }
 
-              {/* Etapa 3 */}
-              <div className={`p-2.5 rounded-xl border space-y-1 ${
-                selectedProcesso.situacao.toLowerCase().includes("oposição") || selectedProcesso.situacao.toLowerCase().includes("publica")
-                  ? "border-amber-500/50 bg-amber-500/15"
-                  : "border-border/60 bg-background/40"
-              }`}>
-                <div className="size-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold mx-auto flex items-center justify-center">3</div>
-                <div className="text-[11px] font-bold text-foreground">RPI 60 Dias</div>
-                <div className="text-[9px] font-mono text-amber-500">Prazo Legal</div>
-              </div>
+              const steps = [
+                { num: 1, title: "Depósito", sub: "Concluído", desc: "Protocolo inicial no INPI" },
+                { num: 2, title: "Exame Formal", sub: "Superado", desc: "Análise de taxas e documentos" },
+                { num: 3, title: "RPI 60 Dias", sub: "Prazo Legal", desc: "Prazo para manifestação de terceiros" },
+                { num: 4, title: "Exame Mérito", sub: "Art. 124 LPI", desc: "Análise de registrabilidade" },
+                { num: 5, title: "Decenal", sub: "10 Anos", desc: "Concessão e vigência decenal" },
+              ];
 
-              {/* Etapa 4 */}
-              <div className={`p-2.5 rounded-xl border space-y-1 ${
-                selectedProcesso.situacao.toLowerCase().includes("exame") || selectedProcesso.situacao.toLowerCase().includes("deferi")
-                  ? "border-primary/50 bg-primary/10"
-                  : "border-border/60 bg-background/40"
-              }`}>
-                <div className="size-5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold mx-auto flex items-center justify-center">4</div>
-                <div className="text-[11px] font-bold text-foreground">Exame Mérito</div>
-                <div className="text-[9px] font-mono text-muted-foreground">Art. 124 LPI</div>
-              </div>
+              return (
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-center">
+                  {steps.map((step) => {
+                    const isCompleted = step.num < currentStep;
+                    const isCurrent = step.num === currentStep;
 
-              {/* Etapa 5 */}
-              <div className={`p-2.5 rounded-xl border space-y-1 ${
-                selectedProcesso.situacao.toLowerCase().includes("conced") || selectedProcesso.situacao.toLowerCase().includes("registro")
-                  ? "border-emerald-500/50 bg-emerald-500/20"
-                  : "border-border/60 bg-background/40"
-              }`}>
-                <div className="size-5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold mx-auto flex items-center justify-center">5</div>
-                <div className="text-[11px] font-bold text-foreground">Decenal</div>
-                <div className="text-[9px] font-mono text-muted-foreground">10 Anos</div>
-              </div>
-            </div>
+                    let statusLabel = step.sub;
+                    if (isCompleted) {
+                      statusLabel = step.num === 1 ? "Concluído" : step.num === 2 ? "Superado" : "Concluído";
+                    } else if (isCurrent) {
+                      statusLabel = currentStep === 5 ? "Vigente (Ativo)" : "Em Andamento";
+                    } else {
+                      statusLabel = "Aguardando";
+                    }
+
+                    return (
+                      <div
+                        key={step.num}
+                        className={`p-2.5 rounded-xl border transition-all space-y-1 ${
+                          isCompleted
+                            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
+                            : isCurrent
+                            ? "border-primary/80 bg-primary/15 shadow-sm shadow-primary/10 ring-1 ring-primary/40"
+                            : "border-border/50 bg-background/30 opacity-60"
+                        }`}
+                      >
+                        <div
+                          className={`size-5 rounded-full text-[10px] font-bold mx-auto flex items-center justify-center ${
+                            isCompleted
+                              ? "bg-emerald-500 text-black font-bold"
+                              : isCurrent
+                              ? "bg-primary text-primary-foreground font-extrabold animate-pulse"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {isCompleted ? "✓" : step.num}
+                        </div>
+                        <div className={`text-[11px] font-bold ${isCurrent ? "text-primary" : "text-foreground"}`}>
+                          {step.title}
+                        </div>
+                        <div
+                          className={`text-[9px] font-mono font-bold ${
+                            isCompleted
+                              ? "text-emerald-500"
+                              : isCurrent
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {statusLabel}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
