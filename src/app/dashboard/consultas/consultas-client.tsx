@@ -1203,12 +1203,9 @@ export function ConsultasClient({
                     }}
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center gap-2.5 text-center p-3">
-                    <span className="font-mono text-xs uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-md shadow-xs">
+                  <div className="flex flex-col items-center justify-center text-center p-3">
+                    <span className="font-mono text-xs uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-md shadow-xs">
                       Processo Nominativo
-                    </span>
-                    <span className="text-[11px] text-muted-foreground leading-relaxed max-w-[180px]">
-                      Proteção exclusiva da palavra/expressão no INPI
                     </span>
                   </div>
                 )}
