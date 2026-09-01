@@ -554,8 +554,11 @@ export default function LandingPage() {
 
           <div className="p-4 sm:p-8 rounded-2xl border border-border/70 bg-card/60 backdrop-blur-md space-y-3.5 sm:space-y-4">
             <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-border/40">
-              <span className="text-xs font-bold text-foreground">Fluxo de Protocolo & Radar</span>
-              <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-md font-bold">
+              <span className="text-xs font-bold text-foreground leading-tight">
+                Fluxo de Protocolo <br className="sm:hidden" />
+                <span className="text-primary">&</span> Radar
+              </span>
+              <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-md font-bold shrink-0 self-start sm:self-auto">
                 Acompanhamento Técnico
               </span>
             </div>
