@@ -1116,7 +1116,7 @@ export function ConsultasClient({
 
             {/* Right Logo Column */}
             <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-xl border border-border/70 bg-muted/20 text-center">
-              <div className="size-44 rounded-xl border border-border/60 bg-background flex items-center justify-center overflow-hidden p-2 shadow-inner">
+              <div className="size-44 rounded-xl border border-border/60 bg-background flex flex-col items-center justify-center overflow-hidden p-3 shadow-inner">
                 {selectedProcesso.logoUrl ? (
                   <img
                     src={selectedProcesso.logoUrl}
@@ -1127,10 +1127,22 @@ export function ConsultasClient({
                     }}
                   />
                 ) : (
-                  <ImageIcon className="size-10 text-muted-foreground/40" />
+                  <div className="flex flex-col items-center justify-center gap-2 text-center p-2">
+                    <span className="font-serif text-2xl font-bold text-primary tracking-tight line-clamp-2 uppercase">
+                      {selectedProcesso.marca}
+                    </span>
+                    <span className="font-mono text-[9px] uppercase font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border/60">
+                      Processo Nominativo
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/80 leading-tight">
+                      Proteção exclusiva da palavra/expressão no INPI
+                    </span>
+                  </div>
                 )}
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground mt-2">Logotipo Oficial INPI</span>
+              <span className="font-mono text-[10px] text-muted-foreground mt-2">
+                {selectedProcesso.logoUrl ? "Logotipo Oficial INPI" : "Apresentação Oficial INPI"}
+              </span>
             </div>
           </div>
 
