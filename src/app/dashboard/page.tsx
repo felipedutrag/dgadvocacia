@@ -37,6 +37,8 @@ import {
   Sparkles,
   Layers,
   Scale,
+  Minus,
+  Plus,
   X
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -113,18 +115,25 @@ export default function DashboardPage() {
   const [pixSuccess, setPixSuccess] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
 
-  // Calculadora de Processos B2B
-  const [calcProcessos, setCalcProcessos] = useState<number>(25);
+  // Calculadora de Processos B2B (Radar RPI - Base R$ 47 até 3 marcas + adicional)
+  const [calcProcessos, setCalcProcessos] = useState<number>(3);
 
-  const getUnitPrice = (qty: number) => {
-    if (qty <= 10) return 29.90;
-    if (qty <= 50) return 19.90;
-    if (qty <= 200) return 12.90;
-    return 7.90;
+  const getRadarPricing = (qty: number) => {
+    const count = Math.max(1, qty);
+    if (count <= 3) {
+      return { total: 47, unit: 47 / count, isBase: true };
+    }
+    // A partir da 4ª marca: R$ 47 base (cobre 3 marcas) + R$ 15 por marca extra (com desconto para volumes grandes)
+    const extra = count - 3;
+    let extraRate = 15;
+    if (count > 50) extraRate = 9.90;
+    else if (count > 20) extraRate = 12.00;
+    
+    const total = 47 + Math.round(extra * extraRate);
+    return { total, unit: total / count, isBase: false };
   };
 
-  const calcUnitPrice = getUnitPrice(calcProcessos);
-  const calcTotalPrice = Math.round(calcProcessos * calcUnitPrice);
+  const { total: calcTotalPrice, unit: calcUnitPrice } = getRadarPricing(calcProcessos);
 
   // Toast de Pagamento
   const [paymentToast, setPaymentToast] = useState<{ show: boolean; title: string; message: string; planName?: string; time?: string } | null>(null);
@@ -641,120 +650,164 @@ export default function DashboardPage() {
               </div>
 
               {/* ── CALCULADORA DINÂMICA DE CARTEIRA (RADAR RPI) ── */}
-              <div className="rounded-2xl border-2 border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6">
+              <div className="rounded-2xl border-2 border-primary/40 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl shadow-primary/5 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/60">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
-                        Calculadora de Monitoramento
+                        Radar RPI Automático
                       </span>
                       <span className="text-xs text-emerald-500 font-bold font-mono">
-                        Adesão & Setup Grátis
+                        Recorrência Mensal
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold text-foreground">
-                      Quantos processos você deseja monitorar na sua carteira?
+                    <h3 className="text-xl font-bold text-foreground">
+                      Calculadora de Monitoramento da Carteira
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      Arraste a barra para calcular a mensalidade da sua empresa com desconto progressivo por volume.
+                      Vigilância ativa semanal na Revista da Propriedade Industrial (RPI) contra cópias e colidências.
                     </p>
                   </div>
 
                   {/* Preço Calculado */}
-                  <div className="flex items-baseline gap-2 bg-background/80 border border-border/70 p-4 rounded-xl self-start md:self-auto">
+                  <div className="flex items-baseline gap-3 bg-background/90 border-2 border-primary/30 p-4 rounded-2xl self-start md:self-auto shadow-sm">
                     <div>
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Valor do Pacote</div>
-                      <div className="text-3xl font-extrabold text-foreground tracking-tight">
-                        R$ {calcTotalPrice.toLocaleString("pt-BR")}
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Valor do Radar</div>
+                      <div className="text-3xl font-extrabold text-foreground tracking-tight flex items-baseline gap-1">
+                        <span>R$ {calcTotalPrice.toLocaleString("pt-BR")}</span>
                         <span className="text-xs text-muted-foreground font-normal">/mês</span>
                       </div>
                     </div>
-                    <div className="border-l border-border/60 pl-3">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Custo Unitário</div>
-                      <div className="text-sm font-bold text-emerald-500 font-mono">
-                        R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
-                        <span className="text-[10px] text-muted-foreground font-normal">{" /marca"}</span>
+                    {calcProcessos > 3 && (
+                      <div className="border-l border-border/60 pl-3">
+                        <div className="text-[10px] font-mono text-muted-foreground uppercase">Média / Marca</div>
+                        <div className="text-sm font-bold text-emerald-500 font-mono">
+                          R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Slider Interativo */}
-                <div className="space-y-4 pt-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-muted-foreground">Volume Selecionado:</span>
-                    <span className="font-bold text-base text-primary bg-primary/10 px-3 py-1 rounded-lg border border-primary/20">
-                      {calcProcessos} {calcProcessos === 1 ? "Processo" : "Processos Ativos"}
+                {/* Controle Interativo: Input Direto + Botões +/- + Slider */}
+                <div className="space-y-4 pt-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <span className="text-xs font-mono text-muted-foreground font-medium">
+                      Informe ou ajuste a quantidade de marcas:
                     </span>
+
+                    {/* Contador com Botões e Input Direto */}
+                    <div className="flex items-center gap-2 self-start sm:self-auto">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-xs"
+                        onClick={() => setCalcProcessos((prev) => Math.max(1, prev - 1))}
+                        disabled={calcProcessos <= 1}
+                        className="size-8 rounded-lg border-border"
+                      >
+                        <Minus className="size-3.5" />
+                      </Button>
+
+                      <div className="relative">
+                        <input
+                          type="number"
+                          min="1"
+                          max="1000"
+                          value={calcProcessos}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            setCalcProcessos(isNaN(val) ? 1 : Math.max(1, Math.min(1000, val)));
+                          }}
+                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-primary/30 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                        />
+                        <span className="absolute right-2 top-2 text-[9px] text-muted-foreground pointer-events-none font-mono">un</span>
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-xs"
+                        onClick={() => setCalcProcessos((prev) => Math.min(1000, prev + 1))}
+                        className="size-8 rounded-lg border-border"
+                      >
+                        <Plus className="size-3.5" />
+                      </Button>
+                    </div>
                   </div>
 
+                  {/* Slider Horizontal Fluido */}
                   <input
                     type="range"
-                    min="5"
-                    max="500"
-                    step="5"
+                    min="1"
+                    max="100"
+                    step="1"
                     value={calcProcessos}
                     onChange={(e) => setCalcProcessos(Number(e.target.value))}
                     className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                   />
 
-                  {/* Atalhos Rápidos de Seleção */}
+                  {/* Atalhos Rápidos */}
                   <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <span className="text-[11px] font-mono text-muted-foreground">Atalhos rápidos:</span>
-                    {[10, 25, 50, 100, 200, 500].map((qty) => (
+                    <span className="text-[11px] font-mono text-muted-foreground">Predefinições:</span>
+                    {[3, 5, 10, 20, 50, 100].map((qty) => (
                       <Button
                         key={qty}
                         type="button"
                         variant={calcProcessos === qty ? "default" : "outline"}
                         size="xs"
                         onClick={() => setCalcProcessos(qty)}
-                        className="text-[11px] font-mono h-7"
+                        className="text-[11px] font-mono h-6 px-2.5 rounded-md"
                       >
-                        {qty} marcas
+                        {qty === 3 ? "3 marcas (Base)" : `${qty} marcas`}
                       </Button>
                     ))}
                   </div>
                 </div>
 
-                {/* Faixas de Desconto B2B */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos <= 10 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
-                    <div className="text-[10px] font-mono uppercase text-muted-foreground">Até 10 marcas</div>
-                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 29,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                {/* Benefícios Inclusos no Radar RPI */}
+                <div className="rounded-xl border border-border/60 bg-background/50 p-4 space-y-3">
+                  <div className="text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-wider">
+                    O que está incluso no seu plano:
                   </div>
-                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 10 && calcProcessos <= 50 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
-                    <div className="text-[10px] font-mono uppercase text-muted-foreground">11 a 50 marcas</div>
-                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 19,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
-                  </div>
-                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 50 && calcProcessos <= 200 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
-                    <div className="text-[10px] font-mono uppercase text-muted-foreground">51 a 200 marcas</div>
-                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 12,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
-                  </div>
-                  <div className={cn("p-3 rounded-xl border text-center transition-all", calcProcessos > 200 ? "border-primary bg-primary/5" : "border-border/50 bg-background/40")}>
-                    <div className="text-[10px] font-mono uppercase text-muted-foreground">201 a 500+ marcas</div>
-                    <div className="text-sm font-bold text-foreground mt-0.5">R$ 7,90 <span className="text-[10px] font-normal text-muted-foreground">/un</span></div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-foreground">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span><strong>Monitoramento de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Alertas automáticos no Telegram</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Consultas e Raio-X IA Ilimitados</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
+                      <span>Controle de vigência decenal e prazos</span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Botão de Contratação do Plano Calculado */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/50">
-                  <div className="text-xs text-muted-foreground flex items-center gap-2">
-                    <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                    <span>Inclui Radar RPI Semanal, Alertas Telegram, Consultas IA e Suporte Jurídico.</span>
+                  <div className="text-xs text-muted-foreground">
+                    Sem taxa de adesão ou fidelidade &bull; Liberação instantânea via Pix
                   </div>
 
                   <Button
                     size="lg"
                     onClick={() => handleOpenPixModal({
-                      id: `pack_${calcProcessos}`,
-                      name: `Plano Carteira B2B (${calcProcessos} Processos)`,
+                      id: `radar_${calcProcessos}_marcas`,
+                      name: `Radar RPI Mensal (${calcProcessos} ${calcProcessos === 1 ? "Marca" : "Marcas"})`,
                       price: calcTotalPrice,
-                      description: `DG Advocacia - Assinatura B2B para ${calcProcessos} marcas no Radar INPI`,
+                      description: `DG Advocacia - Assinatura Radar RPI para ${calcProcessos} marcas monitoradas`,
                     })}
                     className="w-full sm:w-auto text-xs font-bold gap-2 h-11 px-6 bg-primary text-primary-foreground"
                   >
                     <Zap className="size-4" />
-                    <span>Ativar Plano de {calcProcessos} Processos (Pix)</span>
+                    <span>Contratar Radar para {calcProcessos} {calcProcessos === 1 ? "Marca" : "Marcas"} (R$ {calcTotalPrice})</span>
                   </Button>
                 </div>
               </div>
