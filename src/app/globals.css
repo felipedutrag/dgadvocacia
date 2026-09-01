@@ -105,9 +105,16 @@ html {
   font-size: 14.5px;
 }
 
-@media (min-width: 1536px) {
+/* Em telas com 100% de escala no Windows (viewport lógico amplo >= 1600px ou largura nativa Full HD sem zoom), ajustamos suavemente para cima */
+@media (min-width: 1600px) {
   html {
-    font-size: 15px;
+    font-size: 15.5px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 16px;
   }
 }
 
