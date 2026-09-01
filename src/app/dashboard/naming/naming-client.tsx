@@ -734,24 +734,24 @@ Gerado pelo MarcaShield Naming AI.`;
           <div className="lg:col-span-5 space-y-4">
             <Card className="border-border/70 bg-card/60 backdrop-blur-md">
               <CardHeader className="pb-3 border-b border-border/60">
-                <div className="flex items-center justify-between gap-2">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <CardTitle className="text-sm font-bold flex items-center justify-between">
+                  <span className="flex items-center gap-2">
                     <Bot className="size-4 text-primary" />
                     <span>Briefing de Naming & Branding</span>
-                  </CardTitle>
+                  </span>
 
                   {(segmento || sugestoes.length > 0) && (
                     <button
                       type="button"
                       onClick={handleResetProject}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-destructive px-2.5 py-1 rounded-lg border border-border/70 hover:border-destructive/40 hover:bg-destructive/10 transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-destructive px-2 py-0.5 rounded-lg border border-border/70 hover:border-destructive/40 hover:bg-destructive/10 transition-all font-normal whitespace-nowrap shrink-0 cursor-pointer"
                       title="Limpar campos e começar novo projeto"
                     >
                       <RefreshCw className="size-3 shrink-0" />
                       <span>Novo Briefing</span>
                     </button>
                   )}
-                </div>
+                </CardTitle>
                 <CardDescription className="text-xs">
                   A marca pretendida está indisponível? Gere novas opções para registro no INPI.
                 </CardDescription>
