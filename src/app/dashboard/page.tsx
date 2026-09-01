@@ -1182,9 +1182,6 @@ export default function DashboardPage() {
                       <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
                         Assessoria Integral & Radar RPI
                       </span>
-                      <span className="text-xs text-primary font-bold font-mono">
-                        Recorrência Mensal
-                      </span>
                     </div>
                     <h3 className="text-xl font-bold text-foreground">
                       Proteção Total de Marcas INPI
