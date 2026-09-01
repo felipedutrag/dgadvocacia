@@ -561,12 +561,12 @@ export default function DashboardPage() {
             onClick={() => { setActiveTab("plans"); if (isDrawer) setMobileDrawerOpen(false); }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === "plans"
-                ? "bg-amber-500 text-black font-bold shadow-xs"
-                : "text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20"
+                ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             }`}
             title="Serviços & Planos"
           >
-            <Crown className="size-4 shrink-0 text-amber-500" />
+            <Crown className="size-4 shrink-0" />
             {(sidebarOpen || isDrawer) && <span>Serviços & Planos</span>}
           </button>
 
@@ -879,14 +879,14 @@ export default function DashboardPage() {
               </div>
 
               {/* ── CALCULADORA DINÂMICA DE CARTEIRA (RADAR RPI) ── */}
-              <div className="rounded-2xl border-2 border-amber-500/40 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl shadow-amber-500/5 space-y-6">
+              <div className="rounded-2xl border-2 border-primary/30 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl shadow-primary/5 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/60">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] uppercase font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
+                      <span className="font-mono text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md">
                         Radar RPI Automático
                       </span>
-                      <span className="text-xs text-amber-400 font-bold font-mono">
+                      <span className="text-xs text-primary font-bold font-mono">
                         Recorrência Mensal
                       </span>
                     </div>
@@ -899,10 +899,10 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Preço Calculado */}
-                  <div className="flex items-baseline gap-3 bg-background/90 border-2 border-amber-500/40 p-4 rounded-2xl self-start md:self-auto shadow-sm">
+                  <div className="flex items-baseline gap-3 bg-background/90 border-2 border-primary/30 p-4 rounded-2xl self-start md:self-auto shadow-sm">
                     <div>
                       <div className="text-[10px] font-mono text-muted-foreground uppercase font-semibold">Valor do Radar</div>
-                      <div className="text-3xl font-extrabold text-amber-400 tracking-tight flex items-baseline gap-1">
+                      <div className="text-3xl font-extrabold text-foreground tracking-tight flex items-baseline gap-1">
                         <span>R$ {calcTotalPrice.toLocaleString("pt-BR")}</span>
                         <span className="text-xs text-muted-foreground font-normal">/mês</span>
                       </div>
@@ -910,7 +910,7 @@ export default function DashboardPage() {
                     {calcProcessos > 3 && (
                       <div className="border-l border-border/60 pl-3">
                         <div className="text-[10px] font-mono text-muted-foreground uppercase">Média / Marca</div>
-                        <div className="text-sm font-bold text-amber-400 font-mono">
+                        <div className="text-sm font-bold text-primary font-mono">
                           R$ {calcUnitPrice.toFixed(2).replace(".", ",")}
                         </div>
                       </div>
@@ -948,7 +948,7 @@ export default function DashboardPage() {
                             const val = parseInt(e.target.value, 10);
                             setCalcProcessos(isNaN(val) ? 1 : Math.max(1, Math.min(1000, val)));
                           }}
-                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-amber-500/40 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                          className="w-20 h-8 text-center text-sm font-bold font-mono bg-background border border-primary/30 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                         />
                         <span className="absolute right-2 top-2 text-[9px] text-muted-foreground pointer-events-none font-mono">un</span>
                       </div>
@@ -973,7 +973,7 @@ export default function DashboardPage() {
                     step="1"
                     value={calcProcessos}
                     onChange={(e) => setCalcProcessos(Number(e.target.value))}
-                    className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-amber-500"
+                    className="w-full h-2.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                   />
 
                   {/* Atalhos Rápidos */}
@@ -986,9 +986,7 @@ export default function DashboardPage() {
                         variant={calcProcessos === qty ? "default" : "outline"}
                         size="xs"
                         onClick={() => setCalcProcessos(qty)}
-                        className={`text-[11px] font-mono h-6 px-2.5 rounded-md ${
-                          calcProcessos === qty ? "bg-amber-500 text-black font-bold hover:bg-amber-400" : ""
-                        }`}
+                        className="text-[11px] font-mono h-6 px-2.5 rounded-md"
                       >
                         {qty === 3 ? "3 marcas (Base)" : `${qty} marcas`}
                       </Button>
@@ -997,25 +995,25 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Benefícios Inclusos no Radar RPI */}
-                <div className="rounded-xl border border-amber-500/20 bg-background/50 p-4 space-y-3">
-                  <div className="text-[11px] font-mono uppercase font-bold text-amber-500 tracking-wider">
+                <div className="rounded-xl border border-border/70 bg-background/50 p-4 space-y-3">
+                  <div className="text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-wider">
                     O que está incluso no seu plano:
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-foreground">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-amber-500 shrink-0" />
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span><strong>Monitoramento de {calcProcessos} {calcProcessos === 1 ? "marca" : "marcas"}</strong></span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-amber-500 shrink-0" />
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span>Alertas automáticos no Telegram</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-amber-500 shrink-0" />
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span>Consultas e Raio-X IA Ilimitados</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-amber-500 shrink-0" />
+                      <CheckCircle2 className="size-4 text-primary shrink-0" />
                       <span>Controle de vigência decenal e prazos</span>
                     </div>
                   </div>
@@ -1035,7 +1033,7 @@ export default function DashboardPage() {
                       price: calcTotalPrice,
                       description: `DG Advocacia - Assinatura Radar RPI para ${calcProcessos} marcas monitoradas`,
                     })}
-                    className="w-full sm:w-auto text-xs font-bold h-11 px-6 bg-amber-500 hover:bg-amber-400 text-black shadow-lg shadow-amber-500/20"
+                    className="w-full sm:w-auto text-xs font-bold h-11 px-6 bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
                   >
                     <span>Contratar Radar para {calcProcessos} {calcProcessos === 1 ? "Marca" : "Marcas"} (R$ {calcTotalPrice})</span>
                   </Button>
@@ -1056,11 +1054,11 @@ export default function DashboardPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* 1. Protocolo de Registro */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-amber-500/20 bg-card/60 p-5 backdrop-blur-md">
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-amber-500 uppercase bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md font-bold">Depósito INPI</span>
-                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Taxa Única</span>
+                        <span className="font-mono text-[10px] text-primary uppercase bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-md font-bold">Depósito INPI</span>
+                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Taxa Única</span>
                       </div>
                       <div className="mt-3 flex items-baseline gap-1">
                         <span className="text-3xl font-extrabold text-foreground">R$ 490</span>
@@ -1070,9 +1068,9 @@ export default function DashboardPage() {
                         Protocolo completo do pedido com qualificação formal, enquadramento de classes e especificação.
                       </p>
                       <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Parecer de Viabilidade IA + Humano</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Peticionamento no e-Marcas</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Acompanhamento do exame formal</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Parecer de Viabilidade IA + Humano</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento no e-Marcas</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Acompanhamento do exame formal</li>
                       </ul>
                     </div>
 
@@ -1092,11 +1090,11 @@ export default function DashboardPage() {
                   </div>
 
                   {/* 2. Oposição & Manifestação */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-amber-500/20 bg-card/60 p-5 backdrop-blur-md">
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-amber-500 uppercase bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md font-bold">Defesa LPI</span>
-                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Peça Técnica</span>
+                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">Defesa LPI</span>
+                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Peça Técnica</span>
                       </div>
                       <div className="mt-3 flex items-baseline gap-1">
                         <span className="text-3xl font-extrabold text-foreground">R$ 690</span>
@@ -1106,9 +1104,9 @@ export default function DashboardPage() {
                         Elaboração de Oposição contra marcas colidentes ou Manifestação a Oposição sofrida.
                       </p>
                       <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Fundamentação no Art. 124 da LPI</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Assinatura por advogado habilitado</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Protocolo dentro do prazo de 60 dias</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Fundamentação no Art. 124 da LPI</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Assinatura por advogado habilitado</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Protocolo dentro do prazo de 60 dias</li>
                       </ul>
                     </div>
 
@@ -1128,11 +1126,11 @@ export default function DashboardPage() {
                   </div>
 
                   {/* 3. Recurso contra Indeferimento */}
-                  <div className="flex flex-col justify-between rounded-2xl border border-amber-500/20 bg-card/60 p-5 backdrop-blur-md">
+                  <div className="flex flex-col justify-between rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-md">
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-amber-500 uppercase bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md font-bold">2ª Instância</span>
-                        <span className="font-mono text-[10px] font-semibold text-emerald-500">Recurso</span>
+                        <span className="font-mono text-[10px] text-muted-foreground uppercase border border-border px-2 py-0.5 rounded-md font-bold">2ª Instância</span>
+                        <span className="font-mono text-[10px] font-semibold text-muted-foreground">Recurso</span>
                       </div>
                       <div className="mt-3 flex items-baseline gap-1">
                         <span className="text-3xl font-extrabold text-foreground">R$ 890</span>
@@ -1142,9 +1140,9 @@ export default function DashboardPage() {
                         Peça recursal técnica ao Presidente do INPI para reverter decisão de indeferimento de marca.
                       </p>
                       <ul className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Análise das razões do indeferimento</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Jurisprudência consolidada do INPI</li>
-                        <li className="flex items-center gap-1.5"><Check className="size-3 text-amber-500 shrink-0" /> Peticionamento tempestivo (60 dias)</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Análise das razões do indeferimento</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Jurisprudência consolidada do INPI</li>
+                        <li className="flex items-center gap-1.5"><Check className="size-3 text-primary shrink-0" /> Peticionamento tempestivo (60 dias)</li>
                       </ul>
                     </div>
 
