@@ -92,7 +92,7 @@ export default function LandingPage() {
           background: "radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--primary) 25%, transparent), transparent 70%)"
         }}
       />
-      
+
       {/* ── Linear Navigation Bar ── */}
       <header className="fixed top-0 inset-x-0 z-50 flex w-full items-center justify-center border-b border-border/60 bg-background/80 px-4 sm:px-8 py-3 backdrop-blur-xl transition-all">
         <div className="flex w-full max-w-6xl items-center justify-between gap-4">
@@ -175,8 +175,8 @@ export default function LandingPage() {
         <div className="flex w-full max-w-4xl flex-col items-center mx-auto">
           <div className="mb-4 sm:mb-5 inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-semibold text-primary tracking-wide backdrop-blur-md">
             <Handshake className="size-3.5" />
-            <span className="sm:hidden">Parceria Jurídico-empresarial B2B</span>
-            <span className="hidden sm:inline">Parceria Jurídica B2B & Backend de Registro de Marcas</span>
+            <span className="sm:hidden">PARCERIA JURÍDICO-EMPRESARIAL B2B</span>
+            <span className="hidden sm:inline">PARCERIA JURÍDICA B2B & BACKEND DE REGISTRO DE MARCAS</span>
           </div>
 
           <h1 className="mb-3 sm:mb-4 text-[22px] xs:text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.2] sm:leading-[1.15] max-w-3xl mx-auto">
@@ -230,11 +230,11 @@ export default function LandingPage() {
 
           {/* ── FLOWCHART PIPELINE CONTAINER ── */}
           <div className="relative flex flex-col items-center space-y-4">
-            
+
             {/* ═══ CAMADA 1: PARCEIRO / COMERCIAL ═══ */}
             <div className="w-full rounded-2xl border border-primary/30 bg-gradient-to-b from-card/90 to-card/60 p-5 sm:p-7 shadow-lg backdrop-blur-md relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
-              
+
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border/50">
                 <div className="flex items-center gap-3">
                   <div className="size-10 sm:size-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 shadow-inner">
@@ -410,7 +410,7 @@ export default function LandingPage() {
 
               {/* 4 Mapeamentos Jurídicos */}
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                
+
                 {/* 1. Top-Left: Despacho Formal */}
                 <div className="rounded-xl border border-border/60 bg-background/60 p-4 space-y-2 relative overflow-hidden">
                   <div className="flex items-center justify-between gap-2">
@@ -590,7 +590,7 @@ export default function LandingPage() {
 
             {/* Grid 2 Gráficos / Indicadores */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              
+
               {/* Gráfico 1: Curva de Monitoramento e Varredura Semanal (SVG Chart) */}
               <div className="lg:col-span-7 space-y-3 sm:space-y-4 rounded-xl border border-border/60 bg-background/50 p-3.5 sm:p-5">
                 <div className="flex items-center justify-between">
@@ -616,7 +616,7 @@ export default function LandingPage() {
                     <line x1="0" y1="20" x2="400" y2="20" stroke="currentColor" strokeOpacity="0.06" strokeDasharray="3 3" />
                     <line x1="0" y1="50" x2="400" y2="50" stroke="currentColor" strokeOpacity="0.06" strokeDasharray="3 3" />
                     <line x1="0" y1="80" x2="400" y2="80" stroke="currentColor" strokeOpacity="0.06" strokeDasharray="3 3" />
-                    
+
                     {/* Área Preenchida com Gradiente (Animação Fade-In Preenchendo) */}
                     <path
                       d="M0,80 Q60,65 100,50 T200,60 T300,25 T400,10 L400,100 L0,100 Z"
@@ -660,7 +660,7 @@ export default function LandingPage() {
                     <span className="text-xs font-bold text-foreground">Score de Blindagem da Carteira</span>
                     <span className="text-xs font-mono font-bold text-emerald-500">98.2% Seguro</span>
                   </div>
-                  
+
                   {/* Barra de Progresso Segmentada */}
                   <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex gap-1 p-0.5 border border-border/40">
                     <div className="bg-emerald-500 h-full rounded-l-full" style={{ width: "74%" }} title="Processos Sem Oposição (74%)" />
@@ -832,7 +832,7 @@ export default function LandingPage() {
       {/* ── SEÇÃO 5: ESTEIRA OPERACIONAL & PIPELINE DE BLINDAGEM (VISUAL HIGH-TECH) ── */}
       <section className="relative z-10 flex w-full flex-col items-center px-4 py-20 bg-card/40 border-y border-border/60">
         <div className="w-full max-w-5xl mx-auto space-y-12">
-          
+
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
               <Sparkles className="size-3.5" />
@@ -848,7 +848,7 @@ export default function LandingPage() {
 
           {/* Stepper / Grid Visual de 4 Módulos da Plataforma */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
+
             {/* Módulo 1: Criação de Marcas e Naming */}
             <div className="relative group p-5 rounded-2xl border border-border/70 bg-background/60 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
@@ -1068,7 +1068,7 @@ export default function LandingPage() {
         {/* Bloco Superior do Rodapé */}
         <div className="w-full max-w-6xl mx-auto px-6 sm:px-8 pt-16 pb-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12">
-            
+
             {/* Coluna 1: Branding & Identificação do Escritório */}
             <div className="md:col-span-5 space-y-4">
               <Link href="/" className="inline-block transition-transform hover:opacity-95">
@@ -1077,7 +1077,7 @@ export default function LandingPage() {
               <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
                 Assessoria e suporte técnico-jurídico especializado em Propriedade Industrial perante o INPI. Inteligência processual e infraestrutura de acompanhamento para escritórios e empresas parceiras.
               </p>
-              
+
               <div className="pt-2 flex items-center gap-3">
                 <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                   <Scale className="size-4" />
