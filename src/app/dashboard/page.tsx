@@ -37,7 +37,7 @@ import {
   QrCode,
   Loader2,
   Zap,
-  Sparkles,
+  Lightbulb,
   Layers,
   Scale,
   Minus,
@@ -459,7 +459,7 @@ export default function DashboardPage() {
             }`}
             title="Estúdio Naming & Logos IA"
           >
-            <Sparkles className="size-4 shrink-0 text-amber-500" />
+            <Lightbulb className="size-4 shrink-0 text-amber-500" />
             {(sidebarOpen || isDrawer) && (
               <div className="flex items-center justify-between flex-1">
                 <span>Estúdio Naming & IA</span>
@@ -664,7 +664,7 @@ export default function DashboardPage() {
                       <span>Minha Conta</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("naming")} className="text-xs">
-                      <Sparkles className="mr-2 size-3.5 text-amber-500" />
+                      <Lightbulb className="mr-2 size-3.5 text-amber-500" />
                       <span>Estúdio Naming & Logos IA</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab("plans")} className="text-xs">

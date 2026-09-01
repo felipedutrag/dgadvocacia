@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import {
-  Sparkles,
+  Lightbulb,
+  PenTool,
   Bot,
   Search,
   CheckCircle2,
@@ -158,7 +159,7 @@ export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
             onClick={() => setActiveSubTab("naming")}
             className="text-xs font-bold h-8 gap-1.5"
           >
-            <Sparkles className="size-3.5" />
+            <Lightbulb className="size-3.5" />
             <span>Gerador de Nomes</span>
           </Button>
           <Button
@@ -269,7 +270,7 @@ export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
                       </>
                     ) : (
                       <>
-                        <Sparkles className="size-4" />
+                        <Lightbulb className="size-4" />
                         <span>Gerar 6 Sugestões de Nomes com IA</span>
                       </>
                     )}

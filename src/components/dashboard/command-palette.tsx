@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -6,7 +6,7 @@ import {
   Shield,
   Crown,
   User,
-  Sparkles,
+  Lightbulb,
   Command,
   FileText,
   Palette,
@@ -137,7 +137,7 @@ export function CommandPalette({
             className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/60 transition-colors text-left text-foreground"
           >
             <div className="flex items-center gap-2.5">
-              <Sparkles className="size-4 text-amber-500" />
+              <Lightbulb className="size-4 text-amber-500" />
               <span>Estúdio IA de Naming & Criação de Logos</span>
             </div>
             <kbd className="font-mono text-[10px] text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
