@@ -6,11 +6,10 @@ import {
   CheckCircle2,
   AlertTriangle,
   Clock,
-  ExternalLink,
   ChevronRight,
   ShieldCheck,
-  Sparkles,
-  Inbox
+  Inbox,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -26,40 +25,36 @@ export type DashboardNotification = {
 
 interface NotificationsPopoverProps {
   onSelectProcesso?: (numero: string) => void;
-  onNavigateTab?: (tab: "consultas" | "marcas" | "naming" | "plans") => void;
+  onNavigateTab?: (tab: "consultas" | "marcas" | "naming" | "logos" | "nice" | "domains" | "plans" | "profile") => void;
 }
 
 export function NotificationsPopover({ onSelectProcesso, onNavigateTab }: NotificationsPopoverProps) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [notifications, setNotifications] = useState<DashboardNotification[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [notifications, setNotifications] = useState<DashboardNotification[]>([
-    {
-      id: "1",
-      titulo: "Publicação RPI 2825 Disponível",
-      descricao: "A nova Revista da Propriedade Industrial foi sincronizada. 0 colidências detectadas.",
-      tipo: "sucesso",
-      tempo: "Hoje, 09:30",
-      lida: false,
-    },
-    {
-      id: "2",
-      titulo: "Controle de Prazo de Oposição",
-      descricao: "Processo Nº 934812345 está no 42º dia do prazo legal de 60 dias (Art. 158 LPI).",
-      tipo: "prazo",
-      tempo: "Há 2 dias",
-      lida: false,
-      processoNumero: "934812345",
-    },
-    {
-      id: "3",
-      titulo: "Radar RPI Ativo",
-      descricao: "Todas as marcas da sua carteira estão com telemetria e vigilância contínua ativadas.",
-      tipo: "info",
-      tempo: "Há 3 dias",
-      lida: true,
-    },
-  ]);
+  // Buscar notificações reais do Supabase / API
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/marcas/notificacoes");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.notifications && Array.isArray(data.notifications)) {
+          setNotifications(data.notifications);
+        }
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar notificações:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   // Fechar ao clicar fora
   useEffect(() => {
@@ -91,8 +86,11 @@ export function NotificationsPopover({ onSelectProcesso, onNavigateTab }: Notifi
       <Button
         variant="ghost"
         size="icon-xs"
-        onClick={() => setOpen((prev) => !prev)}
-        className="relative size-8 rounded-lg text-muted-foreground hover:text-foreground"
+        onClick={() => {
+          setOpen((prev) => !prev);
+          if (!open) fetchNotifications();
+        }}
+        className="relative size-8 rounded-lg text-muted-foreground hover:text-foreground cursor-pointer"
         title="Central de Notificações"
       >
         <Bell className="size-4" />
@@ -119,7 +117,7 @@ export function NotificationsPopover({ onSelectProcesso, onNavigateTab }: Notifi
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="text-[11px] text-primary hover:underline font-semibold"
+                className="text-[11px] text-primary hover:underline font-semibold cursor-pointer"
               >
                 Marcar lidas
               </button>
@@ -128,7 +126,12 @@ export function NotificationsPopover({ onSelectProcesso, onNavigateTab }: Notifi
 
           {/* Lista de Notificações */}
           <div className="max-h-80 overflow-y-auto divide-y divide-border/40">
-            {notifications.length === 0 ? (
+            {loading ? (
+              <div className="p-8 text-center text-muted-foreground text-xs space-y-2">
+                <Loader2 className="size-6 mx-auto animate-spin text-primary" />
+                <p>Verificando despachos da RPI...</p>
+              </div>
+            ) : notifications.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground text-xs space-y-2">
                 <Inbox className="size-8 mx-auto opacity-40" />
                 <p>Nenhuma notificação recente.</p>
@@ -200,7 +203,7 @@ export function NotificationsPopover({ onSelectProcesso, onNavigateTab }: Notifi
                 if (onNavigateTab) onNavigateTab("marcas");
                 setOpen(false);
               }}
-              className="text-[11px] font-bold text-primary hover:underline inline-flex items-center gap-1"
+              className="text-[11px] font-bold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <span>Acessar Radar INPI Completo</span>
               <ChevronRight className="size-3" />
