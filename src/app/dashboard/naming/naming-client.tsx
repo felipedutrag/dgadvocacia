@@ -17,9 +17,11 @@ import {
   ArrowRight,
   Loader2,
   RefreshCw,
-  Eye,
-  ShieldCheck,
-  FileText
+  Globe,
+  Scale,
+  ShieldAlert,
+  Send,
+  Printer
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +34,7 @@ interface NamingClientProps {
 }
 
 export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos">("naming");
+  const [activeSubTab, setActiveSubTab] = useState<"naming" | "logos" | "nice" | "domains" | "cease_desist">("naming");
 
   // Naming Form State
   const [segmento, setSegmento] = useState("");
@@ -54,6 +56,31 @@ export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
   const [logoLoading, setLogoLoading] = useState(false);
   const [generatedLogo, setGeneratedLogo] = useState<{ imageUrl: string; model: string } | null>(null);
   const [logoError, setLogoError] = useState<string | null>(null);
+
+  // Smart Nice Classifier State
+  const [niceInput, setNiceInput] = useState("");
+  const [niceLoading, setNiceLoading] = useState(false);
+  const [niceResult, setNiceResult] = useState<any | null>(null);
+  const [niceError, setNiceError] = useState<string | null>(null);
+
+  // Domain & Socials Check State
+  const [domainInput, setDomainInput] = useState("");
+  const [domainLoading, setDomainLoading] = useState(false);
+  const [domainResult, setDomainResult] = useState<any | null>(null);
+  const [domainError, setDomainError] = useState<string | null>(null);
+
+  // Cease & Desist State
+  const [cdNotificante, setCdNotificante] = useState("");
+  const [cdDoc, setCdDoc] = useState("");
+  const [cdMarca, setCdMarca] = useState("");
+  const [cdProcesso, setCdProcesso] = useState("");
+  const [cdNotificado, setCdNotificado] = useState("");
+  const [cdUso, setCdUso] = useState("");
+  const [cdPlataforma, setCdPlataforma] = useState("Instagram / Web");
+  const [cdPrazo, setCdPrazo] = useState("5");
+  const [cdLoading, setCdLoading] = useState(false);
+  const [cdResult, setCdResult] = useState<any | null>(null);
+  const [cdError, setCdError] = useState<string | null>(null);
 
   // Geração de Nomes com Gemini
   const handleGenerateNames = async (e: React.FormEvent) => {
@@ -135,42 +162,148 @@ export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  // Enquadramento Nice com IA
+  const handleClassifyNice = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!niceInput.trim()) return;
+    setNiceLoading(true);
+    setNiceError(null);
+    try {
+      const res = await fetch("/api/inpi/nice-classifier", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ atividade: niceInput }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao classificar");
+      setNiceResult(data);
+    } catch (err: any) {
+      setNiceError(err.message);
+    } finally {
+      setNiceLoading(false);
+    }
+  };
+
+  // Checagem de Domínios
+  const handleCheckDomains = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!domainInput.trim()) return;
+    setDomainLoading(true);
+    setDomainError(null);
+    try {
+      const res = await fetch(`/api/inpi/domain-check?domain=${encodeURIComponent(domainInput.trim())}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao checar domínios");
+      setDomainResult(data);
+    } catch (err: any) {
+      setDomainError(err.message);
+    } finally {
+      setDomainLoading(false);
+    }
+  };
+
+  // Notificação Extrajudicial
+  const handleGenerateCeaseDesist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!cdMarca.trim() || !cdNotificado.trim()) return;
+    setCdLoading(true);
+    setCdError(null);
+    try {
+      const res = await fetch("/api/inpi/cease-desist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          notificanteNome: cdNotificante,
+          notificanteDocumento: cdDoc,
+          marcaRegistrada: cdMarca,
+          processoInpi: cdProcesso,
+          notificadoNome: cdNotificado,
+          notificadoUsoIndevido: cdUso,
+          plataformaInfracao: cdPlataforma,
+          prazoDias: cdPrazo,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao redigir notificação");
+      setCdResult(data);
+    } catch (err: any) {
+      setCdError(err.message);
+    } finally {
+      setCdLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header com Seletor de Sub-Abas */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-4">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-border/60 pb-4">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <span>Estúdio IA de Criação & Identidade Marcária</span>
+            <span>Central IA de Naming, Proteção & Ativos Marcários</span>
             <span className="font-mono text-[10px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2.5 py-0.5 rounded-full font-bold">
-              Gemini 2.5 Intelligence
+              Suíte Jurídica & IA
             </span>
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Crie nomes com alta distintividade perante o Art. 124 da LPI, verifique conflitos na hora e gere conceitos de logomarcas com IA.
+            Crie marcas com distintividade, enquadre classes Nice, gere logomarcas, verifique domínios e redija notificações extrajudiciais.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 bg-muted rounded-xl border border-border/60 self-start sm:self-auto">
+        {/* 5 Ferramentas B2B */}
+        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-muted rounded-xl border border-border/60">
           <Button
             type="button"
             variant={activeSubTab === "naming" ? "default" : "ghost"}
-            size="sm"
+            size="xs"
             onClick={() => setActiveSubTab("naming")}
             className="text-xs font-bold h-8 gap-1.5"
           >
             <Lightbulb className="size-3.5" />
-            <span>Gerador de Nomes</span>
+            <span>Naming</span>
           </Button>
+
           <Button
             type="button"
             variant={activeSubTab === "logos" ? "default" : "ghost"}
-            size="sm"
+            size="xs"
             onClick={() => setActiveSubTab("logos")}
             className="text-xs font-bold h-8 gap-1.5"
           >
             <Palette className="size-3.5" />
-            <span>Criador de Logomarcas</span>
+            <span>Logomarcas</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant={activeSubTab === "nice" ? "default" : "ghost"}
+            size="xs"
+            onClick={() => setActiveSubTab("nice")}
+            className="text-xs font-bold h-8 gap-1.5"
+          >
+            <Layers className="size-3.5" />
+            <span>Enquadrador Nice</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant={activeSubTab === "domains" ? "default" : "ghost"}
+            size="xs"
+            onClick={() => setActiveSubTab("domains")}
+            className="text-xs font-bold h-8 gap-1.5"
+          >
+            <Globe className="size-3.5" />
+            <span>Domínios & @</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant={activeSubTab === "cease_desist" ? "default" : "ghost"}
+            size="xs"
+            onClick={() => setActiveSubTab("cease_desist")}
+            className="text-xs font-bold h-8 gap-1.5"
+          >
+            <ShieldAlert className="size-3.5" />
+            <span>Notificação Extrajudicial</span>
           </Button>
         </div>
       </div>
@@ -556,6 +689,375 @@ export function NamingClient({ onVerifyTrademark }: NamingClientProps) {
           </div>
         </div>
       )}
+
+      {/* ── SUB-ABA 3: ENQUADRADOR INTELIGENTE DE CLASSES NICE ── */}
+      {activeSubTab === "nice" && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-5 space-y-4">
+            <Card className="border-border/70 bg-card/60 backdrop-blur-md">
+              <CardHeader className="pb-3 border-b border-border/40">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <Layers className="size-4 text-primary" />
+                  <span>Enquadrador de Classes Nice com IA</span>
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Mapeia as 45 classes de Nice e especificações pré-aprovadas pelo INPI.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <form onSubmit={handleClassifyNice} className="space-y-3.5">
+                  {niceError && (
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+                      {niceError}
+                    </div>
+                  )}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Descreva as atividades do negócio *</Label>
+                    <textarea
+                      placeholder="Ex: Fabricamos suplementos esportivos e vendemos no atacado e através de loja virtual própria..."
+                      value={niceInput}
+                      onChange={(e) => setNiceInput(e.target.value)}
+                      className="w-full rounded-md border border-input bg-card/80 p-2.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[90px] resize-none"
+                      required
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={niceLoading}
+                    className="w-full text-xs font-bold h-10 gap-2 bg-primary text-primary-foreground"
+                  >
+                    {niceLoading ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        <span>Consultando Diretrizes do INPI...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Layers className="size-4" />
+                        <span>Enquadrar Classes de Nice</span>
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-7 space-y-4">
+            {!niceResult ? (
+              <div className="p-12 rounded-2xl border-2 border-dashed border-border/70 text-center space-y-3 bg-muted/20">
+                <Layers className="size-10 mx-auto text-primary/60" />
+                <h3 className="text-sm font-bold text-foreground">Aguardando Descrição das Atividades</h3>
+                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                  Descreva os produtos ou serviços ao lado para a IA indicar as classes exatas e especificações para o e-Marcas.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Classe Principal */}
+                <div className="p-5 rounded-2xl border-2 border-primary/40 bg-card/80 shadow-lg shadow-primary/5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-primary uppercase bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
+                      Classe Principal Recomendada: NCL {niceResult.classePrincipal?.numero}
+                    </span>
+                    <span className="text-xs font-mono font-bold text-emerald-500">Prioridade Alta</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-foreground">{niceResult.classePrincipal?.titulo}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{niceResult.classePrincipal?.justificativa}</p>
+                  <div className="p-3 rounded-xl bg-background/60 border border-border/50 space-y-1">
+                    <span className="text-[10px] font-mono text-muted-foreground uppercase font-bold">Especificação Pré-Aprovada INPI:</span>
+                    <p className="text-xs text-foreground font-mono">{niceResult.classePrincipal?.especificacaoSugerida}</p>
+                  </div>
+                </div>
+
+                {/* Classes Secundárias */}
+                {niceResult.classesSecundarias?.map((sec: any, idx: number) => (
+                  <div key={idx} className="p-4 rounded-2xl border border-border/70 bg-card/60 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-muted-foreground uppercase bg-muted px-2.5 py-0.5 rounded-full">
+                        Classe Secundária Estratégica: NCL {sec.numero}
+                      </span>
+                      <span className="text-xs font-mono text-amber-500 font-bold">Blindagem Adicional</span>
+                    </div>
+                    <h5 className="text-xs font-bold text-foreground">{sec.titulo}</h5>
+                    <p className="text-xs text-muted-foreground">{sec.justificativa}</p>
+                    <div className="p-2.5 rounded-lg bg-background/40 border border-border/40 text-[11px] font-mono text-foreground">
+                      {sec.especificacaoSugerida}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── SUB-ABA 4: VERIFICADOR DE DOMÍNIOS & REDES SOCIAIS ── */}
+      {activeSubTab === "domains" && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-5 space-y-4">
+            <Card className="border-border/70 bg-card/60 backdrop-blur-md">
+              <CardHeader className="pb-3 border-b border-border/40">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <Globe className="size-4 text-primary" />
+                  <span>Checador de Domínios & @ Social</span>
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Consulta de disponibilidade no Registro.br, .com e redes sociais.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <form onSubmit={handleCheckDomains} className="space-y-3.5">
+                  {domainError && (
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+                      {domainError}
+                    </div>
+                  )}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Nome da Marca para Consulta *</Label>
+                    <Input
+                      placeholder="Ex: DG Advocacia, MarcaShield, NexaPay..."
+                      value={domainInput}
+                      onChange={(e) => setDomainInput(e.target.value)}
+                      className="text-xs h-9 bg-card/80 font-mono"
+                      required
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={domainLoading}
+                    className="w-full text-xs font-bold h-10 gap-2 bg-primary text-primary-foreground"
+                  >
+                    {domainLoading ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        <span>Consultando Registro.br e DNS...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Search className="size-4" />
+                        <span>Verificar Domínios e Redes</span>
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-7 space-y-4">
+            {!domainResult ? (
+              <div className="p-12 rounded-2xl border-2 border-dashed border-border/70 text-center space-y-3 bg-muted/20">
+                <Globe className="size-10 mx-auto text-primary/60" />
+                <h3 className="text-sm font-bold text-foreground">Aguardando Nome de Domínio</h3>
+                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                  Consulte se a marca possui o domínio nacional (.com.br), internacional (.com) e perfis livres.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Domínios Web */}
+                <div className="p-5 rounded-2xl border border-border/70 bg-card/70 space-y-3">
+                  <div className="text-xs font-mono font-bold uppercase text-muted-foreground">
+                    Status de Domínios Oficiais
+                  </div>
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {domainResult.domains?.map((dom: any, idx: number) => (
+                      <div key={idx} className="p-3 rounded-xl bg-background/50 border border-border/50 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Globe className="size-4 text-primary" />
+                          <span className="font-mono font-bold text-xs text-foreground">{dom.fqdn}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={`font-mono text-[11px] font-bold ${dom.available ? "text-emerald-500" : "text-amber-500"}`}>
+                            {dom.available ? "Disponível para Registro" : "Registrado / Em Uso"}
+                          </span>
+                          <a
+                            href={dom.registrationUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-md hover:bg-primary/20 transition-colors"
+                          >
+                            Registrar
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Redes Sociais */}
+                <div className="p-5 rounded-2xl border border-border/70 bg-card/70 space-y-3">
+                  <div className="text-xs font-mono font-bold uppercase text-muted-foreground">
+                    Handles de Redes Sociais
+                  </div>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    {domainResult.socials?.map((soc: any, idx: number) => (
+                      <a
+                        key={idx}
+                        href={soc.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-3 rounded-xl bg-background/50 border border-border/50 hover:border-primary/50 transition-colors block text-center space-y-1"
+                      >
+                        <div className="text-[10px] font-mono text-muted-foreground">{soc.network}</div>
+                        <div className="text-xs font-mono font-bold text-primary truncate">{soc.handle}</div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── SUB-ABA 5: GERADOR DE NOTIFICAÇÃO EXTRAJUDICIAL COM IA ── */}
+      {activeSubTab === "cease_desist" && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-5 space-y-4">
+            <Card className="border-border/70 bg-card/60 backdrop-blur-md">
+              <CardHeader className="pb-3 border-b border-border/40">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <ShieldAlert className="size-4 text-rose-500" />
+                  <span>Notificação Extrajudicial por Uso Indevido</span>
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Peça técnica com base nos Arts. 129, 189 e 209 da Lei nº 9.279/96 (LPI).
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <form onSubmit={handleGenerateCeaseDesist} className="space-y-3">
+                  {cdError && (
+                    <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+                      {cdError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <Label className="text-[11px]">Sua Empresa (Notificante) *</Label>
+                      <Input
+                        placeholder="Nome / Razão Social"
+                        value={cdNotificante}
+                        onChange={(e) => setCdNotificante(e.target.value)}
+                        className="text-xs h-8 bg-card/80"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[11px]">CNPJ / CPF</Label>
+                      <Input
+                        placeholder="00.000.000/0001-00"
+                        value={cdDoc}
+                        onChange={(e) => setCdDoc(e.target.value)}
+                        className="text-xs h-8 bg-card/80 font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <Label className="text-[11px]">Marca Registrada *</Label>
+                      <Input
+                        placeholder="Nome da sua marca"
+                        value={cdMarca}
+                        onChange={(e) => setCdMarca(e.target.value)}
+                        className="text-xs h-8 bg-card/80 font-bold"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[11px]">Nº Processo INPI</Label>
+                      <Input
+                        placeholder="Ex: 934812345"
+                        value={cdProcesso}
+                        onChange={(e) => setCdProcesso(e.target.value)}
+                        className="text-xs h-8 bg-card/80 font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <Label className="text-[11px]">Nome do Infrator (Notificado) *</Label>
+                    <Input
+                      placeholder="Empresa ou perfil infrator"
+                      value={cdNotificado}
+                      onChange={(e) => setCdNotificado(e.target.value)}
+                      className="text-xs h-8 bg-card/80"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <Label className="text-[11px]">Descrição do Uso Indevido</Label>
+                    <textarea
+                      placeholder="Ex: Utilização do mesmo nome e logo em perfil comercial no Instagram vendendo produtos no mesmo segmento..."
+                      value={cdUso}
+                      onChange={(e) => setCdUso(e.target.value)}
+                      className="w-full rounded-md border border-input bg-card/80 p-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[50px] resize-none"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={cdLoading}
+                    className="w-full text-xs font-bold h-9 gap-2 bg-rose-600 hover:bg-rose-700 text-white"
+                  >
+                    {cdLoading ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        <span>Redigindo Peça Jurídica...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Scale className="size-4" />
+                        <span>Gerar Notificação Extrajudicial</span>
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-7 space-y-4">
+            {!cdResult ? (
+              <div className="p-12 rounded-2xl border-2 border-dashed border-border/70 text-center space-y-3 bg-muted/20">
+                <ShieldAlert className="size-10 mx-auto text-rose-500/60" />
+                <h3 className="text-sm font-bold text-foreground">Aguardando Dados da Notificação</h3>
+                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                  Preencha os dados do infrator para gerar a notificação formal de cessação de uso indevido e concorrência desleal.
+                </p>
+              </div>
+            ) : (
+              <Card className="border-border/70 bg-card/60 backdrop-blur-md overflow-hidden">
+                <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="text-sm font-bold text-foreground">{cdResult.titulo}</CardTitle>
+                    <CardDescription className="text-xs">{cdResult.resumoJuridico}</CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      navigator.clipboard.writeText(cdResult.notificacaoTexto);
+                      alert("Notificação copiada com sucesso!");
+                    }}
+                    className="text-xs h-8 gap-1.5 font-bold"
+                  >
+                    <Copy className="size-3.5" />
+                    <span>Copiar Peça</span>
+                  </Button>
+                </CardHeader>
+                <CardContent className="p-6 max-h-[500px] overflow-y-auto font-mono text-xs text-foreground/90 whitespace-pre-line leading-relaxed bg-background/50">
+                  {cdResult.notificacaoTexto}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

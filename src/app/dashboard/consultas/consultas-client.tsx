@@ -32,6 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
+import { LegalReportModal } from "@/components/dashboard/legal-report-modal";
 
 interface ProcessoSummary {
   numero: string;
@@ -119,9 +120,10 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [trackingLoading, setTrackingLoading] = useState<string | null>(null);
 
-  // AI Diagnostic State
+  // AI Diagnostic State & Modal PDF
   const [aiReport, setAiReport] = useState<AiViabilityReport | null>(null);
   const [loadingAi, setLoadingAi] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
 
   // 1. Busca por Nome
   const handleSearchMarca = async (e: React.FormEvent) => {
@@ -654,8 +656,32 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
               </ul>
             </div>
           </div>
+
+          {/* Botão de Exportação de Parecer em PDF */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border/40">
+            <span className="text-xs text-muted-foreground font-mono">
+              Documento assinado digitalmente por Dr. Felipe Dutra Gonçalves (OAB/MG 45.925)
+            </span>
+            <Button
+              type="button"
+              onClick={() => setReportModalOpen(true)}
+              className="w-full sm:w-auto text-xs font-bold gap-2 bg-primary text-primary-foreground h-9 px-4"
+            >
+              <FileText className="size-3.5" />
+              <span>Exportar Parecer Técnico em PDF</span>
+            </Button>
+          </div>
         </div>
       )}
+
+      {/* Modal de Relatório Jurídico em PDF */}
+      <LegalReportModal
+        open={reportModalOpen}
+        onOpenChange={setReportModalOpen}
+        marca={nomeMarca}
+        classe={classeNice}
+        report={aiReport}
+      />
 
       {/* ── MODAL / DETALHE DO PROCESSO SELECIONADO (RAIO-X) ── */}
       {selectedProcesso && (
@@ -705,6 +731,67 @@ export function ConsultasClient({ initialQuery, initialProcesso, initialClasse }
               >
                 <X className="size-4" />
               </Button>
+            </div>
+          </div>
+
+          {/* ── LINHA DO TEMPO VISUAL DO TRÂMITE NO INPI ── */}
+          <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-mono font-bold uppercase text-muted-foreground">
+                Linha do Tempo Oficial &bull; Trâmite Administrativo INPI
+              </span>
+              <span className="text-[10px] font-mono text-primary font-bold">
+                {selectedProcesso.dataDeposito ? `Depositado em ${selectedProcesso.dataDeposito}` : "Em Processamento"}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-center">
+              {/* Etapa 1 */}
+              <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 space-y-1">
+                <div className="size-5 rounded-full bg-emerald-500 text-black text-[10px] font-bold mx-auto flex items-center justify-center">1</div>
+                <div className="text-[11px] font-bold text-foreground">Depósito</div>
+                <div className="text-[9px] font-mono text-emerald-500">Concluído</div>
+              </div>
+
+              {/* Etapa 2 */}
+              <div className="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 space-y-1">
+                <div className="size-5 rounded-full bg-emerald-500 text-black text-[10px] font-bold mx-auto flex items-center justify-center">2</div>
+                <div className="text-[11px] font-bold text-foreground">Exame Formal</div>
+                <div className="text-[9px] font-mono text-emerald-500">Superado</div>
+              </div>
+
+              {/* Etapa 3 */}
+              <div className={`p-2.5 rounded-xl border space-y-1 ${
+                selectedProcesso.situacao.toLowerCase().includes("oposição") || selectedProcesso.situacao.toLowerCase().includes("publica")
+                  ? "border-amber-500/50 bg-amber-500/15"
+                  : "border-border/60 bg-background/40"
+              }`}>
+                <div className="size-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold mx-auto flex items-center justify-center">3</div>
+                <div className="text-[11px] font-bold text-foreground">RPI 60 Dias</div>
+                <div className="text-[9px] font-mono text-amber-500">Prazo Legal</div>
+              </div>
+
+              {/* Etapa 4 */}
+              <div className={`p-2.5 rounded-xl border space-y-1 ${
+                selectedProcesso.situacao.toLowerCase().includes("exame") || selectedProcesso.situacao.toLowerCase().includes("deferi")
+                  ? "border-primary/50 bg-primary/10"
+                  : "border-border/60 bg-background/40"
+              }`}>
+                <div className="size-5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold mx-auto flex items-center justify-center">4</div>
+                <div className="text-[11px] font-bold text-foreground">Exame Mérito</div>
+                <div className="text-[9px] font-mono text-muted-foreground">Art. 124 LPI</div>
+              </div>
+
+              {/* Etapa 5 */}
+              <div className={`p-2.5 rounded-xl border space-y-1 ${
+                selectedProcesso.situacao.toLowerCase().includes("conced") || selectedProcesso.situacao.toLowerCase().includes("registro")
+                  ? "border-emerald-500/50 bg-emerald-500/20"
+                  : "border-border/60 bg-background/40"
+              }`}>
+                <div className="size-5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold mx-auto flex items-center justify-center">5</div>
+                <div className="text-[11px] font-bold text-foreground">Decenal</div>
+                <div className="text-[9px] font-mono text-muted-foreground">10 Anos</div>
+              </div>
             </div>
           </div>
 
