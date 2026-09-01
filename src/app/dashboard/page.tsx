@@ -942,7 +942,7 @@ export default function DashboardPage() {
             </header>
 
             {/* ── Main Dashboard Content ── */}
-            <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1440px] mx-auto w-full">
               {/* TAB 1: CONSULTAS INPI & TELEMETRIA */}
               {(activeTab === "consultas-nome" || activeTab === "consultas-processo" || activeTab === "consultas-figura" || activeTab === "consultas") && (
                 <div className="space-y-6 animate-fade-in">
@@ -1189,7 +1189,7 @@ export default function DashboardPage() {
                     <h3 className="text-xl font-bold text-foreground">
                       Proteção Total de Marcas INPI
                     </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
+                    <p className="text-xs text-muted-foreground leading-relaxed max-w-5xl">
                       Assessoria jurídica integral para as marcas cadastradas: você só precisa protocolar o pedido e inserir o número no menu{" "}
                       <button
                         type="button"
