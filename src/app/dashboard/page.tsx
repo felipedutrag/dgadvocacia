@@ -692,8 +692,9 @@ export default function DashboardPage() {
                 >
                   <Search className="size-3.5 shrink-0" />
                   <span>Buscar processo ou comando...</span>
-                  <div className="flex items-center gap-1 font-mono text-[10px] bg-muted border border-border/80 px-1.5 py-0.5 rounded text-muted-foreground ml-1">
+                  <div className="flex items-center gap-0.5 font-mono text-[10px] bg-muted border border-border/80 px-1.5 py-0.5 rounded text-muted-foreground ml-1">
                     <span>⌘</span>
+                    <span className="text-[9px] text-muted-foreground/80">+</span>
                     <span>K</span>
                   </div>
                 </Button>
