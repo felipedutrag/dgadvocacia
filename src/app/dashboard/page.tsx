@@ -1697,9 +1697,9 @@ export default function DashboardPage() {
         {/* ── CHAT FLUTUANTE COM IA & TOOL CALLING INPI ── */}
         <FloatingAiChat />
 
-        {/* ── TOAST NOTIFICAÇÃO REALTIME DE WEBHOOK / PAGAMENTO ── */}
+        {/* ── TOAST NOTIFICAÇÃO REALTIME DE WEBHOOK / PAGAMENTO (CANTO INFERIOR ESQUERDO) ── */}
         {paymentToast?.show && (
-          <div className="fixed top-5 right-5 z-[9999] max-w-md w-[92vw] sm:w-[380px] animate-slide-in bg-card/95 border-2 border-emerald-500/60 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex items-start gap-3.5 select-none">
+          <div className="fixed bottom-6 left-6 z-[9999] max-w-md w-[92vw] sm:w-[380px] animate-slide-in bg-card/95 border-2 border-emerald-500/60 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex items-start gap-3.5 select-none">
             <div className="size-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shrink-0 mt-0.5 animate-bounce">
               <CheckCircle2 className="size-5" />
             </div>
