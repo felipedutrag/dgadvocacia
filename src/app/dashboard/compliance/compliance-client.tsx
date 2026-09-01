@@ -121,17 +121,17 @@ export function ComplianceClient() {
   const progressPercent = Math.round((totalCompleted / 6) * 100);
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* ── GRID DE SERVIÇOS DE COMPLIANCE & LGPD ── */}
+    <div className="space-y-4 animate-fade-in">
+      {/* ── GRID DE SERVIÇOS DE COMPLIANCE & LGPD COM PADRÃO DE CORES HARMONIZADO ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-        {/* 1. Adequação LGPD Completa */}
+        {/* 1. Adequação LGPD Completa (Esmeralda / Proteção) */}
         <Card
           onClick={() => handleOpenModalWithService("Adequação LGPD Completa & Inventário (ROPA)")}
-          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-emerald-500/40 transition-all cursor-pointer group"
         >
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+              <div className="size-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0 group-hover:scale-105 transition-transform">
                 <ShieldCheck className="size-4" />
               </div>
               <h3 className="text-xs font-bold text-foreground leading-tight">
@@ -139,30 +139,27 @@ export function ComplianceClient() {
               </h3>
             </div>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Mapeamento minucioso dos fluxos de dados pessoais (Data Mapping), enquadramento nas bases legais do Art. 7º da Lei 13.709/2018 e Relatório de Impacto à Proteção de Dados (RIPD).
+              Mapeamento minucioso dos fluxos de dados pessoais (Data Mapping), enquadramento nas bases legais do Art. 7º da Lei 13.709/2018 e Relatório de Impacto (RIPD).
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">Lei 13.709/18 • ANPD</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-emerald-500 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              Lei 13.709/18 & ANPD
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
 
-        {/* 2. DPO as a Service */}
+        {/* 2. DPO as a Service (Azul / Governança) */}
         <Card
           onClick={() => handleOpenModalWithService("DPO as a Service (Encarregado de Dados Nomeado)")}
-          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-blue-500/40 transition-all cursor-pointer group"
         >
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+              <div className="size-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 shrink-0 group-hover:scale-105 transition-transform">
                 <UserCheck className="size-4" />
               </div>
               <h3 className="text-xs font-bold text-foreground leading-tight">
@@ -173,27 +170,24 @@ export function ComplianceClient() {
               Nomeação de Encarregado de Proteção de Dados externo habilitado perante a ANPD e canal direto de atendimento às requisições de titulares (Art. 41).
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">Encarregado • Art. 41</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-blue-500 font-bold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+              Encarregado • Art. 41
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
 
-        {/* 3. Políticas de Privacidade & Termos de Uso */}
+        {/* 3. Políticas de Privacidade & Termos (Roxo / Contratos) */}
         <Card
           onClick={() => handleOpenModalWithService("Políticas de Privacidade & Termos de Uso")}
-          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-purple-500/40 transition-all cursor-pointer group"
         >
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+              <div className="size-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 shrink-0 group-hover:scale-105 transition-transform">
                 <FileText className="size-4" />
               </div>
               <h3 className="text-xs font-bold text-foreground leading-tight">
@@ -204,27 +198,24 @@ export function ComplianceClient() {
               Redação e blindagem de Políticas de Privacidade, avisos de cookies granulares e Termos de Uso para plataformas web, e-commerces e aplicativos móveis.
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">Termos & Cookies</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-purple-500 font-bold bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+              Termos & Cookies
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
 
-        {/* 4. Aditivos Contratuais & DPA para Terceiros */}
+        {/* 4. Aditivos Contratuais & DPA (Ciano / B2B) */}
         <Card
           onClick={() => handleOpenModalWithService("Aditivos de Proteção de Dados (DPA) com Operadores")}
-          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-cyan-500/40 transition-all cursor-pointer group"
         >
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+              <div className="size-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-500 shrink-0 group-hover:scale-105 transition-transform">
                 <Lock className="size-4" />
               </div>
               <h3 className="text-xs font-bold text-foreground leading-tight">
@@ -235,27 +226,24 @@ export function ComplianceClient() {
               Elaboração de Data Processing Agreements (DPA), cláusulas de sigilo e aditivos contratuais de conformidade com fornecedores, agências e operadores terceirizados.
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">Segurança Jurídica B2B</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-cyan-500 font-bold bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+              Segurança Jurídica B2B
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
 
-        {/* 5. Auditoria & Gestão de Incidentes ANPD */}
+        {/* 5. Auditoria & Incidentes ANPD (Âmbar / Alerta) */}
         <Card
           onClick={() => handleOpenModalWithService("Auditoria de Risco Regulatório & Gestão de Incidentes")}
-          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
+          className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-amber-500/40 transition-all cursor-pointer group"
         >
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+              <div className="size-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0 group-hover:scale-105 transition-transform">
                 <AlertTriangle className="size-4" />
               </div>
               <h3 className="text-xs font-bold text-foreground leading-tight">
@@ -263,23 +251,20 @@ export function ComplianceClient() {
               </h3>
             </div>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Plano de resposta a vazamentos de dados, protocolos de comunicação obrigatória à Autoridade Nacional de Proteção de Dados (ANPD) e defesas em sanções administrativas.
+              Plano de resposta a vazamentos de dados, protocolos de comunicação obrigatória à Autoridade Nacional de Proteção de Dados (ANPD) e defesas em sanções.
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">Gestão de Crise & Defesa</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-amber-500 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+              Gestão de Crise & Sanções
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
 
-        {/* 6. Governança e Compliance de IA */}
+        {/* 6. Governança e Compliance de IA (Dourado / Primário / IA) */}
         <Card
           onClick={() => handleOpenModalWithService("Governança & Compliance de Inteligência Artificial")}
           className="border-border/70 bg-card/60 backdrop-blur-md p-4 flex flex-col justify-between gap-3 hover:border-primary/40 transition-all cursor-pointer group"
@@ -297,29 +282,26 @@ export function ComplianceClient() {
               Avaliação de impacto algorítmico, conformidade regulatória para integração de LLMs e mitigação de responsabilidade civil no uso empresarial de Inteligência Artificial.
             </p>
           </div>
-
           <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-muted-foreground">AI Act • Ética Algorítmica</span>
-            <Button
-              type="button"
-              size="sm"
-              className="text-[11px] font-bold h-7 px-3 bg-primary text-primary-foreground group-hover:bg-primary/90"
-            >
-              Solicitar
-            </Button>
+            <span className="text-[10px] font-mono text-primary font-bold bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+              AI Act & Governança LLM
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+              Solicitar &rarr;
+            </span>
           </div>
         </Card>
       </div>
 
       {/* ── CHECKLIST INTERATIVO DE CONFORMIDADE (LGPD & ANPD) ── */}
-      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5 sm:p-6 space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-4">
+      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5 sm:p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-3">
           <div>
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
               <FileCheck2 className="size-4 text-primary" />
               <span>Diagnóstico de Maturidade Regulatória (Checklist Contínuo)</span>
             </h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-[11px] text-muted-foreground mt-0.5">
               Monitore os 6 pilares fundamentais exigidos em fiscalizações da Autoridade Nacional de Proteção de Dados (ANPD).
             </p>
           </div>
@@ -345,7 +327,7 @@ export function ComplianceClient() {
             <div
               key={item.id}
               onClick={() => toggleCheck(item.id)}
-              className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
+              className={`p-3 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
                 checkedItems[item.id]
                   ? "bg-primary/5 border-primary/30"
                   : "bg-background/40 border-border/60 hover:border-border"
@@ -366,26 +348,6 @@ export function ComplianceClient() {
               </div>
             </div>
           ))}
-        </div>
-      </Card>
-
-      {/* ── CARD DE IMPLEMENTAÇÃO & AGENDAMENTO ── */}
-      <Card className="border-border/70 bg-card/60 backdrop-blur-md p-5">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h4 className="text-xs font-bold text-foreground">Precisa de Adequação LGPD Completa ou DPO Dedicado?</h4>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Nossa equipe de advogados especialistas em Direito Digital e Compliance elabora o inventário formal (ROPA), aditivos contratuais e defesas perante a ANPD para sua empresa.
-            </p>
-          </div>
-          <Button
-            type="button"
-            onClick={() => handleOpenModalWithService("Adequação LGPD Completa & Inventário (ROPA)")}
-            className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm shrink-0 h-10 cursor-pointer"
-          >
-            <Send className="size-3.5" />
-            <span>Falar com Especialista</span>
-          </Button>
         </div>
       </Card>
 
