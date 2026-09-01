@@ -177,15 +177,11 @@ export function MarcasClient() {
       if (data) {
         const list = data as MarcaItem[];
         setMarcas(list);
-        setStoredCache(list);
-
-        const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
-        const limit = isPaid ? (profile?.marcas_limit || 1) : 1;
         setQuota({
-          total: limit,
+          total: 9999,
           used: list.length,
-          remaining: Math.max(0, limit - list.length),
-          plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : "Gratuito (1 Marca)",
+          remaining: 9999,
+          plan: "Radar RPI Ilimitado",
         });
       }
     } catch (err: any) {
@@ -214,15 +210,6 @@ export function MarcasClient() {
     e.preventDefault();
     const cleanNum = newNumero.trim();
     if (!cleanNum) return;
-
-    // Checagem de limite no frontend
-    const alreadyExists = marcas.some(m => m.numero_inpi === cleanNum);
-    if (!alreadyExists && marcas.length >= quota.total) {
-      setErrorMsg(
-        `Limite de acompanhamento atingido (${marcas.length}/${quota.total} marca ativa). Exclua o processo abaixo para liberar sua vaga gratuita ou contrate o Radar RPI para monitorar mais marcas.`
-      );
-      return;
-    }
 
     setAdding(true);
     setErrorMsg(null);
@@ -389,12 +376,10 @@ export function MarcasClient() {
 
         <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
           <div className="text-right">
-            <div className="text-[10px] font-mono uppercase text-muted-foreground">Em Uso</div>
-            <div className="text-sm font-extrabold font-mono text-foreground">
-              <span className={isAtLimit ? "text-amber-500" : "text-emerald-500"}>
-                {marcas.length}
-              </span>{" "}
-              / {quota.total} {quota.total === 1 ? "Marca" : "Marcas"}
+            <div className="text-[10px] font-mono uppercase text-muted-foreground">Monitoramento</div>
+            <div className="text-sm font-extrabold font-mono text-emerald-500 flex items-center gap-1.5 justify-end">
+              <span>{marcas.length}</span>
+              <span className="text-xs text-muted-foreground font-normal">/ Ilimitado</span>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Busca marcas e perfil do usuário para quotas
+    // Busca marcas e perfil do usuário
     const [{ data: marcas, error: marcasErr }, { data: profile }] = await Promise.all([
       supabase
         .from("marcas")
@@ -26,16 +26,15 @@ export async function GET() {
 
     if (marcasErr) throw marcasErr;
 
-    const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
-    const marcasLimit = isPaid ? (profile?.marcas_limit || 1) : 1;
-
+    // Radar RPI é Ilimitado para todos os usuários
     return NextResponse.json({
       marcas: marcas || [],
       quota: {
-        total: marcasLimit,
+        total: 9999,
         used: (marcas || []).length,
-        remaining: Math.max(0, marcasLimit - (marcas || []).length),
-        plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : "Gratuito (1 Marca)",
+        remaining: 9999,
+        plan: "Radar RPI Ilimitado",
+        isUnlimited: true
       }
     });
   } catch (error: any) {
@@ -61,47 +60,7 @@ export async function POST(request: Request) {
 
     const cleanNum = numero_inpi.trim();
 
-    // 1. Verifica se esta marca já existe para o usuário (caso de atualização)
-    const { data: existingMarca } = await supabase
-      .from("marcas")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("numero_inpi", cleanNum)
-      .maybeSingle();
-
-    // 2. Se for uma nova marca, checar limite do plano
-    if (!existingMarca) {
-      const [{ count }, { data: profile }] = await Promise.all([
-        supabase
-          .from("marcas")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id),
-        supabase
-          .from("profiles")
-          .select("marcas_limit, plan, plan_status")
-          .eq("id", user.id)
-          .maybeSingle(),
-      ]);
-
-      const isPaid = profile?.plan && profile.plan !== "free" && !profile.plan.toLowerCase().includes("gratuito") && profile.plan_status === "active";
-      const marcasLimit = isPaid ? (profile?.marcas_limit || 1) : 1;
-      const currentActiveCount = count || 0;
-
-      if (currentActiveCount >= marcasLimit) {
-        return NextResponse.json(
-          {
-            error: `Limite de marcas atingido. Seu plano atual permite acompanhar ${marcasLimit} marca(s) ativa(s). Exclua a marca atual para liberar sua vaga gratuita ou contrate a Proteção Total de Marcas para monitorar mais marcas.`,
-            limitReached: true,
-            currentLimit: marcasLimit,
-            activeCount: currentActiveCount,
-            plan: isPaid ? (profile?.plan || "Radar RPI Ativo") : "Gratuito (1 Marca)",
-          },
-          { status: 403 }
-        );
-      }
-    }
-
-    // 3. Upsert da marca
+    // Radar RPI é Ilimitado: Upsert direto sem bloqueio de cota
     const { data, error } = await supabase
       .from("marcas")
       .upsert({
