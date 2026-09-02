@@ -189,20 +189,23 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
-            <Link
-              href="/register"
-              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-semibold bg-primary text-primary-foreground rounded-xl gap-2")}
-            >
-              <span>Criar Conta de Parceiro</span>
-              <ArrowRight className="size-4" />
-            </Link>
             <a
-              href="#dashboard"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-medium border-border/80")}
+              href="https://wa.me/5511972667778?text=Olá,%20tenho%20interesse%20em%20ser%20parceiro%20da%20DG%20Advocacia%20e%20gostaria%20de%20solicitar%20meu%20código%20de%20acesso."
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-semibold bg-primary text-primary-foreground rounded-xl gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all")}
             >
-              Conhecer a Dashboard
+              <span>Quero ser Parceiro</span>
+              <ArrowRight className="size-4" />
             </a>
+            <Link
+              href="/login?mode=register"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-medium border-border/80 bg-background/50 hover:bg-muted/80")}
+            >
+              Já possuo um Convite
+            </Link>
           </div>
+
 
           <div className="mt-12 flex flex-wrap justify-center gap-6 sm:gap-8 text-xs text-muted-foreground">
             <div className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-primary" /> Cadastro Simplificado por Protocolo</div>
@@ -1045,19 +1048,27 @@ export default function LandingPage() {
           <div className="size-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
             <Handshake className="size-6 text-primary" />
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
-            Pronto para expandir sua capacidade operacional em marcas?
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Pronto para escalar sua operação?
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-normal max-w-xl mx-auto">
-            Crie sua conta de parceiro hoje mesmo, acesse a dashboard operacional e conte com assessoria jurídica especializada em cada etapa do processo no INPI.
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-normal max-w-xl mx-auto leading-relaxed">
+            O acesso à nossa infraestrutura operacional e Radar RPI é liberado exclusivamente para parceiros credenciados após sessão de alinhamento com nossos advogados.
           </p>
-          <div className="pt-2">
-            <Link
-              href="/register"
-              className={cn(buttonVariants({ size: "lg" }), "h-11 sm:h-12 px-8 text-sm font-semibold bg-primary text-primary-foreground rounded-xl gap-2")}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+            <a
+              href="https://wa.me/5511972667778?text=Olá,%20tenho%20interesse%20em%20ser%20parceiro%20da%20DG%20Advocacia%20e%20gostaria%20de%20solicitar%20meu%20código%20de%20acesso."
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-8 text-sm font-semibold bg-primary text-primary-foreground rounded-xl gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all")}
             >
-              <span>Criar Conta de Parceiro</span>
+              <span>Quero ser Parceiro</span>
               <ArrowRight className="size-4" />
+            </a>
+            <Link
+              href="/login?mode=register"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto h-11 sm:h-12 px-6 text-sm font-medium border-border/80 bg-background/50 hover:bg-muted/80")}
+            >
+              Já tenho um Código
             </Link>
           </div>
         </div>

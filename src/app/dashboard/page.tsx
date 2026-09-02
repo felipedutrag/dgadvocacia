@@ -1013,7 +1013,7 @@ export default function DashboardPage() {
             </header>
 
             {/* ── Main Dashboard Content (Compacto em 125% e amplo em 100% Full HD) ── */}
-            <div className="flex-1 p-4 sm:p-6 lg:p-7 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-[1320px] mx-auto w-full">
+            <div className="flex-1 p-4 sm:p-6 lg:p-7 max-w-6xl mx-auto w-full">
               {/* TAB 1: CONSULTAS INPI & TELEMETRIA */}
               {(activeTab === "consultas-nome" || activeTab === "consultas-processo" || activeTab === "consultas-figura" || activeTab === "consultas") && (
                 <div className="space-y-6 animate-fade-in">
@@ -1228,7 +1228,7 @@ export default function DashboardPage() {
           {activeTab === "plans" && (
             <div className="relative space-y-10 animate-fade-in">
               {/* Efeitos de Iluminação e Background Atmosférico */}
-              <div className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-gradient-to-b from-primary/15 via-primary/5 to-transparent blur-3xl opacity-70 -z-10" />
+              <div className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-gradient-to-b from-primary/15 via-primary/5 to-transparent blur-3xl opacity-70 -z-10" />
               <div className="pointer-events-none absolute top-40 -left-20 size-72 rounded-full bg-amber-500/10 blur-3xl -z-10" />
               <div className="pointer-events-none absolute top-60 -right-20 size-72 rounded-full bg-emerald-500/10 blur-3xl -z-10" />
 
@@ -1244,7 +1244,7 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
-                  <div className="space-y-2.5 max-w-3xl">
+                  <div className="space-y-2.5 max-w-6xl">
                     <h3 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight leading-tight">
                       Centralize 100% da Gestão Marcária da sua Empresa
                     </h3>
@@ -1277,7 +1277,7 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-3">
                   <div className="h-px flex-1 bg-border/60" />
                   <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground px-2">
-                    O que está incluso na sua conta
+                    Serviços Inclusos
                   </span>
                   <div className="h-px flex-1 bg-border/60" />
                 </div>

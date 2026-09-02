@@ -277,7 +277,7 @@ export function MarcasClient() {
       setNewNumero("");
       setSuccessMsg(`Processo ${cleanNum} (${nomeMarca}) adicionado e sincronizado com o Radar!`);
       setTimeout(() => setSuccessMsg(null), 5000);
-      
+
       // Atualiza o cache e quotas imediatamente
       fetchMarcas(false);
     } catch (err: any) {
@@ -361,8 +361,8 @@ export function MarcasClient() {
     return <Clock className="size-3.5" />;
   };
 
-  const filteredMarcas = marcas.filter(m => 
-    m.numero_inpi.includes(searchQuery) || 
+  const filteredMarcas = marcas.filter(m =>
+    m.numero_inpi.includes(searchQuery) ||
     m.nome_marca.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (m.titular && m.titular.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -441,7 +441,7 @@ export function MarcasClient() {
 
       {/* Barra de Filtro e Busca Local */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="relative flex-1 max-w-sm">
+        <div className="relative w-full sm:w-1/3 pr-3">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <Input
             type="text"
@@ -516,17 +516,17 @@ export function MarcasClient() {
               // Determina o estágio atual (1 a 5)
               let currentStep = 1;
               if (
-                sit.includes("conced") || 
-                sit.includes("registro de marca em vigor") || 
+                sit.includes("conced") ||
+                sit.includes("registro de marca em vigor") ||
                 sit.includes("prorrog") ||
                 sit.includes("decenal") ||
                 despachosText.includes("concessão")
               ) {
                 currentStep = 5;
               } else if (
-                sit.includes("deferi") || 
-                sit.includes("indeferi") || 
-                sit.includes("exame de mérito") || 
+                sit.includes("deferi") ||
+                sit.includes("indeferi") ||
+                sit.includes("exame de mérito") ||
                 sit.includes("mérito") ||
                 despachosText.includes("deferimento") ||
                 despachosText.includes("indeferimento") ||
@@ -534,15 +534,15 @@ export function MarcasClient() {
               ) {
                 currentStep = 4;
               } else if (
-                sit.includes("oposição") || 
-                sit.includes("publica") || 
-                sit.includes("aguardando prazo") || 
+                sit.includes("oposição") ||
+                sit.includes("publica") ||
+                sit.includes("aguardando prazo") ||
                 despachosText.includes("publicação de pedido") ||
                 despachosText.includes("oposição")
               ) {
                 currentStep = 3;
               } else if (
-                sit.includes("exame formal") || 
+                sit.includes("exame formal") ||
                 sit.includes("exigência formal") ||
                 despachosText.includes("exame formal")
               ) {
@@ -577,22 +577,20 @@ export function MarcasClient() {
                     return (
                       <div
                         key={step.num}
-                        className={`p-2.5 rounded-xl border transition-all space-y-1 ${
-                          isCompleted
-                            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
-                            : isCurrent
+                        className={`p-2.5 rounded-xl border transition-all space-y-1 ${isCompleted
+                          ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
+                          : isCurrent
                             ? "border-primary/80 bg-primary/15 shadow-sm shadow-primary/10 ring-1 ring-primary/40"
                             : "border-border/50 bg-background/30 opacity-60"
-                        }`}
+                          }`}
                       >
                         <div
-                          className={`size-5 rounded-full text-[10px] font-bold mx-auto flex items-center justify-center ${
-                            isCompleted
-                              ? "bg-emerald-500 text-black font-bold"
-                              : isCurrent
+                          className={`size-5 rounded-full text-[10px] font-bold mx-auto flex items-center justify-center ${isCompleted
+                            ? "bg-emerald-500 text-black font-bold"
+                            : isCurrent
                               ? "bg-primary text-primary-foreground font-extrabold animate-pulse"
                               : "bg-muted text-muted-foreground"
-                          }`}
+                            }`}
                         >
                           {isCompleted ? "✓" : step.num}
                         </div>
@@ -600,13 +598,12 @@ export function MarcasClient() {
                           {step.title}
                         </div>
                         <div
-                          className={`text-[9px] font-mono font-bold ${
-                            isCompleted
-                              ? "text-emerald-500"
-                              : isCurrent
+                          className={`text-[9px] font-mono font-bold ${isCompleted
+                            ? "text-emerald-500"
+                            : isCurrent
                               ? "text-primary"
                               : "text-muted-foreground"
-                          }`}
+                            }`}
                         >
                           {statusLabel}
                         </div>
@@ -762,7 +759,7 @@ export function MarcasClient() {
                     {deletingId === marca.id ? <Loader2 className="size-3 animate-spin" /> : <Trash2 className="size-3" />}
                   </Button>
                 </div>
-                
+
                 <h3 className="mt-2.5 text-sm font-bold leading-snug text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
                   {marca.nome_marca}
                 </h3>
@@ -772,7 +769,7 @@ export function MarcasClient() {
                     Titular: <span className="font-semibold text-foreground/80">{marca.titular}</span>
                   </p>
                 )}
-                
+
                 <div className="mt-2 flex flex-wrap gap-2">
                   <span className={`inline-flex items-center gap-1 font-mono text-[9px] px-2 py-0.5 rounded-full border ${getStatusColor(marca.status_ipas)}`}>
                     {getStatusIcon(marca.status_ipas)}
@@ -780,7 +777,7 @@ export function MarcasClient() {
                   </span>
                 </div>
               </div>
-              
+
               <div className="mt-4 flex items-center justify-between font-mono text-[10px] text-muted-foreground border-t border-border/50 pt-3">
                 <Button
                   variant="ghost"

@@ -19,8 +19,9 @@ import {
 } from "lucide-react";
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,21 +31,19 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { SmartDocLogo, SmartDocBrand } from "@/components/brand-logo";
 
-export default function AuthPage() {
+function AuthForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
 
-  const [mode, setMode] = useState<"login" | "register" | "forgot" | "reset">(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const m = params.get("mode");
-      if (m === "register" || m === "forgot" || m === "reset") return m;
-      if (window.location.hash.includes("type=recovery") || window.location.hash.includes("access_token")) {
-        return "reset";
-      }
-    }
-    return "login";
-  });
+  const modeParam = searchParams.get("mode");
+  const initialMode = (modeParam === "register" || modeParam === "forgot" || modeParam === "reset") 
+    ? modeParam 
+    : (searchParams.get("invite") || searchParams.get("codigo") || searchParams.get("convite")) 
+      ? "register" 
+      : "login";
+
+  const [mode, setMode] = useState<"login" | "register" | "forgot" | "reset">(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -407,9 +406,17 @@ export default function AuthPage() {
                     className="pl-9 font-mono uppercase tracking-wider border-primary/30 focus-visible:ring-primary/20"
                   />
                 </div>
-                <p className="text-[11px] text-muted-foreground">
-                  Adesão restrita a parceiros com convite ativo.
-                </p>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-muted-foreground">Não possui um código?</span>
+                  <a
+                    href="https://wa.me/5511972667778?text=Olá,%20tenho%20interesse%20em%20ser%20parceiro%20da%20DG%20Advocacia%20e%20gostaria%20de%20solicitar%20meu%20código%20de%20acesso."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    Quero ser Parceiro &rarr;
+                  </a>
+                </div>
               </div>
             )}
 
@@ -587,5 +594,13 @@ export default function AuthPage() {
         )}
       </Card>
     </main>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center" />}>
+      <AuthForm />
+    </Suspense>
   );
 }
