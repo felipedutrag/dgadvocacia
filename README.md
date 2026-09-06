@@ -1,4 +1,4 @@
-﻿# ⚖️ DG Advocacia — B2B Legal Infrastructure & Intellectual Property Ecosystem
+# ⚖️ DG Advocacia — B2B Legal Infrastructure & Intellectual Property Ecosystem
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js 16" />
