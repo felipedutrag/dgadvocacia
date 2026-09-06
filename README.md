@@ -32,7 +32,7 @@ graph TD
     end
 
     subgraph "Core Intelligence & Legal Automation"
-        B --> D[Collision & Phonetic Analysis (Art. 124 LPI)]
+        B --> D["Collision & Phonetic Analysis (Art. 124 LPI)"]
         C --> D
         D --> E[Dra. Sofia - Active Legal AI Agent]
         E -->|Tool Calling: Search DB, Rules & Statutes| F[Technical Legal Feasibility Report]
@@ -41,12 +41,12 @@ graph TD
     subgraph "Operational Legal Dashboard & Vault"
         F --> G[Partner Dashboard Cockpit]
         G --> H[Process Telemetry & Realtime Alerts]
-        G --> I[Petition & Contract Generator (TipTap + DOCX)]
+        G --> I["Petition & Contract Generator (TipTap + DOCX)"]
         G --> J[Obsidian B2B Knowledge Vault]
     end
 
     subgraph "Cloud & Data Tier"
-        G --> K[(Supabase PostgreSQL 17 + RLS)]
+        G --> K[("Supabase PostgreSQL 17 + RLS")]
         E --> L[Google Gemini API]
         G --> M[Resend & Telegram Webhook Alerts]
     end
